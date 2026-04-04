@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infrastructure Proxmox - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --proxmox-orange: #E57000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(229, 112, 0, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(229, 112, 0, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--proxmox-orange);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--proxmox-orange);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(229, 112, 0, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(229, 112, 0, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--proxmox-orange);
+        }
+
+        .server-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .server-card {
+            background: var(--surface);
+            border: 1px solid rgba(229, 112, 0, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .server-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--proxmox-orange);
+        }
+
+        .server-card h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--proxmox-orange);
+        }
+
+        .server-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(229, 112, 0, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--proxmox-orange);
+            color: var(--proxmox-orange);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0; /* Évite les espaces sous l'image */
+        }
+
+        /* Style spécifique pour les nouvelles images */
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .server-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Infrastructure · Virtualisation</div>
+            
+            <h1>Cluster Proxmox</h1>
+            
+            <p class="project-subtitle">
+                Du laptop surchauffé à un cluster professionnel de 3 serveurs : construire une infrastructure de datacenter à domicile.
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Serveurs</div>
+                    <div class="meta-value">3 Nodes</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">VMs / Containers</div>
+                    <div class="meta-value">~20 Services</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Uptime</div>
+                    <div class="meta-value">99.9%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>Quand le Laptop ne Suffit Plus</h2>
+            <p>
+                Le vieux laptop qui hébergeait Home Assistant avait fait son temps. Entre les crashs aléatoires, les ventilateurs qui hurlaient 24/7, et les limitations de ressources qui bridaient mes ambitions, il était clair qu'il fallait passer à autre chose.
+            </p>
+            <p>
+                Je voulais pouvoir faire tourner plusieurs services simultanément : Home Assistant bien sûr, mais aussi un NAS pour stocker mes données, un serveur de surveillance vidéo, des conteneurs pour mes expérimentations... Le moment était venu de construire une vraie infrastructure.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Proxmox/Photo datacenter physique.jpg" alt="Architecture du Cluster Proxmox" class="media-image">
+            </div>
+            <p class="media-caption">Vue d'ensemble de l'infrastructure Proxmox</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Découverte de Proxmox</h2>
+            <p>
+                En cherchant des solutions de virtualisation, je suis tombé sur Proxmox VE. Une plateforme open-source qui permet de gérer des machines virtuelles (KVM) et des conteneurs (LXC) depuis une interface web élégante. C'était exactement ce dont j'avais besoin.
+            </p>
+            <p>
+                L'idée de pouvoir créer un cluster, migrer des VMs à chaud entre serveurs, gérer tout depuis un navigateur... C'était comme avoir mon propre mini datacenter à la maison. Le genre de technologie qui donne envie de se lancer.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Les Trois Mousquetaires</h2>
+            <p>
+                Petit à petit, j'ai assemblé un cluster de 3 serveurs. Chacun avec son propre rôle, ses propres forces, formant ensemble une infrastructure robuste et évolutive.
+            </p>
+
+            <div class="server-grid">
+                <div class="server-card">
+                    <h4>🖥️ HP Z440 Workstation</h4>
+                    <p><strong>Rôle :</strong> Node Principal</p>
+                    <p><strong>CPU :</strong> Intel Xeon</p>
+                    <p><strong>RAM :</strong> 40GB ECC</p>
+                    <p><strong>GPU :</strong> 2x NVIDIA (pour Kara IA)</p>
+                    <p><strong>Fonction :</strong> Machine learning, IA locale, calculs lourds</p>
+                </div>
+
+                <div class="server-card">
+                    <h4>💻 HP Laptop</h4>
+                    <p><strong>Rôle :</strong> Node Secondaire</p>
+                    <p><strong>CPU :</strong> Intel Core i5 8ème gen</p>
+                    <p><strong>RAM :</strong> 16GB</p>
+                    <p><strong>Fonction :</strong> Services légers, conteneurs applicatifs, testing</p>
+                </div>
+
+                <div class="server-card">
+                    <h4>🏢 Dell PowerEdge R230</h4>
+                    <p><strong>Rôle :</strong> Node Enterprise</p>
+                    <p><strong>CPU :</strong> Intel Xeon E3</p>
+                    <p><strong>RAM :</strong> 16GB ECC</p>
+                    <p><strong>Fonction :</strong> Services critiques, stockage, haute disponibilité</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>L'Écosystème de Services</h2>
+            <p>
+                Avec cette infrastructure, j'ai pu déployer une vingtaine de VMs et conteneurs, chacun avec sa mission spécifique. Voici les principaux services qui tournent sur le cluster :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Services en Production</h3>
+                <ul>
+                    <li>Home Assistant - Le cœur de la domotique</li>
+                    <li>TrueNAS - Stockage centralisé et sécurisé</li>
+                    <li>Frigate - Surveillance vidéo avec IA</li>
+                    <li>Pi-hole - DNS et anti-publicités</li>
+                    <li>Octoprint - Contrôle impression 3D</li>
+                    <li>OpenWebUI - Interface pour Kara</li>
+                    <li>Ollama - Modèles IA locaux</li>
+                    <li>N8N - Automatisations workflow</li>
+                    <li>Et bien d'autres expérimentations...</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Proxmox/Interface Proxmox.png" alt="Dashboard Proxmox en temps réel" class="media-image">
+            </div>
+            <p class="media-caption">Interface de gestion du cluster avec métriques de performance</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Haute Disponibilité & Résilience</h2>
+            <p>
+                L'un des grands avantages d'avoir un cluster, c'est la résilience. Si un serveur tombe, les services critiques peuvent être migrés automatiquement vers un autre node. Plus de panique quand quelque chose plante.
+            </p>
+            <p>
+                J'ai mis en place des backups automatiques quotidiens, des snapshots avant chaque mise à jour majeure, et un système de monitoring qui m'alerte en cas de problème. Mon infrastructure est devenue aussi fiable qu'un service cloud professionnel.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Technologies & Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">Proxmox VE</div>
+                <div class="tech-tag">KVM</div>
+                <div class="tech-tag">LXC</div>
+                <div class="tech-tag">ZFS</div>
+                <div class="tech-tag">Ceph</div>
+                <div class="tech-tag">VLAN</div>
+                <div class="tech-tag">pfSense</div>
+                <div class="tech-tag">Ansible</div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Compétences Développées</h3>
+                <ul>
+                    <li>Virtualisation et gestion de clusters</li>
+                    <li>Networking avancé (VLANs, routing, firewalling)</li>
+                    <li>Stockage distribué et systèmes de fichiers</li>
+                    <li>Haute disponibilité et failover</li>
+                    <li>Automation avec scripts et Ansible</li>
+                    <li>Monitoring et observabilité</li>
+                    <li>Gestion de l'énergie et optimisation thermique</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Le Futur de l'Infrastructure</h2>
+            <p>
+                Cette infrastructure continue d'évoluer. Je teste régulièrement de nouvelles technologies, j'optimise les performances, j'ajoute des serveurs quand le besoin se fait sentir. C'est un terrain de jeu infini pour apprendre et expérimenter.
+            </p>
+            <p>
+                Mais une infrastructure, ce n'est rien sans les services qui tournent dessus. Et parmi tous ces services, certains méritent qu'on s'y attarde. Commençons par la colonne vertébrale du stockage : TrueNAS.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="truenas.html" class="next-project-link">
+            <div class="next-label">Service suivant</div>
+            <h3>TrueNAS</h3>
+            <p class="next-description">Le cœur du stockage : comment je gère téraoctets de données avec redondance et sécurité</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Portfolio. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wii Portable DIY - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --surface: rgba(255, 255, 255, 0.05);
+            --wii-blue: #009BE5;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 155, 229, 0.03), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.03), transparent 50%);
+            pointer-events: none;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .back-button {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .back-button:hover { background: var(--surface); color: var(--text-primary); }
+        .back-button::before { content: '←'; margin-right: 0.5rem; }
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            text-align: center;
+        }
+        .hero-content { max-width: 800px; animation: fadeIn 1s; }
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(0, 155, 229, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--wii-blue);
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+        }
+        .section {
+            margin-bottom: 6rem;
+            animation: fadeIn 1s backwards;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        ul { list-style: none; padding: 0; }
+        li {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--wii-blue);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 155, 229, 0.05), rgba(0, 102, 255, 0.05));
+            border: 1px solid rgba(0, 155, 229, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            color: var(--wii-blue);
+            margin-bottom: 1rem;
+        }
+        .video-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--wii-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+        .video-link:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+        .media-section { margin-bottom: 6rem; }
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .media-container:hover .media-image { transform: scale(1.02); }
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, .content { padding-left: 2rem; padding-right: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="project-category">DIY · Console Modding</div>
+            <h1>Wii Portable DIY</h1>
+            <p class="subtitle">
+                Transformer une Nintendo Wii en console portable avec écran intégré et sortie HDMI vers TV
+            </p>
+        </div>
+    </section>
+
+    <div class="content">
+        <div class="section">
+            <h2>Le Projet O-Wii de Benge</h2>
+            <p>
+                Le projet O-Wii (prononcé "Oh Wii") de Benge alias Millomaker est un projet de Wii portable DIY devenu célèbre dans la communauté BitBuilt. L'idée : découper littéralement la carte mère d'une Wii pour ne garder que l'essentiel, puis tout réassembler dans un boîtier custom imprimé en 3D.
+            </p>
+            <p>
+                J'ai découvert ce projet sur BitBuilt et les vidéos YouTube de Benge, et j'ai décidé de me lancer. C'est un projet complexe qui demande des compétences en électronique, micro-soudure, impression 3D et patience.
+            </p>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 2rem 0;">
+                <a href="https://bitbuilt.net/forums/threads/o-wii-first-benge-portable-wii.3579/" target="_blank" class="video-link">
+                    📖 Worklog O-Wii (BitBuilt)
+                </a>
+                <a href="https://www.youtube.com/watch?v=A67Bc_3gHcs" target="_blank" class="video-link">
+                    📺 Vidéo Benge V1
+                </a>
+                <a href="https://www.youtube.com/watch?v=n-rd5-7yNcE" target="_blank" class="video-link">
+                    📺 Vidéo Benge V2
+                </a>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet wii portable/IMG_0035.jpg" alt="Wii Portable vue générale" class="media-image">
+            </div>
+            <p class="media-caption">Ma Wii Portable basée sur le design O-Wii de Benge</p>
+        </div>
+
+        <div class="section">
+            <h2>Qu'est-ce qu'un Portable Wii ?</h2>
+            <p>
+                Un portable Wii, c'est une Nintendo Wii dont on a :
+            </p>
+            <ul>
+                <li><strong>Trim la carte mère :</strong> Couper littéralement le PCB pour retirer toutes les parties inutiles (lecteur DVD, ports inutilisés, etc.)</li>
+                <li><strong>Miniaturisé l'alimentation :</strong> Remplacer le gros transformateur par des modules DC-DC compacts</li>
+                <li><strong>Intégré un écran :</strong> Ajouter un écran LCD 5-7 pouces avec driver VGA/composite</li>
+                <li><strong>Miniaturisé les contrôles :</strong> Démonter une manette GameCube et réutiliser ses composants</li>
+                <li><strong>Ajouté une batterie :</strong> Cellules Li-ion 18650 pour autonomie portable</li>
+                <li><strong>Créé un boîtier custom :</strong> Impression 3D d'une coque qui ressemble à une console portable</li>
+            </ul>
+            <p>
+                Résultat : une vraie Wii fonctionnelle dans un format portable, capable de jouer à tous les jeux Wii et GameCube !
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Ma Modification : Splitter HDMI</h2>
+            <p>
+                J'ai suivi globalement le design de Benge, mais avec une modification importante : <strong>j'ai ajouté un splitter HDMI et un port HDMI externe</strong>.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Pourquoi un Splitter HDMI ?</h3>
+                <p>Benge a conçu sa Wii portable uniquement pour jouer en mode portable. Moi, je voulais pouvoir jouer AUSSI sur ma TV quand je suis chez moi.</p>
+                <p style="margin-top: 1rem;"><strong>Ma solution :</strong></p>
+                <ul>
+                    <li>Le signal vidéo de la Wii passe d'abord par un <strong>splitter HDMI</strong></li>
+                    <li>Une sortie du splitter va vers l'<strong>écran intégré</strong> de la portable</li>
+                    <li>L'autre sortie va vers un <strong>port HDMI externe</strong> sur le boîtier</li>
+                    <li>Résultat : je peux brancher la portable sur ma TV et jouer sur grand écran !</li>
+                </ul>
+                <p style="margin-top: 1rem; font-style: italic;">C'est le meilleur des deux mondes : portable quand je veux, TV quand je suis chez moi.</p>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet wii portable/IMG_0037.jpg" alt="Port HDMI externe sur le boîtier" class="media-image">
+            </div>
+            <p class="media-caption">Le port HDMI externe sur le boîtier pour brancher sur TV</p>
+        </div>
+
+        <div class="section">
+            <h2>Le Trimming : Découper la Wii</h2>
+            <p>
+                L'étape la plus stressante : découper la carte mère de la Wii. On utilise une Dremel avec un disque de découpe pour enlever toutes les parties inutiles du PCB.
+            </p>
+            <p>
+                <strong>Qu'est-ce qu'on enlève ?</strong>
+            </p>
+            <ul>
+                <li>Toute la partie lecteur DVD (inutile, on charge les jeux depuis USB)</li>
+                <li>Les ports GameCube (remplacés par des versions miniatures)</li>
+                <li>Une partie des ports USB (on en garde juste un ou deux)</li>
+                <li>Les connecteurs d'alimentation d'origine</li>
+                <li>Toutes les zones du PCB qui ne contiennent pas de composants critiques</li>
+            </ul>
+            <p>
+                Résultat : la carte mère passe de ~20x15cm à environ 8x8cm. Un gain de place énorme !
+            </p>
+            <p style="font-style: italic; color: var(--wii-blue);">
+                Note : Il faut être TRÈS prudent avec le trimming. Une erreur et la Wii est morte. J'ai suivi scrupuleusement les guides de la communauté BitBuilt.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>L'Alimentation</h2>
+            <p>
+                La Wii originale utilise un gros transformateur 12V. Pour une portable, on utilise des modules DC-DC compacts qui convertissent la tension de la batterie vers les différentes tensions nécessaires :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Système d'Alimentation</h3>
+                <ul>
+                    <li><strong>Batterie :</strong> 6x cellules 18650 Li-ion (3000mAh chacune) en 2S3P = 7.4V 9000mAh</li>
+                    <li><strong>Autonomie :</strong> ~4-5 heures de jeu</li>
+                    <li><strong>Module PMS (Power Management System) :</strong> Gère la charge et la protection des batteries</li>
+                    <li><strong>Modules DC-DC PTH08080 :</strong> Convertissent 7.4V vers les tensions nécessaires (1V, 1.15V, 3.3V, 5V)</li>
+                    <li><strong>U-Amp :</strong> Amplificateur audio pour les haut-parleurs intégrés</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet wii portable/" alt="Carte mère Wii trimmée" class="media-image">
+            </div>
+            <p class="media-caption">Carte mère Wii après trimming : de 20x15cm à 8x8cm !</p>
+        </div>
+
+        <div class="section">
+            <h2>L'Écran & La Vidéo</h2>
+            <p>
+                Pour l'affichage, j'ai utilisé un écran LCD 7 pouces avec driver VGA. La Wii peut sortir en VGA moyennant une petite modification (relocalisation de résistances).
+            </p>
+            <p>
+                <strong>Mon setup vidéo :</strong>
+            </p>
+            <ul>
+                <li>Signal VGA de la Wii → Convertisseur VGA vers HDMI</li>
+                <li>HDMI → Splitter HDMI 1 vers 2</li>
+                <li>Sortie 1 du splitter → Écran LCD 7" intégré (via driver HDMI vers LVDS)</li>
+                <li>Sortie 2 du splitter → Port HDMI externe sur le boîtier</li>
+            </ul>
+            <p>
+                Résolution : 480p (mode progressif), bien suffisant pour l'écran 7 pouces et compatible avec toutes les TVs modernes.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Les Contrôles</h2>
+            <p>
+                J'ai démonté une manette GameCube et réutilisé tous ses composants. Le layout est inspiré de la PSP et de la Switch :
+            </p>
+            <ul>
+                <li><strong>Joysticks :</strong> Sticks analogiques GameCube d'origine</li>
+                <li><strong>Boutons principaux :</strong> A, B, X, Y de la GameCube</li>
+                <li><strong>D-Pad :</strong> Directionnel GameCube</li>
+                <li><strong>Gâchettes L/R :</strong> Adaptées depuis les triggers GameCube</li>
+                <li><strong>Boutons Start/Select :</strong> Tactile switches compacts</li>
+                <li><strong>Bouton Power :</strong> Avec LED d'état</li>
+            </ul>
+            <p>
+                Tous les boutons et sticks sont reliés aux PCBs custom que Benge a conçus et que j'ai fait fabriquer chez JLCPCB.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet wii portable/interieur wii.jpg" alt="Intérieur de la Wii portable" class="media-image">
+            </div>
+            <p class="media-caption">L'intérieur du boîtier : carte Wii trimmée, batteries, modules d'alimentation, splitter HDMI</p>
+        </div>
+
+        <div class="section">
+            <h2>Le Boîtier Imprimé 3D</h2>
+            <p>
+                Le boîtier est entièrement imprimé en 3D. Benge a partagé ses fichiers STL que j'ai légèrement modifiés pour intégrer le splitter HDMI et le port HDMI externe.
+            </p>
+            <p>
+                <strong>Caractéristiques du boîtier :</strong>
+            </p>
+            <ul>
+                <li>Dimensions finales : ~25 x 14 x 4 cm (proche d'une Switch en plus épais)</li>
+                <li>Matériau : PLA pour les tests, puis PETG pour la version finale (plus solide)</li>
+                <li>Finition : Ponçage + apprêt + peinture (gris mat)</li>
+                <li>Ouvertures : Port HDMI, USB, carte SD, jack audio, port charge</li>
+                <li>Grilles d'aération : Pour refroidissement actif (ventilateur 40mm)</li>
+            </ul>
+            <p>
+                Temps d'impression total : environ 30 heures (plusieurs pièces assemblées).
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Logiciel & Homebrew</h2>
+            <p>
+                Pour qu'une Wii portable soit pratique, il faut installer des homebrews :
+            </p>
+            <ul>
+                <li><strong>RVLoader :</strong> Loader qui remplace le menu Wii et permet de lancer des jeux depuis USB</li>
+                <li><strong>Nintendont :</strong> Pour jouer aux jeux GameCube</li>
+                <li><strong>USB Loader GX :</strong> Alternative pour charger les jeux Wii</li>
+                <li><strong>Homebrew Channel :</strong> Pour lancer tous les homebrew</li>
+            </ul>
+            <p>
+                Tous les jeux sont stockés sur une clé USB 128GB. Plus besoin de disques !
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Défis & Problèmes Rencontrés</h2>
+            <p>
+                Ce projet n'a pas été facile. Voici les principaux défis :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Galères & Solutions</h3>
+                <ul>
+                    <li><strong>Trimming raté (1ère tentative) :</strong> J'ai coupé une trace importante. Wii morte. J'ai recommencé avec une 2ème Wii.</li>
+                    <li><strong>Problèmes d'alimentation :</strong> Les modules PTH08080 chauffaient trop. Solution : meilleurs dissipateurs + ventilateur forcé.</li>
+                    <li><strong>Écran qui ne s'allumait pas :</strong> Mauvais câble LVDS. Remplacé par un câble de meilleure qualité.</li>
+                    <li><strong>Splitter HDMI qui bugait :</strong> Premier splitter pas assez puissant. Remplacé par un modèle alimenté.</li>
+                    <li><strong>Boîtier trop petit (1ère version) :</strong> Le splitter HDMI ne rentrait pas. Redessiné le boîtier avec 5mm de plus en épaisseur.</li>
+                    <li><strong>Surchauffe CPU :</strong> Ajout d'un dissipateur custom + thermal pad pour mieux évacuer la chaleur.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Résultat Final</h2>
+            <p>
+                Après plusieurs mois de travail (et une Wii sacrifiée), j'ai maintenant une Wii portable 100% fonctionnelle qui :
+            </p>
+            <ul>
+                <li>Joue à tous les jeux Wii et GameCube sans lag</li>
+                <li>A une autonomie de 4-5 heures</li>
+                <li>Peut se brancher sur TV via le port HDMI externe</li>
+                <li>A un écran 7 pouces de bonne qualité</li>
+                <li>Tient dans un sac à dos</li>
+                <li>A des contrôles confortables (merci GameCube !)</li>
+            </ul>
+            <p>
+                C'est de loin le projet DIY que jai le plus aime réalisé. Le résultat en vaut la chandelle : avoir Mario Kart Wii en portable, c'est juste génial.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Wii Portable/En Action.jpg" alt="Wii Portable en fonctionnement" class="media-image">
+            </div>
+            <p class="media-caption">La Wii Portable en action : The legend of zelda: Twilight Princess en mode portable !</p>
+        </div>
+
+        <div class="section">
+            <h2>Remerciements</h2>
+            <p>
+                Un énorme merci à la communauté <strong>BitBuilt</strong> et en particulier à <strong>Benge (Millomaker)</strong> pour avoir partagé ses designs, PCBs et conseils. Sans cette communauté passionnée, ce projet n'aurait jamais vu le jour.
+            </p>
+            <p>
+                Merci aussi à tous ceux qui ont contribué aux guides, documentations et tutoriels sur le trimming de Wii. C'est un savoir collectif incroyable.
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

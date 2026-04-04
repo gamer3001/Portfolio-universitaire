@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frigate - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --frigate-blue: #00A4DB;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 164, 219, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(0, 164, 219, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--frigate-blue);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--frigate-blue);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 164, 219, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 164, 219, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--frigate-blue);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(0, 164, 219, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--frigate-blue);
+            color: var(--frigate-blue);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0;
+        }
+
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Sécurité · Vision IA</div>
+            
+            <h1>Frigate</h1>
+            
+            <p class="project-subtitle">
+                2 caméras extérieures avec détection d'objets IA en temps réel - LXC 115 Docker sur EliteBook
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Serveur</div>
+                    <div class="meta-value">ProxmoxEliteBook</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Type</div>
+                    <div class="meta-value">LXC (Docker)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">RAM</div>
+                    <div class="meta-value">2 GB</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">CPU</div>
+                    <div class="meta-value">2 cores</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Uptime</div>
+                    <div class="meta-value">5d 16h 37m</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>La Surveillance Intelligente</h2>
+            <p>
+                Savoir ce qui se passe autour de chez soi, c'est rassurant. Mais avoir des caméras qui enregistrent tout 24/7 sans intelligence, c'est juste générer des téraoctets de vidéos inutiles. Frigate change complètement la donne avec sa détection d'objets par IA en temps réel.
+            </p>
+            <p>
+                Frigate ne se contente pas d'enregistrer : il analyse. Personnes, voitures, animaux, colis... tout est détecté et classifié instantanément. Je reçois des notifications uniquement quand quelque chose d'important se passe, pas à chaque fois qu'une feuille bouge dans le vent.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Frigate/Interface Frigate.jpg" alt="Interface Frigate avec détections en temps réel" class="media-image">
+            </div>
+            <p class="media-caption">Dashboard Frigate montrant les détections d'objets en temps réel sur les 2 caméras</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Architecture & Déploiement</h2>
+            <p>
+                Frigate tourne dans un conteneur LXC 115 sur le ProxmoxEliteBook. J'ai choisi de le déployer via Docker dans un conteneur LXC plutôt qu'une VM pour optimiser les performances et la consommation de ressources. Avec 2GB de RAM et 2 cores CPU, c'est largement suffisant pour analyser 2 flux vidéo simultanés.
+            </p>
+            <p>
+                Le stockage utilise 14.68GB d'espace disque pour les enregistrements avec une rétention de 30 jours. Les vidéos sont stockées sur TrueNAS via un partage NFS, garantissant qu'aucun événement important ne soit perdu.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Configuration des Caméras</h3>
+                <ul>
+                    <li><strong>Caméra 1 - Entrée principale :</strong> Vue sur la porte d'entrée et l'allée</li>
+                    <li><strong>Caméra 2 - Jardin arrière :</strong> Surveillance de la cour et accès latéral</li>
+                    <li><strong>Résolution :</strong> 1080p à 15 FPS pour balance performance/qualité</li>
+                    <li><strong>Vision nocturne :</strong> IR automatique dès la tombée de la nuit</li>
+                    <li><strong>Détection de mouvement :</strong> Zones configurables pour éviter faux positifs</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>L'IA qui Voit et Comprend</h2>
+            <p>
+                Le cœur de Frigate, c'est son moteur de détection d'objets basé sur des modèles de machine learning optimisés. Il utilise des modèles comme MobileNet SSD ou YOLOv4 pour identifier les objets en temps réel avec une latence inférieure à 100ms.
+            </p>
+            <p>
+                J'ai configuré des zones de détection personnalisées pour chaque caméra. Par exemple, la caméra de l'entrée ignore les voitures qui passent dans la rue mais alerte immédiatement si une personne approche de la porte. La caméra du jardin détecte les animaux mais ne m'envoie pas de notification sauf s'il s'agit d'une personne.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Frigate/Detections IA.jpg" alt="Exemples de détections d'objets" class="media-image">
+            </div>
+            <p class="media-caption">L'IA de Frigate identifiant des personnes, voitures et animaux avec précision</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Intégration Home Assistant</h2>
+            <p>
+                Frigate s'intègre parfaitement avec Home Assistant. Chaque caméra apparaît comme une entité avec son flux en direct, ses snapshots, et ses événements de détection. Je peux voir instantanément ce qui se passe depuis mon dashboard.
+            </p>
+            <p>
+                J'ai créé des automatisations puissantes : notification sur mon téléphone avec snapshot quand une personne est détectée à l'entrée, allumage automatique des lumières extérieures si mouvement détecté la nuit, enregistrement d'événements spécifiques dans un journal.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Automatisations Actives</h3>
+                <ul>
+                    <li>Notification instantanée + snapshot si personne détectée à l'entrée</li>
+                    <li>Allumage lumières extérieures si mouvement de nuit (23h-6h)</li>
+                    <li>Alerte spéciale si détection pendant mes absences</li>
+                    <li>Enregistrement automatique des 30 secondes avant/après chaque événement</li>
+                    <li>Clips automatiques sauvegardés pour les détections importantes</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Streaming & Performance</h2>
+            <p>
+                Le conteneur go2rtc (LXC 113) que j'ai déployé sur le même serveur gère le streaming vidéo ultra-performant. Il permet de convertir les flux RTSP des caméras en WebRTC pour un affichage instantané dans l'interface web sans latence.
+            </p>
+            <p>
+                Les statistiques réseau parlent d'elles-mêmes : 27.57 GB de données entrantes et 3.72 GB sortantes depuis le dernier redémarrage. C'est énorme, mais c'est le prix à payer pour avoir 2 flux vidéo 1080p analysés en continu.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Frigate/Timeline Events.jpg" alt="Timeline des événements Frigate" class="media-image">
+            </div>
+            <p class="media-caption">Timeline des événements détectés avec thumbnails et filtres par type d'objet</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Gestion du Stockage</h2>
+            <p>
+                Avec 2 caméras qui enregistrent en continu, l'espace disque peut vite exploser. Frigate gère intelligemment le stockage avec plusieurs types de rétention :
+            </p>
+            <ul>
+                <li><strong>Enregistrements continus :</strong> 7 jours complets gardés</li>
+                <li><strong>Événements avec détections :</strong> 30 jours conservés</li>
+                <li><strong>Snapshots :</strong> 60 jours de thumbnails pour recherche rapide</li>
+                <li><strong>Clips importants :</strong> Gardés indéfiniment jusqu'à suppression manuelle</li>
+            </ul>
+            <p>
+                Les enregistrements sont stockés sur TrueNAS qui gère automatiquement la compression et la déduplication, optimisant encore plus l'espace utilisé.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Statistiques & Métriques</h2>
+            <p>
+                Après plus de 5 jours d'uptime continu, voici les chiffres clés de Frigate :
+            </p>
+            <ul>
+                <li><strong>Détections par jour :</strong> ~500 objets identifiés (personnes, voitures, animaux)</li>
+                <li><strong>Faux positifs :</strong> <5% grâce au réglage des zones et seuils</li>
+                <li><strong>Utilisation CPU :</strong> 0.81% en moyenne (très optimisé)</li>
+                <li><strong>RAM utilisée :</strong> 733 MB sur 2 GB alloués</li>
+                <li><strong>Latence détection :</strong> <100ms du flux vidéo à l'alerte</li>
+                <li><strong>Espace disque :</strong> 13.54 GB pour 30 jours de rétention</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Technologies & Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">Frigate NVR</div>
+                <div class="tech-tag">Docker</div>
+                <div class="tech-tag">TensorFlow Lite</div>
+                <div class="tech-tag">YOLO / MobileNet</div>
+                <div class="tech-tag">go2rtc</div>
+                <div class="tech-tag">RTSP</div>
+                <div class="tech-tag">WebRTC</div>
+                <div class="tech-tag">MQTT</div>
+                <div class="tech-tag">Home Assistant</div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Compétences Développées</h3>
+                <ul>
+                    <li>Déploiement de systèmes de vision par ordinateur</li>
+                    <li>Configuration de modèles ML pour détection d'objets</li>
+                    <li>Optimisation de streaming vidéo (RTSP, WebRTC)</li>
+                    <li>Gestion de stockage vidéo à grande échelle</li>
+                    <li>Tuning de zones de détection et seuils de confiance</li>
+                    <li>Intégration avec systèmes domotiques (MQTT, API)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Évolution Future</h2>
+            <p>
+                Je réfléchis à ajouter une 3ème caméra pour couvrir l'angle mort du garage. J'aimerais aussi tester des modèles plus avancés comme YOLOv8 pour améliorer encore la précision des détections.
+            </p>
+            <p>
+                L'idée d'intégrer la reconnaissance faciale me trotte en tête pour différencier les membres de la famille des visiteurs, mais je reste prudent sur les questions de vie privée. Pour l'instant, Frigate fait exactement ce dont j'ai besoin : garder un œil intelligent sur la maison.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="pihole.html" class="next-project-link">
+            <div class="next-label">Service suivant</div>
+            <h3>Pi-hole</h3>
+            <p class="next-description">Bloquer les publicités au niveau DNS : LXC 100 ultra-léger qui nettoie tout le réseau</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

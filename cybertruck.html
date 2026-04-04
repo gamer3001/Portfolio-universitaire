@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybertruck Intelligent - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --surface: rgba(255, 255, 255, 0.05);
+            --cyber-silver: #C0C0C0;
+            --cyber-red: #FF3B30;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(192, 192, 192, 0.03), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 59, 48, 0.03), transparent 50%);
+            pointer-events: none;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .back-button {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .back-button:hover { background: var(--surface); color: var(--text-primary); }
+        .back-button::before { content: '←'; margin-right: 0.5rem; }
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            text-align: center;
+        }
+        .hero-content { max-width: 800px; animation: fadeIn 1s; }
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(192, 192, 192, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--cyber-silver);
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+        }
+        .section {
+            margin-bottom: 6rem;
+            animation: fadeIn 1s backwards;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        ul { list-style: none; padding: 0; }
+        li {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--cyber-silver);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.05), rgba(255, 59, 48, 0.05));
+            border: 1px solid rgba(192, 192, 192, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            color: var(--cyber-silver);
+            margin-bottom: 1rem;
+        }
+        .modes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .mode-card {
+            background: var(--surface);
+            border: 1px solid rgba(192, 192, 192, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        .mode-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyber-silver);
+        }
+        .mode-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .mode-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        .media-section { margin-bottom: 6rem; }
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Images & GIFs */
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .media-container:hover .media-image { transform: scale(1.02); }
+        /* Vidéos */
+        .media-video {
+            width: 100%;
+            max-height: 55vh;
+            display: block;
+            object-fit: contain;
+            background: #000;
+        }
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, .content { padding-left: 2rem; padding-right: 2rem; }
+            .modes-grid { grid-template-columns: 1fr; }
+            .media-video { max-height: 40vh; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="project-category">Robotique · Arduino</div>
+            <h1>Cybertruck Intelligent</h1>
+            <p class="subtitle">
+                Robot autonome capable d'éviter des obstacles, suivre une personne et explorer de manière autonome
+            </p>
+        </div>
+    </section>
+
+    <div class="content">
+        <div class="section">
+            <h2>Le Projet</h2>
+            <p>
+                Le Cybertruck Intelligent est un robot autonome que j'ai conçu et réalisé entièrement, de la programmation Arduino au boîtier imprimé en 3D. L'idée était de créer un petit véhicule intelligent capable de naviguer dans son environnement de manière totalement autonome.
+            </p>
+            <p>
+                Ce projet combine électronique, programmation, design 3D et impression additive. Le robot embarque plusieurs capteurs ultrasoniques, un écran LCD, des LEDs de signalisation et peut être contrôlé en 3 modes différents.
+            </p>
+            <p style="font-style: italic; color: var(--cyber-red);">
+                Note : J'avais prévu de faire une vidéo YouTube complète sur ce projet, mais je n'ai pas réussi à en faire quelque chose d'assez vidéoludique pour le publier. Le robot fonctionne parfaitement, mais la vidéo finale ne me satisfaisait pas niveau qualité de contenu.
+            </p>
+        </div>
+
+        <!-- IMAGE -->
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cybertruck/Un Cybertruck Miniature !_20241117_175045_0000.png" alt="Cybertruck intelligent complet" class="media-image">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Les 3 Modes de Fonctionnement</h2>
+            <p>
+                Le robot dispose de 3 modes distincts, sélectionnables via deux boutons. L'écran LCD affiche le mode actif pour faciliter l'utilisation.
+            </p>
+            
+            <div class="modes-grid">
+                <div class="mode-card">
+                    <div class="mode-icon">🚧</div>
+                    <div class="mode-title">Évitement d'Obstacles</div>
+                    <p>Le robot détecte les obstacles devant lui et change automatiquement de direction pour les éviter</p>
+                </div>
+                
+                <div class="mode-card">
+                    <div class="mode-icon">👤</div>
+                    <div class="mode-title">Suivi de Personne</div>
+                    <p>Le robot suit une personne en gardant une distance de sécurité constante, comme un compagnon</p>
+                </div>
+                
+                <div class="mode-card">
+                    <div class="mode-icon">🗺️</div>
+                    <div class="mode-title">Exploration Autonome</div>
+                    <p>Le robot explore une zone de manière aléatoire en évitant automatiquement les obstacles rencontrés</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Comment Ça Fonctionne ? (Le Code)</h2>
+            <p>
+                Le cerveau du robot est une carte Arduino programmée en C++. Voici comment il prend ses décisions :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Logique de Décision</h3>
+                <ul>
+                    <li><strong>Sélection du mode :</strong> Deux boutons permettent de naviguer entre les 3 modes. L'écran LCD affiche le mode actif.</li>
+                    <li><strong>Capteurs ultrasoniques :</strong> Mesurent en permanence la distance des objets autour du robot (avant, gauche, droite).</li>
+                    <li><strong>Prise de décision :</strong> Si un obstacle est trop proche (<20cm), le robot change de direction ou ralentit automatiquement.</li>
+                    <li><strong>Signalisation LED :</strong> Vert = OK, Jaune = Obstacle proche, Rouge = Obstacle critique.</li>
+                    <li><strong>Adaptation :</strong> En mode suivi, le robot ajuste sa vitesse pour maintenir la distance avec la personne.</li>
+                </ul>
+            </div>
+
+            <p>
+                Simple mais efficace ! Le code fait environ 500 lignes et gère tous les capteurs, moteurs et l'affichage en temps réel.
+            </p>
+        </div>
+
+        <!-- VIDÉO -->
+        <div class="media-section">
+            <div class="media-container">
+                <video class="media-video" controls>
+                    <source src="Data/Images/Projet Cybertruck/Code Arduino.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture de vidéos.
+                </video>
+            </div>
+            <p class="media-caption">Extrait du code Arduino montrant la logique de détection d'obstacles</p>
+        </div>
+
+        <div class="section">
+            <h2>Schéma Électronique</h2>
+            <p>
+                Le câblage est la partie technique du projet. Chaque composant doit être relié correctement à l'Arduino pour que tout fonctionne.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Composants Électroniques</h3>
+                <ul>
+                    <li><strong>Arduino Uno :</strong> Le cerveau du robot qui exécute le code</li>
+                    <li><strong>3x Capteurs ultrasoniques HC-SR04 :</strong> Détection d'obstacles (avant, gauche, droite)</li>
+                    <li><strong>Driver moteur L298N :</strong> Contrôle des 2 moteurs DC pour les mouvements</li>
+                    <li><strong>2x Moteurs DC :</strong> Propulsion et direction du robot</li>
+                    <li><strong>Écran LCD 16x2 :</strong> Affichage du mode actif</li>
+                    <li><strong>3x LEDs (Vert, Jaune, Rouge) :</strong> Signalisation visuelle de l'état</li>
+                    <li><strong>Buzzer :</strong> Alarme sonore en cas d'obstacle critique</li>
+                    <li><strong>2x Boutons :</strong> Sélection du mode de fonctionnement</li>
+                    <li><strong>Batterie 9V :</strong> Alimentation autonome du système</li>
+                </ul>
+            </div>
+
+            <p>
+                Les LEDs ajoutent un vrai plus pour la sécurité : on sait immédiatement si le robot détecte quelque chose. Vert = tout va bien, Jaune = attention obstacle proche, Rouge = obstacle critique !
+            </p>
+        </div>
+
+        <!-- IMAGE -->
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cybertruck/Shema du robot.jpg" alt="Schéma de câblage électronique" class="media-image">
+            </div>
+            <p class="media-caption">Schéma électronique complet montrant toutes les connexions</p>
+        </div>
+
+        <div class="section">
+            <h2>Design 3D & Impression</h2>
+            <p>
+                Pour que tout soit bien organisé et protégé, j'ai conçu un boîtier compact dans Fusion 360. Le design s'inspire (un peu) du Cybertruck de Tesla avec ses lignes angulaires.
+            </p>
+            <p>
+                Le boîtier a été optimisé pour :
+            </p>
+            <ul>
+                <li>Accueillir tous les composants de manière compacte</li>
+                <li>Avoir des ouvertures précises pour les 3 capteurs ultrasoniques</li>
+                <li>Permettre l'accès aux boutons et à l'écran LCD</li>
+                <li>Laisser voir les LEDs de signalisation</li>
+                <li>Être imprimable en une seule pièce (ou en 2 parties assemblables)</li>
+                <li>Avoir un look futuriste qui en jette !</li>
+            </ul>
+            <p>
+                Impression 3D en PLA, environ 8 heures d'impression. Le résultat est solide et parfaitement adapté au projet.
+            </p>
+        </div>
+
+        <!-- VIDÉO -->
+        <div class="media-section">
+            <div class="media-container">
+                <video class="media-video" controls>
+                    <source src="Data/Images/Projet Cybertruck/Partie 3D Fusion.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture de vidéos.
+                </video>
+            </div>
+            <p class="media-caption">Modèle 3D du boîtier dans Fusion 360 avant impression</p>
+        </div>
+
+        <div class="section">
+            <h2>Câblage & Assemblage</h2>
+            <p>
+                L'assemblage est la partie où tout prend vie. Il faut être méthodique pour que rien ne soit oublié.
+            </p>
+            <p>
+                Étapes d'assemblage :
+            </p>
+            <ul>
+                <li><strong>Montage des moteurs :</strong> Fixation des 2 moteurs DC sur le châssis du robot</li>
+                <li><strong>Installation des capteurs :</strong> Placement précis des 3 capteurs ultrasoniques (avant, gauche, droite)</li>
+                <li><strong>Câblage Arduino :</strong> Connexion de tous les composants selon le schéma électronique</li>
+                <li><strong>Test des connexions :</strong> Vérification que les LEDs, le buzzer et l'écran fonctionnent</li>
+                <li><strong>Montage du boîtier :</strong> Installation de tous les composants dans le boîtier imprimé</li>
+                <li><strong>Fermeture finale :</strong> Une fois tout testé, on ferme le boîtier et c'est parti !</li>
+            </ul>
+            <p>
+                Le câblage est la partie la plus délicate : chaque fil doit aller à la bonne broche de l'Arduino. Une erreur et ça ne fonctionne pas. Heureusement, j'avais préparé un schéma détaillé !
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Tests & Validation</h2>
+            <p>
+                Une fois l'assemblage terminé, place aux tests ! Il faut valider que chaque mode fonctionne correctement.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Tests Effectués</h3>
+                <ul>
+                    <li><strong>Mode Évitement d'Obstacles :</strong> Le robot détecte un obstacle à gauche et change immédiatement de direction. Les LEDs passent au jaune puis au rouge si trop proche. Validé ✓</li>
+                    <li><strong>Mode Suivi de Personne :</strong> Le robot garde une distance de sécurité (~30cm) tout en suivant la personne. Il s'arrête si la personne s'arrête. Validé ✓</li>
+                    <li><strong>Mode Exploration Autonome :</strong> Le robot se déplace de manière aléatoire, explorant la zone et évitant automatiquement les obstacles rencontrés. Validé ✓</li>
+                </ul>
+            </div>
+
+            <p>
+                Tous les modes fonctionnent parfaitement ! Le robot est réactif, les capteurs sont précis, et la signalisation LED rend tout très visuel.
+            </p>
+        </div>
+
+        <!-- GIF → reste une image -->
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cybertruck/Video-Project-1.gif" alt="Robot en test avec obstacles" class="media-image">
+            </div>
+               </div>
+
+        <div class="section">
+            <h2>Améliorations Possibles</h2>
+            <p>
+                Ce projet pourrait être amélioré de plusieurs façons :
+            </p>
+            <ul>
+                <li>Ajouter une caméra pour reconnaissance d'objets via IA</li>
+                <li>Intégrer un module Bluetooth pour contrôle depuis smartphone</li>
+                <li>Utiliser des capteurs infrarouges supplémentaires pour détecter les rebords</li>
+                <li>Implémenter un système de cartographie SLAM pour mémoriser l'environnement</li>
+                <li>Ajouter un bras robotique pour manipulation d'objets</li>
+                <li>Améliorer l'autonomie avec une batterie Li-Po plus puissante</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Bilan du Projet</h2>
+            <p>
+                Le Cybertruck Intelligent est un projet complet qui m'a permis de mettre en pratique mes compétences en robotique, programmation, électronique et impression 3D. Le résultat final est fonctionnel et abouti.
+            </p>
+            <p>
+                Même si je n'ai pas publié la vidéo YouTube (je n'étais pas satisfait du rendu ), le robot fonctionne parfaitement et démontre bien les concepts de robotique autonome.
+            </p>
+            <p>
+                Ce projet m'a appris énormément sur :
+            </p>
+            <ul>
+                <li>La programmation de systèmes embarqués temps réel</li>
+                <li>L'utilisation de capteurs ultrasoniques pour navigation</li>
+                <li>Le design de boîtiers fonctionnels en CAO 3D</li>
+                <li>L'importance du câblage propre et méthodique</li>
+                <li>Le débogage hardware/software simultané</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi-hole - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --pihole-red: #F60D1A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(246, 13, 26, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(246, 13, 26, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--pihole-red);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--pihole-red);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(246, 13, 26, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(246, 13, 26, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--pihole-red);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(246, 13, 26, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--pihole-red);
+            color: var(--pihole-red);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0;
+        }
+
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Réseau · DNS</div>
+            
+            <h1>Pi-hole</h1>
+            
+            <p class="project-subtitle">
+                Bloquer publicités et trackers au niveau réseau - LXC 100 ultra-léger sur EliteBook avec 512MB RAM
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Serveur</div>
+                    <div class="meta-value">ProxmoxEliteBook</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Type</div>
+                    <div class="meta-value">LXC</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">RAM</div>
+                    <div class="meta-value">512 MB</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">CPU</div>
+                    <div class="meta-value">1 core</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Uptime</div>
+                    <div class="meta-value">6d 21h 22m</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>Le Gardien Invisible du Réseau</h2>
+            <p>
+                Publicités envahissantes, trackers qui te suivent partout, popups qui ralentissent la navigation... C'était devenu insupportable. Pi-hole résout tout ça en un seul coup : bloquer les pubs au niveau DNS pour TOUS les appareils de la maison, sans installer quoi que ce soit sur chaque appareil.
+            </p>
+            <p>
+                Le principe est simple mais génial : Pi-hole agit comme serveur DNS pour tout le réseau. Quand un appareil veut charger une pub ou contacter un tracker, Pi-hole bloque la requête avant même qu'elle ne quitte le réseau. C'est invisible, automatique, et ça marche sur absolument tout : PC, smartphones, tablettes, TV connectées, même les appareils IoT.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Pi-hole/Dashboard Pi-hole.jpg" alt="Dashboard Pi-hole avec statistiques de blocage" class="media-image">
+            </div>
+            <p class="media-caption">Dashboard Pi-hole montrant les requêtes bloquées en temps réel</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Configuration Ultra-Légère</h2>
+            <p>
+                Pi-hole est incroyablement léger. Il tourne dans le conteneur LXC 100 sur le ProxmoxEliteBook avec seulement 512MB de RAM et 1 core CPU. C'est tout ce dont il a besoin pour filtrer des milliers de requêtes par heure pour toute la maison.
+            </p>
+            <p>
+                L'uptime de plus de 6 jours sans interruption prouve sa stabilité. Utilisation CPU : 0.42% en moyenne. RAM utilisée : 77.54 MB sur 512 MB. Il consomme tellement peu que je pourrais le faire tourner sur une pomme de terre.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Configuration Réseau</h3>
+                <ul>
+                    <li>DNS primaire pour tout le réseau (configuré sur le routeur)</li>
+                    <li>Upstream DNS : Cloudflare (1.1.1.1) et Google (8.8.8.8) pour redondance</li>
+                    <li>DHCP désactivé (géré par le routeur)</li>
+                    <li>Interface web accessible sur port 80/443</li>
+                    <li>Logs conservés pendant 30 jours pour analyse</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Les Listes de Blocage</h2>
+            <p>
+                Pi-hole utilise des listes noires de domaines connus pour servir des pubs et des trackers. J'ai configuré plusieurs listes réputées qui sont mises à jour automatiquement chaque semaine :
+            </p>
+            <ul>
+                <li><strong>StevenBlack's Unified Hosts :</strong> Liste massive combinant plusieurs sources</li>
+                <li><strong>EasyList :</strong> Focus sur les pubs web classiques</li>
+                <li><strong>Tracking & Telemetry :</strong> Bloque les mouchards et télémétrie</li>
+                <li><strong>Malware domains :</strong> Protection contre sites malveillants</li>
+            </ul>
+            <p>
+                Total : plus de 1.5 million de domaines bloqués. Et je peux ajouter/retirer des domaines manuellement si besoin.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Pi-hole/Queries Blocked.jpg" alt="Graphiques des requêtes bloquées" class="media-image">
+            </div>
+            <p class="media-caption">Statistiques montrant 25-30% de requêtes DNS bloquées quotidiennement</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Statistiques Impressionnantes</h2>
+            <p>
+                Les chiffres parlent d'eux-mêmes. Pi-hole bloque en moyenne 25 à 30% de TOUTES les requêtes DNS du réseau. Ça veut dire qu'un tiers du trafic sortant de la maison était des pubs et des trackers. Flippant quand on y pense.
+            </p>
+            <ul>
+                <li><strong>Requêtes par jour :</strong> ~15,000 - 20,000 requêtes DNS</li>
+                <li><strong>Blocages par jour :</strong> ~4,000 - 6,000 requêtes bloquées (25-30%)</li>
+                <li><strong>Domains bloqués :</strong> 1.5M+ dans les listes noires</li>
+                <li><strong>Temps de réponse DNS :</strong> <20ms (plus rapide que sans Pi-hole !)</li>
+                <li><strong>Trafic réseau :</strong> 676 MB entrants, 79 MB sortants</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Expérience Utilisateur Transformée</h2>
+            <p>
+                La différence est énorme. Les sites web chargent plus vite sans attendre que les pubs se téléchargent. Les applications mobiles arrêtent de me bombarder de bannières publicitaires. Les vidéos YouTube... bon, elles ont toujours des pubs (Pi-hole ne peut pas bloquer les pubs servies par le même domaine que le contenu), mais tous les trackers tiers sont neutralisés.
+            </p>
+            <p>
+                Le plus satisfaisant, c'est de voir les statistiques : certains sites tentent de charger 50+ trackers différents. Pi-hole les bloque tous silencieusement. Ma vie privée est enfin protégée au niveau du réseau.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Top Domaines Bloqués</h3>
+                <ul>
+                    <li>doubleclick.net - Régie publicitaire Google</li>
+                    <li>googleadservices.com - Tracking et analytics</li>
+                    <li>facebook.com/tr - Pixel de tracking Facebook</li>
+                    <li>googlesyndication.com - Pubs AdSense</li>
+                    <li>amazon-adsystem.com - Publicités Amazon</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Gestion des Exceptions</h2>
+            <p>
+                Parfois, Pi-hole bloque trop. Certains sites légitimes utilisent des domaines qui ressemblent à de la pub. J'ai une whitelist pour ces cas : si un site ne fonctionne pas correctement, je vérifie les logs Pi-hole, identifie le domaine bloqué, et je l'autorise manuellement.
+            </p>
+            <p>
+                Je peux aussi créer des blacklists personnalisées. Par exemple, j'ai bloqué certains sites de clickbait et de fake news. Mes enfants ne peuvent pas y accéder, même s'ils essaient.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Pi-hole/Query Log.jpg" alt="Logs des requêtes DNS en temps réel" class="media-image">
+            </div>
+            <p class="media-caption">Vue des requêtes DNS en temps réel avec statut (autorisé/bloqué)</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Intégration Home Assistant</h2>
+            <p>
+                Pi-hole s'intègre avec Home Assistant pour monitoring et automatisations. Je peux voir le nombre de requêtes bloquées directement dans mon dashboard, activer/désactiver Pi-hole à distance, et même créer des automatisations basées sur l'activité réseau.
+            </p>
+            <p>
+                J'ai configuré une alerte si Pi-hole tombe en panne ou si le nombre de requêtes bloquées chute soudainement (signe possible d'un problème de configuration). Jusqu'ici, jamais eu besoin de cette alerte - Pi-hole est rock solid.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Technologies & Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">Pi-hole 5.x</div>
+                <div class="tech-tag">dnsmasq</div>
+                <div class="tech-tag">Debian 12</div>
+                <div class="tech-tag">Lighttpd</div>
+                <div class="tech-tag">PHP</div>
+                <div class="tech-tag">SQLite</div>
+                <div class="tech-tag">Gravity</div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Compétences Développées</h3>
+                <ul>
+                    <li>Configuration DNS et DHCP avancée</li>
+                    <li>Gestion de blacklists et whitelists</li>
+                    <li>Analyse de logs réseau</li>
+                    <li>Optimisation de performances DNS</li>
+                    <li>Sécurisation au niveau réseau</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Le Héros Silencieux</h2>
+            <p>
+                Pi-hole fait son travail en silence. Je l'oublie presque... jusqu'à ce que j'utilise le WiFi d'un hôtel ou d'un café et que je me rende compte à quel point Internet est devenu invivable sans lui. Les pubs partout, les popups, les trackers... c'est un cauchemar.
+            </p>
+            <p>
+                Avec Pi-hole, ma navigation est propre, rapide, et privée. Pour 512MB de RAM et 1 core CPU, c'est probablement le meilleur retour sur investissement de toute mon infrastructure.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="n8n.html" class="next-project-link">
+            <div class="next-label">Service suivant</div>
+            <h3>N8N</h3>
+            <p class="next-description">L'orchestrateur intelligent : LXC 106 qui connecte et automatise tous mes services</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

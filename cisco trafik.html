@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cisco-Trafik - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --traffic-red: #FF3B30;
+            --traffic-yellow: #FFCC00;
+            --traffic-green: #34C759;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 59, 48, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 204, 0, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(52, 199, 89, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 59, 48, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--traffic-red);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul, .content-section ol {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--traffic-red);
+        }
+
+        .content-section ol {
+            counter-reset: item;
+        }
+
+        .content-section ol li {
+            counter-increment: item;
+        }
+
+        .content-section ol li::before {
+            content: counter(item) ".";
+            position: absolute;
+            left: 0;
+            color: var(--traffic-red);
+            font-weight: 500;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 59, 48, 0.05) 0%, rgba(52, 199, 89, 0.05) 100%);
+            border: 1px solid rgba(255, 59, 48, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--traffic-red);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 59, 48, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--traffic-red);
+            color: var(--traffic-red);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0;
+        }
+
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Projet Scolaire · Électronique</div>
+            
+            <h1>Cisco-Trafik</h1>
+            
+            <p class="project-subtitle">
+                Système de gestion des feux tricolores : circuit électronique autonome avec PCB custom et boîtier imprimé en 3D
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Formation</div>
+                    <div class="meta-value">CIEL 2024-2025</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Type</div>
+                    <div class="meta-value">Projet Personnel</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Technologie</div>
+                    <div class="meta-value">Électronique pure</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Budget</div>
+                    <div class="meta-value">Faible coût</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>Le Projet Scolaire</h2>
+            <p>
+                Dans le cadre de ma formation CIEL (Cybersécurité, Informatique et réseaux, ÉLectronique), j'ai réalisé un projet ambitieux : concevoir un système de gestion de feux tricolores complètement autonome, sans microcontrôleur.
+            </p>
+            <p>
+                L'objectif était double : approfondir mes compétences en électronique analogique et numérique, tout en créant un système fonctionnel, fiable, et économique. Ce projet a été l'occasion d'appliquer concrètement mes connaissances en circuits logiques, conception de PCB, et fabrication additive.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cisco-Trafik/Projet Final.jpg" alt="Projet Cisco-Trafik terminé" class="media-image">
+            </div>
+            <p class="media-caption">Le système Cisco-Trafik complet avec ses feux tricolores et boîtier imprimé en 3D</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Réalisation du Projet</h2>
+            <p>
+                J'ai mené ce projet de A à Z : de la conception du circuit électronique à la fabrication du boîtier, en passant par le design du PCB et l'assemblage final. Chaque étape a été une opportunité d'approfondir mes compétences techniques et de relever de nouveaux défis.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Encadrement & Soutien</h3>
+                <ul>
+                    <li><strong>M. Mohamed Mehenni :</strong> Professeur technique électronique, soutien et expertise précieuse</li>
+                    <li><strong>M. Mohamed Brahmi :</strong> Professeur principal, encadrement du projet</li>
+                    <li><strong>M. Michael Louage :</strong> Dimension professionnelle et impression 3D des éléments</li>
+                    <li><strong>M. Kilien Dewitte :</strong> Fourniture du matériel nécessaire</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Architecture Électronique</h2>
+            <p>
+                Le cœur du système repose sur une conception purement électronique, sans microcontrôleur. L'idée était de prouver qu'on peut créer un système intelligent avec des composants analogiques et logiques simples.
+            </p>
+            <p>
+                Le circuit utilise deux composants principaux qui travaillent ensemble :
+            </p>
+            <ul>
+                <li><strong>NE555 (Minuterie) :</strong> Génère un signal d'horloge régulier et ajustable</li>
+                <li><strong>CD4017 (Compteur Johnson) :</strong> Séquence les états des feux (vert → jaune → rouge)</li>
+            </ul>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cisco-Trafik/Schema Electronique.jpg" alt="Schéma électronique complet" class="media-image">
+            </div>
+            <p class="media-caption">Schéma du circuit électronique avec NE555 et CD4017</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Fonctionnement du Circuit</h2>
+            <p>
+                Le système fonctionne sur un principe simple mais efficace :
+            </p>
+            <ol>
+                <li>Le <strong>NE555</strong> génère des impulsions à intervalle régulier (fréquence ajustable via potentiomètre)</li>
+                <li>Chaque impulsion fait avancer le <strong>CD4017</strong> d'un état</li>
+                <li>Le CD4017 active successivement ses sorties (Q0 → Q1 → Q2...)</li>
+                <li>Chaque sortie allume une LED correspondante (vert → jaune → rouge)</li>
+                <li>Les <strong>résistances</strong> limitent le courant pour protéger les LEDs</li>
+                <li>Le <strong>condensateur polarisé</strong> contrôle la temporisation du NE555</li>
+            </ol>
+            <p>
+                Le potentiomètre permet d'ajuster la durée de chaque phase (par exemple : 5 secondes vert, 2 secondes jaune, 5 secondes rouge). C'est cette flexibilité qui rend le système vraiment pratique.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Liste des Composants</h2>
+            
+            <div class="highlight-box">
+                <h3>Bill of Materials (BOM)</h3>
+                <ul>
+                    <li><strong>NE555 :</strong> Circuit intégré minuterie (timer)</li>
+                    <li><strong>CD4017 :</strong> Compteur Johnson décimal (0-9)</li>
+                    <li><strong>LEDs :</strong> 3x Rouge, 3x Jaune, 3x Vert (une de chaque par feu)</li>
+                    <li><strong>Résistances :</strong> Pour limitation de courant des LEDs</li>
+                    <li><strong>Condensateur polarisé :</strong> Réglage de la temporisation</li>
+                    <li><strong>Potentiomètre :</strong> Ajustement variable de la durée</li>
+                    <li><strong>Alimentation :</strong> 6V DC</li>
+                    <li><strong>Diodes :</strong> Protection et redressement</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cisco-Trafik/Platine Test.jpg" alt="Montage sur platine d'essai" class="media-image">
+            </div>
+            <p class="media-caption">Premier prototype monté sur platine d'essai pour tests de validation</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Conception du PCB</h2>
+            <p>
+                Une fois le circuit validé sur breadboard, j'ai conçu un PCB (circuit imprimé) professionnel pour un montage plus robuste et esthétique. J'ai utilisé <strong>EasyEDA</strong>, un logiciel gratuit et puissant pour la conception de circuits.
+            </p>
+            <p>
+                Le processus de conception a nécessité plusieurs étapes :
+            </p>
+            <ul>
+                <li>Création du schéma électronique complet avec tous les composants</li>
+                <li>Placement optimisé des composants pour minimiser les interférences</li>
+                <li>Routage des pistes en respectant les bonnes pratiques (largeur, espacement)</li>
+                <li>Ajout de textes indicatifs pour faciliter l'assemblage</li>
+                <li>Ajout de ma signature sur le PCB pour marquer mon œuvre</li>
+            </ul>
+            <p>
+                Le PCB a été commandé en ligne et fabriqué professionnellement. La qualité était impeccable, avec des pistes nettes et un vernis de protection.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cisco-Trafik/PCB Design.jpg" alt="Design du PCB sur EasyEDA" class="media-image">
+            </div>
+            <p class="media-caption">Design du PCB finalisé sur EasyEDA avant fabrication</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Modélisation 3D & Impression</h2>
+            <p>
+                Pour rendre le projet vraiment professionnel, j'ai conçu un boîtier complet sur <strong>Fusion 360</strong>. Le design devait être à la fois esthétique et fonctionnel, avec des emplacements précis pour chaque composant.
+            </p>
+            <p>
+                Le boîtier comprend plusieurs éléments :
+            </p>
+            <ul>
+                <li><strong>Corps principal :</strong> Contient le circuit PCB et l'alimentation</li>
+                <li><strong>3 feux tricolores :</strong> Design réaliste inspiré des vrais feux de circulation</li>
+                <li><strong>Diffuseurs de lumière :</strong> Pour que les LEDs soient bien visibles</li>
+                <li><strong>Passages de câbles :</strong> Connexions propres entre les feux et le circuit</li>
+                <li><strong>Support stable :</strong> Base solide pour maintenir l'ensemble</li>
+            </ul>
+            <p>
+                L'impression a été réalisée en PLA. Total : environ 12 heures d'impression pour tous les éléments. Le résultat final est à la fois solide et esthétiquement réussi.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cisco-Trafik/Modele 3D.jpg" alt="Modèle 3D du boîtier" class="media-image">
+            </div>
+            <p class="media-caption">Modèle 3D complet du boîtier et des feux tricolores dans Fusion 360</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Assemblage & Soudure</h2>
+            <p>
+                L'assemblage final a nécessité précision et patience. Chaque composant devait être soudé au bon endroit, avec la bonne polarité. Les LEDs et le condensateur polarisé sont particulièrement sensibles : une erreur de polarité et ils grillent instantanément.
+            </p>
+            <p>
+                J'ai utilisé un fer à souder avec température réglable pour éviter d'endommager les composants sensibles. Le CD4017 et le NE555 ont été montés sur supports pour faciliter leur remplacement si nécessaire.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cisco-Trafik/PCB Soude.jpg" alt="PCB avec composants soudés" class="media-image">
+            </div>
+            <p class="media-caption">PCB assemblé avec tous les composants soudés et testés</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Tests & Validation</h2>
+            <p>
+                Avant de tout installer dans le boîtier, j'ai effectué une batterie de tests pour garantir le bon fonctionnement :
+            </p>
+            <ul>
+                <li>Vérification des tensions à chaque point du circuit avec un multimètre</li>
+                <li>Test de chaque LED individuellement pour confirmer le câblage</li>
+                <li>Validation du cycle complet des feux (vert → jaune → rouge → répétition)</li>
+                <li>Ajustement du potentiomètre pour obtenir des durées cohérentes</li>
+                <li>Test de fonctionnement prolongé (plusieurs heures) pour vérifier la stabilité</li>
+            </ul>
+            <p>
+                Tous les tests étaient positifs. Le système fonctionnait parfaitement, sans surchauffe ni dysfonctionnement.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Résultat Final</h2>
+            <p>
+                Le projet Cisco-Trafik est un succès complet. J'ai créé un système de feux tricolores autonome, fiable, et visuellement impressionnant. Le boîtier imprimé en 3D donne un rendu ultra-professionnel, et le circuit fonctionne sans faille.
+            </p>
+            <p>
+                Ce projet peut servir de démonstration pédagogique pour enseigner les circuits logiques, ou même être adapté pour une application réelle (maquette de ville, simulation de trafic, etc.).
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Cisco-Trafik/Demo Fonctionnement.jpg" alt="Démonstration du fonctionnement" class="media-image">
+            </div>
+            <p class="media-caption">Le système en action : les feux alternent automatiquement selon la séquence programmée</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Technologies & Compétences</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">NE555 Timer</div>
+                <div class="tech-tag">CD4017 Counter</div>
+                <div class="tech-tag">EasyEDA</div>
+                <div class="tech-tag">Fusion 360</div>
+                <div class="tech-tag">Impression 3D</div>
+                <div class="tech-tag">PCB Design</div>
+                <div class="tech-tag">Soudure</div>
+                <div class="tech-tag">Électronique</div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Compétences Développées</h3>
+                <ul>
+                    <li>Conception de circuits électroniques analogiques et numériques</li>
+                    <li>Design et fabrication de PCB professionnels</li>
+                    <li>Modélisation CAO 3D et impression additive</li>
+                    <li>Techniques de soudure et assemblage électronique</li>
+                    <li>Tests et validation de systèmes embarqués</li>
+                    <li>Gestion de projet technique</li>
+                    <li>Documentation et présentation de projet</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Perspectives & Évolutions</h2>
+            <p>
+                Ce projet pourrait être amélioré de nombreuses façons :
+            </p>
+            <ul>
+                <li><strong>Capteurs de trafic :</strong> Adapter dynamiquement les cycles selon la densité de véhicules</li>
+                <li><strong>Microcontrôleur (ESP32/Arduino) :</strong> Pour une gestion plus complexe et connectée</li>
+                <li><strong>Maquette de carrefour :</strong> Créer une ville miniature avec plusieurs intersections synchronisées</li>
+                <li><strong>Alimentation solaire :</strong> Rendre le système totalement autonome</li>
+                <li><strong>Communication sans fil :</strong> Synchroniser plusieurs feux via WiFi/LoRa</li>
+                <li><strong>Application mobile :</strong> Contrôler et monitorer le système à distance</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Bilan Personnel</h2>
+            <p>
+                Ce projet a été une expérience extrêmement enrichissante. Au-delà des compétences techniques acquises, j'ai appris l'importance de la rigueur dans la conception, de la documentation précise, et de la persévérance face aux obstacles.
+            </p>
+            <p>
+                Voir le système fonctionner pour la première fois, avec les LEDs qui s'allument dans le bon ordre, a été un moment vraiment gratifiant. C'est la preuve qu'avec de la patience et de la méthode, on peut créer des systèmes complexes à partir de composants simples.
+            </p>
+            <p>
+                Ce projet s'inscrit parfaitement dans mon parcours global : électronique, impression 3D, conception CAO... toutes les compétences que j'ai développées dans mes autres projets (Octoprint, ESP32, PCB custom) ont trouvé leur application ici.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="index.html" class="next-project-link">
+            <div class="next-label">Retour au portfolio</div>
+            <h3>Découvrir tous les projets</h3>
+            <p class="next-description">Explorez l'ensemble de mon parcours technique et mes réalisations</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octoprint - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --octo-green: #13C100;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(19, 193, 0, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(19, 193, 0, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--octo-green);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--octo-green);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(19, 193, 0, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(19, 193, 0, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--octo-green);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(19, 193, 0, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--octo-green);
+            color: var(--octo-green);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(19, 193, 0, 0.1) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--text-secondary);
+            border: 2px dashed rgba(19, 193, 0, 0.2);
+            gap: 1rem;
+        }
+
+        .placeholder-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .spec-card {
+            background: var(--surface);
+            border: 1px solid rgba(19, 193, 0, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .spec-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--octo-green);
+        }
+
+        .spec-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--octo-green);
+            font-weight: 400;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .spec-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Fabrication · Impression 3D</div>
+            
+            <h1>Octoprint</h1>
+            
+            <p class="project-subtitle">
+                Contrôler mon Ender 3 à distance et transformer mes modèles Fusion 360 en objets réels grâce à un conteneur LXC sur Proxmox.
+            </p>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>De l'Idée à l'Objet Physique</h2>
+            <p>
+                L'impression 3D a complètement transformé ma façon d'aborder les projets. Avant, quand j'avais besoin d'une pièce spécifique - un support pour capteur, un boîtier custom, un support de caméra - j'étais limité par ce qui existait dans le commerce. Maintenant, je modélise exactement ce dont j'ai besoin dans Fusion 360, et quelques heures plus tard, la pièce existe physiquement entre mes mains.
+            </p>
+            <p>
+                Mon Ender 3 était déjà une excellente imprimante, mais elle avait ses limitations : obligation d'être devant la machine avec une carte SD, impossibilité de surveiller à distance, pas de contrôle fin pendant l'impression. Octoprint a transformé cette imprimante basique en machine connectée et contrôlable depuis n'importe où dans la maison, ou même depuis l'extérieur.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Octoprint/octoprint-camera.jpg" class="media-image">
+            </div>
+            <p class="media-caption">Dashboard Octoprint montrant une impression en cours avec vue temps réel</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Architecture Technique</h2>
+            <p>
+                Octoprint tourne dans un conteneur LXC sur mon HP EliteBook qui fait partie du cluster Proxmox. Ce choix n'est pas anodin - le laptop est parfait pour ce use case : consommation électrique faible, toujours allumé, et suffisamment puissant pour gérer Octoprint sans problème.
+            </p>
+            <div class="highlight-box">
+                <h3>Configuration Conteneur</h3>
+                <p>
+                    Le conteneur LXC Debian 12 tourne avec 2GB de RAM allouée et 2 cores CPU. C'est largement suffisant pour Octoprint et ses plugins. Le conteneur est configuré pour démarrer automatiquement avec Proxmox, garantissant qu'Octoprint est toujours disponible même après un redémarrage du serveur.
+                </p>
+            </div>
+            <p>
+                L'Ender 3 est connectée physiquement au laptop via USB. J'ai configuré Proxmox pour passer le périphérique USB directement au conteneur LXC, permettant à Octoprint de communiquer avec l'imprimante comme si elle était connectée localement. Aucun lag, aucune latence - communication série directe et fiable.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Workflow : De Fusion 360 à l'Objet</h2>
+            <p>
+                Mon workflow d'impression est maintenant complètement fluide. Tout commence dans Fusion 360 où je modélise la pièce dont j'ai besoin. Paramétrique, précis, avec tous les chanfreins et tolérances nécessaires. Une fois le modèle terminé, je l'exporte en STL.
+            </p>
+            <p>
+                Le fichier STL part ensuite dans Cura, mon slicer de prédilection. Je configure les paramètres d'impression : hauteur de couche (généralement 0.2mm pour un bon compromis vitesse/qualité), remplissage (15-20% pour la plupart des pièces structurelles), supports si nécessaire, température du hotend et du bed. Cura génère alors le G-code qui contient toutes les instructions pour l'imprimante.
+            </p>
+            <p>
+                Et c'est là qu'Octoprint brille. Au lieu de copier le G-code sur une carte SD et de la brancher physiquement dans l'imprimante, je drag & drop le fichier directement dans l'interface web d'Octoprint. En un clic, l'impression démarre. Je peux la surveiller depuis mon téléphone, recevoir des notifications de progression, et même la mettre en pause ou l'arrêter si je vois un problème.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Exemples de Pièces Imprimées</h2>
+            <p>
+                L'impression 3D sert directement mes projets domotique et infrastructure. Voici quelques exemples concrets de pièces que j'ai conçues et fabriquées :
+            </p>
+            <ul>
+                <li>Boîtier custom pour l'ESP32 Google Home - design épuré avec grilles d'aération et passages pour micro/haut-parleur</li>
+                <li>Supports muraux ajustables pour les caméras Frigate - angle réglable, fixation propre, câbles cachés</li>
+                <li>Organisateurs de câbles pour le rack serveur - gestion propre et professionnelle du câblage</li>
+                <li>Support de Raspberry Pi avec ventilation intégrée - dissipation thermique optimisée</li>
+                <li>Boîtiers pour capteurs Zigbee - protection et esthétique pour les capteurs de température/mouvement</li>
+                <li>Porte-outils et organisateurs pour l'atelier - rangement sur-mesure pour chaque outil</li>
+            </ul>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <div class="image-placeholder">
+                    📐
+                    <div class="placeholder-text">Modèles Fusion 360<br>Exemples de pièces modélisées</div>
+                </div>
+            </div>
+            <p class="media-caption">Quelques modèles créés dans Fusion 360 avant impression</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Plugins & Fonctionnalités Avancées</h2>
+            <p>
+                Octoprint dispose d'un écosystème de plugins extrêmement riche. J'en ai installé plusieurs qui transforment complètement l'expérience d'impression :
+            </p>
+            <div class="highlight-box">
+                <h3>Mes Plugins Essentiels</h3>
+                <ul>
+                    <li><strong>OctoLapse</strong> - Crée des timelapses stabilisés automatiquement. Chaque couche est photographiée avec la tête d'impression repositionnée, donnant ces vidéos hypnotiques où l'objet apparaît magiquement</li>
+                    <li><strong>Bed Level Visualizer</strong> - Visualise le niveau du bed en 3D. Permet de voir précisément où ajuster les vis pour avoir un bed parfaitement plan</li>
+                    <li><strong>Print Time Genius</strong> - Estimation du temps restant bien plus précise que l'estimation de base. Analyse l'historique d'impressions pour prédire avec exactitude</li>
+                    <li><strong>DisplayLayerProgress</strong> - Affiche la progression par couche directement sur l'écran de l'imprimante</li>
+                    <li><strong>Themeify</strong> - Personnalisation de l'interface avec un thème sombre moderne</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Monitoring & Caméra</h2>
+            <p>
+                Une webcam USB Logitech C270 est montée au-dessus du bed, pointant directement sur la zone d'impression. Octoprint streame le flux vidéo en temps réel, permettant de surveiller l'impression sans être physiquement devant la machine.
+            </p>
+            <p>
+                C'est rassurant de pouvoir jeter un coup d'œil depuis le canapé pour vérifier que tout se passe bien. Si je vois que la première couche n'adhère pas correctement, je peux annuler immédiatement plutôt que de gaspiller des heures de filament. Les timelapses générés automatiquement par OctoLapse sont aussi extrêmement satisfaisants à regarder - voir une pièce complexe se matérialiser couche par couche en accéléré ne vieillit jamais.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Intégration Home Assistant</h2>
+            <p>
+                Octoprint s'intègre parfaitement avec Home Assistant via une intégration officielle. Je peux voir le statut de l'imprimante directement dans mon dashboard : impression en cours, température du hotend et du bed, progression, temps restant estimé.
+            </p>
+            <p>
+                J'ai configuré des automatisations pratiques : notification sur mon téléphone quand une impression se termine, extinction automatique de l'imprimante 10 minutes après la fin d'une impression (via une prise connectée), et même une alerte si la température monte anormalement, signe potentiel d'un problème.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <div class="image-placeholder">
+                    🎬
+                    <div class="placeholder-text">Timelapse OctoLapse<br>Exemple de vidéo générée</div>
+                </div>
+            </div>
+            <p class="media-caption">Timelapse d'une impression complexe, chaque couche capturée et stabilisée</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Gestion du Filament</h2>
+            <p>
+                J'utilise principalement du PLA pour la plupart de mes impressions - facile à imprimer, pas d'odeur, finition propre. Pour des pièces nécessitant plus de résistance thermique ou mécanique, je bascule sur du PETG. Le PETG est légèrement plus difficile à imprimer (warping, stringing) mais offre une bien meilleure résistance.
+            </p>
+            <p>
+                Le filament est stocké dans un boîtier hermétique avec des sachets de silica gel pour éviter l'humidité. L'humidité est l'ennemi du filament - elle cause du stringing, des bulles, et dégrade la qualité d'impression. Avec un stockage approprié, mes bobines gardent leurs propriétés pendant des mois.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Statistiques & Métriques</h2>
+            <div class="spec-grid">
+                <div class="spec-card">
+                    <div class="spec-label">Impressions Réussies</div>
+                    <div class="spec-value">200+</div>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-label">Filament Consommé</div>
+                    <div class="spec-value">15kg</div>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-label">Temps Total</div>
+                    <div class="spec-value">800h+</div>
+                </div>
+                <div class="spec-card">
+                    <div class="spec-label">Taux de Réussite</div>
+                    <div class="spec-value">94%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Maintenance & Calibration</h2>
+            <p>
+                Maintenir une imprimante 3D en bon état demande un entretien régulier. Tous les 20-30 heures d'impression, je nivelle le bed avec Bed Level Visualizer pour m'assurer qu'il reste parfaitement plan. Les roues sont vérifiées pour l'usure, les courroies tendues, les vis serrées.
+            </p>
+            <p>
+                Le nozzle est nettoyé régulièrement - les résidus de filament carbonisé peuvent s'accumuler et causer des problèmes. Tous les 100-150 heures, je démonte le hotend complètement pour un nettoyage en profondeur. C'est contraignant, mais ça garantit des impressions de qualité constante.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Stack Technique</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">Octoprint 1.9.3</div>
+                <div class="tech-tag">Creality Ender 3</div>
+                <div class="tech-tag">Proxmox LXC</div>
+                <div class="tech-tag">Debian 12</div>
+                <div class="tech-tag">Fusion 360</div>
+                <div class="tech-tag">Ultimaker Cura</div>
+                <div class="tech-tag">PLA / PETG</div>
+                <div class="tech-tag">OctoLapse</div>
+                <div class="tech-tag">Home Assistant</div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Projets Futurs</h2>
+            <p>
+                Je réfléchis à upgrader l'Ender 3 avec quelques modifications : bed en verre pour une meilleure adhésion, extrudeur direct drive pour mieux gérer les filaments flexibles, et peut-être même un capteur BLTouch pour l'auto-leveling complet du bed.
+            </p>
+            <p>
+                L'idée d'une deuxième imprimante me trotte aussi en tête - une résine pour des pièces ultra-détaillées. Mais l'Ender 3 + Octoprint fait déjà tellement bien le job pour mes besoins actuels que je ne suis pas pressé. Chaque projet apporte sa nouvelle pièce à imprimer, et c'est exactement ce que je voulais : la capacité de matérialiser mes idées.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="openwebui.html" class="next-project-link">
+            <div class="next-label">Projet suivant</div>
+            <h3>OpenWebUI</h3>
+            <p class="next-description">L'interface élégante pour discuter avec Kara, mon IA personnelle</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Portfolio. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

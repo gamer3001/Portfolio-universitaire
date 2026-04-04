@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailscale VPN - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --vpn-purple: #9333EA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(147, 51, 234, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--vpn-purple);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--vpn-purple);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(147, 51, 234, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--vpn-purple);
+        }
+
+        .code-block {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: var(--vpn-purple);
+            overflow-x: auto;
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0;
+        }
+
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s ease;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav, .project-hero, .project-content, .next-project {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Réseau · Sécurité</div>
+            <h1>Tailscale VPN</h1>
+            <p class="project-subtitle">
+                Accès distant sécurisé au datacenter EPIL : VPN Zero Trust sans ouverture de ports
+            </p>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>Le Besoin d'Accès Distant</h2>
+            <p>
+                Pendant le développement du datacenter EPIL, j'ai rapidement eu besoin d'accéder aux serveurs depuis chez moi pour continuer à travailler en dehors des heures de cours. Le problème : comment accéder de manière sécurisée aux serveurs du lycée sans compromettre la sécurité du réseau ?
+            </p>
+            <p>
+                Les solutions classiques (port forwarding, VPN traditionnel) nécessitent d'ouvrir des ports sur le routeur de l'école, ce qui pose des problèmes de sécurité et nécessite l'intervention du service informatique. J'ai donc cherché une alternative moderne et sécurisée.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Pourquoi Tailscale ?</h2>
+            <p>
+                Tailscale est une solution VPN moderne basée sur WireGuard qui utilise une architecture Zero Trust NAT traversal. Concrètement, cela signifie :
+            </p>
+            <ul>
+                <li><strong>Aucun port à ouvrir</strong> - Fonctionne même derrière NAT et firewall</li>
+                <li><strong>Chiffrement de bout en bout</strong> - Sécurité maximale avec WireGuard</li>
+                <li><strong>Configuration simple</strong> - Installation en 3 commandes</li>
+                <li><strong>Zero Trust</strong> - Authentification par appareil, pas par réseau</li>
+                <li><strong>Gratuit pour usage personnel</strong> - Jusqu'à 100 appareils</li>
+                <li><strong>Multi-plateforme</strong> - Windows, Linux, macOS, iOS, Android</li>
+            </ul>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Taiscale/Shema tailscale.png" alt="Architecture Tailscale" class="media-image">
+            </div>
+            <p class="media-caption">Architecture Tailscale : tunnel sécurisé sans ouverture de ports</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Installation sur Proxmox</h2>
+            <p>
+                L'installation de Tailscale sur le serveur Proxmox est extrêmement simple. Voici les commandes que j'ai utilisées :
+            </p>
+            
+            <div class="code-block">
+# Installation de Tailscale<br>
+curl -fsSL https://tailscale.com/install.sh | sh<br>
+<br>
+# Activation du service<br>
+systemctl enable --now tailscaled<br>
+<br>
+# Connexion au réseau Tailscale<br>
+tailscale up
+            </div>
+
+            <p>
+                La dernière commande génère un lien d'authentification que j'ai ouvert dans mon navigateur pour lier le serveur à mon compte GitHub (nécessaire pour Tailscale).
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Configuration du Réseau</h2>
+            <p>
+                Une fois Tailscale installé, chaque appareil reçoit une IP privée du réseau 100.x.x.x. J'ai configuré :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Appareils Connectés</h3>
+                <ul>
+                    <li><strong>Proxmox R730</strong> - 100.64.x.x (serveur principal)</li>
+                    <li><strong>Proxmox R430</strong> - 100.64.x.x (serveur secondaire)</li>
+                    <li><strong>Mon laptop personnel</strong> - 100.64.x.x (client)</li>
+                    <li><strong>Mon téléphone</strong> - 100.64.x.x (monitoring mobile)</li>
+                </ul>
+            </div>
+
+            <p>
+                Avec cette configuration, je peux accéder à l'interface Proxmox depuis n'importe où comme si j'étais sur le réseau local du lycée : <code>https://100.64.x.x:8006</code>
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Tailscale/Interface Admin.jpg" alt="Interface admin Tailscale" class="media-image">
+            </div>
+            <p class="media-caption">Interface d'administration Tailscale montrant tous les appareils connectés</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Sécurité & Avantages</h2>
+            <p>
+                Tailscale offre plusieurs avantages de sécurité par rapport aux VPN traditionnels :
+            </p>
+            <ul>
+                <li><strong>Authentification par appareil</strong> - Chaque device doit être autorisé individuellement</li>
+                <li><strong>Pas de serveur central</strong> - Connexions peer-to-peer directes quand possible</li>
+                <li><strong>Chiffrement WireGuard</strong> - Protocole moderne ultra-sécurisé</li>
+                <li><strong>Révocation instantanée</strong> - Je peux désactiver un appareil en 1 clic</li>
+                <li><strong>Logs d'accès</strong> - Je vois qui se connecte et quand</li>
+                <li><strong>Aucune exposition internet</strong> - Les serveurs restent invisibles depuis internet</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Utilisation Quotidienne</h2>
+            <p>
+                Depuis l'installation de Tailscale, je peux travailler sur le datacenter EPIL depuis chez moi comme si j'étais au lycée. Cas d'usage typiques :
+            </p>
+            <ul>
+                <li><strong>Administration Proxmox</strong> - Créer/modifier des VMs à distance</li>
+                <li><strong>Accès SSH</strong> - Terminal direct sur les serveurs</li>
+                <li><strong>Monitoring</strong> - Vérifier l'état des services 24/7</li>
+                <li><strong>Backups</strong> - Lancer des sauvegardes manuelles si besoin</li>
+                <li><strong>Debugging</strong> - Résoudre les problèmes sans être sur place</li>
+                <li><strong>Développement</strong> - Tester mes configs en temps réel</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Intégration avec le Datacenter</h2>
+            <p>
+                Tailscale s'intègre parfaitement avec l'infrastructure du datacenter EPIL. J'ai configuré :
+            </p>
+            <ul>
+                <li>Accès direct aux interfaces web (Proxmox, TrueNAS, Home Assistant)</li>
+                <li>SSH sur tous les serveurs et VMs</li>
+                <li>Accès aux shares SMB de TrueNAS</li>
+                <li>Monitoring des logs en temps réel</li>
+                <li>Connexion aux VMs Windows via RDP</li>
+            </ul>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Tailscale/Mobile Access.jpg" alt="Accès mobile via Tailscale" class="media-image">
+            </div>
+            <p class="media-caption">Accès à Proxmox depuis mon téléphone via Tailscale</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Résultats & Bilan</h2>
+            <p>
+                Tailscale a complètement changé ma façon de travailler sur le projet EPIL. Les bénéfices :
+            </p>
+            <ul>
+                <li><strong>Productivité</strong> - Je peux avancer sur le projet même en dehors du lycée</li>
+                <li><strong>Flexibilité</strong> - Accès depuis n'importe où, n'importe quand</li>
+                <li><strong>Sécurité</strong> - Zéro compromis, connexion ultra-sécurisée</li>
+                <li><strong>Simplicité</strong> - Installation en 5 minutes, configuration minimale</li>
+                <li><strong>Fiabilité</strong> - Aucune coupure, connexion stable</li>
+            </ul>
+            <p>
+                Cette solution a été approuvée par les professeurs car elle ne nécessite aucune modification du réseau de l'école et offre un niveau de sécurité supérieur aux VPN traditionnels.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="datacenter-epil.html" class="next-project-link">
+            <div class="next-label">Projet principal</div>
+            <h3>Datacenter EPIL</h3>
+            <p>Retour au projet datacenter complet avec tous les services</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {threshold: 0.1, rootMargin: '0px 0px -100px 0px'});
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

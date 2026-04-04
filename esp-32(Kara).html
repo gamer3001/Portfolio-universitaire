@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32 Google Home - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --esp-green: #00C853;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 200, 83, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(0, 200, 83, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--esp-green);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--esp-green);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 200, 83, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 200, 83, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--esp-green);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(0, 200, 83, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--esp-green);
+            color: var(--esp-green);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0;
+        }
+
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">IoT · Hardware DIY</div>
+            
+            <h1>ESP32 Google Home</h1>
+            
+            <p class="project-subtitle">
+                Assistant vocal DIY : donner une voix physique à Kara avec électronique custom et impression 3D
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Microcontrôleur</div>
+                    <div class="meta-value">ESP32</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Connectivité</div>
+                    <div class="meta-value">WiFi</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Boîtier</div>
+                    <div class="meta-value">Impression 3D</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Budget</div>
+                    <div class="meta-value">~25€</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>Donner Une Voix à Kara</h2>
+            <p>
+                Avoir Kara comme assistant IA c'est génial, mais devoir toujours sortir mon téléphone ou ouvrir l'interface web pour lui parler, c'est contraignant. Je voulais quelque chose de plus naturel : un assistant vocal physique, toujours à l'écoute, que je peux appeler par la voix.
+            </p>
+            <p>
+                Plutôt que d'acheter un Google Home ou un Alexa (qui envoient tout au cloud et ne fonctionnent pas avec Kara), j'ai décidé de fabriquer mon propre assistant vocal basé sur ESP32. Un vrai projet DIY combinant électronique, programmation, et impression 3D.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet ESP32/ESP32-Google-Home-assemblé.png" alt="ESP32 Google Home assemblé" class="media-image">
+            </div>
+            <p class="media-caption">L'ESP32 Google Home assemblé avec son boîtier imprimé en 3D</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Composants & Architecture</h2>
+            <p>
+                Le cœur du système est une carte ESP32, un microcontrôleur WiFi ultra-puissant qui coûte moins de 10€. À ça, j'ai ajouté :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Bill of Materials (BOM)</h3>
+                <ul>
+                    <li><strong>ESP32-WROOM-32 :</strong> Cerveau du système avec WiFi intégré (~8€)</li>
+                    <li><strong>Microphone INMP441 :</strong> Micro I2S de qualité pour capture audio (~3€)</li>
+                    <li><strong>Amplificateur MAX98357A :</strong> Ampli I2S pour haut-parleur (~2€)</li>
+                    <li><strong>Haut-parleur 3W :</strong> Pour la réponse vocale de Kara (~4€)</li>
+                    <li><strong>LED RGB WS2812B :</strong> Indicateur visuel d'état (~1€)</li>
+                    <li><strong>Alimentation 5V 2A :</strong> Pour alimenter le tout (~5€)</li>
+                    <li><strong>Boîtier impression 3D :</strong> Design custom pour tout intégrer (gratuit)</li>
+                </ul>
+                <p><strong>Total :</strong> ~25€ pour un assistant vocal complètement custom !</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Fonctionnement Technique</h2>
+            <p>
+                Le workflow est élégant dans sa simplicité. Quand je dis "Hey Kara" (mot de réveil custom), l'ESP32 :
+            </p>
+            <ol style="padding-left: 2rem;">
+                <li>Détecte le mot de réveil localement (pas besoin de connexion)</li>
+                <li>S'allume en bleu (LED) pour indiquer qu'il écoute</li>
+                <li>Enregistre ma commande vocale (3-5 secondes)</li>
+                <li>Envoie l'audio à N8N via WiFi</li>
+                <li>N8N transmet à Kara (Ollama) pour traitement</li>
+                <li>Kara comprend et exécute (ex: allume lumières via Home Assistant)</li>
+                <li>Kara génère une réponse vocale (TTS)</li>
+                <li>N8N renvoie l'audio à l'ESP32</li>
+                <li>ESP32 joue la réponse via le haut-parleur</li>
+            </ol>
+            <p>
+                Tout ça en moins de 2 secondes. C'est ultra-réactif et complètement local (sauf le TTS qui utilise une API externe pour la voix).
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet ESP32/Circuit Board.jpg" alt="Circuit électronique de l'ESP32" class="media-image">
+            </div>
+            <p class="media-caption">Schéma électronique conçu numériquement pour représenter l’architecture du système</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Programmation ESP32</h2>
+            <p>
+                J'ai programmé l'ESP32 en C++ avec l'IDE Arduino. Le code gère plusieurs tâches en parallèle grâce au dual-core de l'ESP32 :
+            </p>
+            <ul>
+                <li><strong>Core 0 :</strong> Détection du mot de réveil en continu</li>
+                <li><strong>Core 1 :</strong> Enregistrement audio, communication WiFi, lecture audio</li>
+                <li><strong>LED Management :</strong> Indique l'état (veille/écoute/réponse/erreur)</li>
+                <li><strong>Buffer audio :</strong> Optimisé pour faible latence</li>
+            </ul>
+            <p>
+                La partie la plus délicate était la gestion de l'audio I2S (protocole pour micro et ampli). Il a fallu des heures de tuning pour éliminer les bruits parasites et optimiser la qualité.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Design & Impression 3D</h2>
+            <p>
+                Pour le boîtier, j'ai utilisé Fusion 360 pour designer un case élégant qui ressemble à un Google Home mais en plus compact. Le design inclut :
+            </p>
+            <ul>
+                <li>Grille pour le micro en façade (protection + esthétique)</li>
+                <li>Emplacement pour le haut-parleur au dessus</li>
+                <li>Diffuseur de lumière pour la LED RGB</li>
+                <li>Passages pour les câbles USB et alimentation</li>
+                <li>Clips internes pour fixer l'ESP32 et les composants</li>
+            </ul>
+            <p>
+                Impression en PLA sur mon Octoprint-controlled printer. Environ 8 heures d'impression pour le boîtier complet.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet ESP32/Design 3D du boîtie.png" alt="Design 3D du boîtier" class="media-image">
+            </div>
+            <p class="media-caption">Modèle 3D du boîtier dans Fusion 360 avant impression</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Intégration avec Kara</h2>
+            <p>
+                L'ESP32 ne fait pas tourner l'IA lui-même (pas assez puissant). Il sert d'interface vocale vers Kara qui tourne sur la VM-IA-Server. C'est N8N qui fait le pont entre les deux.
+            </p>
+            <p>
+                J'ai créé un workflow N8N spécifique pour l'ESP32 qui gère :
+            </p>
+            <ul>
+                <li>Réception de l'audio brut depuis l'ESP32</li>
+                <li>Conversion audio → texte (Speech-to-Text via API)</li>
+                <li>Envoi du texte à Kara pour traitement</li>
+                <li>Réception de la réponse de Kara</li>
+                <li>Conversion texte → audio (Text-to-Speech)</li>
+                <li>Renvoi de l'audio à l'ESP32 pour lecture</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Exemples d'Utilisation</h2>
+            <p>
+                Au quotidien, j'utilise l'ESP32 Google Home pour plein de choses :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Commandes Typiques</h3>
+                <ul>
+                    <li>"Hey Kara, éteins les lumières du salon" → Extinction via Home Assistant</li>
+                    <li>"Hey Kara, quelle température fait-il dehors ?" → Kara récupère la météo</li>
+                    <li>"Hey Kara, quelqu'un est devant la porte ?" → Analyse image Frigate en temps réel</li>
+                    <li>"Hey Kara, mets la maison en mode nuit" → Active scène complète</li>
+                    <li>"Hey Kara, lance l'impression 3D" → Démarre job Octoprint</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>LED d'État</h2>
+            <p>
+                La LED RGB WS2812B donne un feedback visuel instantané :
+            </p>
+            <ul>
+                <li><strong>Vert doux pulsant :</strong> Mode veille, prêt à écouter</li>
+                <li><strong>Bleu vif :</strong> Écoute en cours (enregistrement)</li>
+                <li><strong>Cyan clignotant :</strong> Traitement par Kara</li>
+                <li><strong>Violet :</strong> Réponse vocale en cours</li>
+                <li><strong>Rouge clignotant :</strong> Erreur de connexion</li>
+            </ul>
+        </div>
+
+
+        <div class="content-section">
+            <h2>Améliorations & Évolutions</h2>
+            <p>
+                Ce projet continue d'évoluer. Voici ce que j'envisage d'ajouter :
+            </p>
+            <ul>
+                <li><strong>Détection de réveil on-device :</strong> Utiliser un modèle TinyML pour détecter "Hey Kara" sans connexion</li>
+                <li><strong>Batterie :</strong> Ajouter une batterie LiPo pour le rendre portable</li>
+                <li><strong>Multi-room audio :</strong> Synchroniser plusieurs ESP32 dans différentes pièces</li>
+                <li><strong>Écran e-ink :</strong> Afficher des informations visuelles (météo, heure, statut)</li>
+                <li><strong>Capteur de proximité :</strong> Ajuster le volume selon la distance</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Technologies & Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">ESP32</div>
+                <div class="tech-tag">C++ / Arduino</div>
+                <div class="tech-tag">I2S Audio</div>
+                <div class="tech-tag">WiFi</div>
+                <div class="tech-tag">HTTP / WebSockets</div>
+                <div class="tech-tag">N8N</div>
+                <div class="tech-tag">Fusion 360</div>
+                <div class="tech-tag">Impression 3D</div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Compétences Développées</h3>
+                <ul>
+                    <li>Programmation embarquée (ESP32, Arduino)</li>
+                    <li>Traitement audio numérique (I2S, buffers)</li>
+                    <li>Design CAO et impression 3D</li>
+                    <li>Électronique et soudure</li>
+                    <li>Intégration IoT et APIs</li>
+                    <li>Optimisation de latence réseau</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Le Pont Entre Digital et Physique</h2>
+            <p>
+                L'ESP32 Google Home est la preuve que hardware et software peuvent fusionner pour créer quelque chose de vraiment unique. C'est le pont physique qui connecte mon monde digital (Kara, Home Assistant, N8N) au monde réel.
+            </p>
+            <p>
+                Plus besoin de sortir mon téléphone. Plus besoin de cliquer sur des boutons. Je parle, Kara comprend, la maison réagit. C'est exactement la vision que j'avais en tête quand j'ai commencé ce projet. Et tout ça pour 25€ de composants.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="index.html" class="next-project-link">
+            <div class="next-label">Retour au portfolio</div>
+            <h3>Découvrir tous les projets</h3>
+            <p class="next-description">Explorez l'ensemble de mon écosystème domotique et IA</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

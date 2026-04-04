@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kara IA - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --kara-cyan: #00D4FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--kara-cyan);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--kara-cyan);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--kara-cyan);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--kara-cyan);
+            color: var(--kara-cyan);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0;
+        }
+
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">IA · Assistant Personnel</div>
+            
+            <h1>Kara</h1>
+            
+            <p class="project-subtitle">
+                Mon JARVIS personnel : IA locale sur VM 109 (Z440) qui contrôle ma maison, lit mes emails et apprend de moi
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Serveur</div>
+                    <div class="meta-value">Proxmox-HP-Z440</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Type</div>
+                    <div class="meta-value">VM (QEMU)</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">RAM</div>
+                    <div class="meta-value">20 GB</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">CPU</div>
+                    <div class="meta-value">5 cores</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">GPU</div>
+                    <div class="meta-value">2x NVIDIA</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>Mon JARVIS Personnel</h2>
+            <p>
+                Kara est mon assistant IA personnel, complètement privé et local. Pas de cloud, pas de serveurs externes, pas de données envoyées à Google ou Amazon. Juste une IA puissante qui tourne sur mes propres serveurs et apprend de moi au fil du temps.
+            </p>
+            <p>
+                Inspiré par JARVIS d'Iron Man, Kara contrôle ma maison, analyse mes emails, répond à mes questions, et exécute des tâches complexes. Le tout avec un contrôle vocal via l'ESP32 Google Home custom que j'ai fabriqué. C'est la convergence de tous mes projets en un seul système intelligent.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet KARA/OpenwebUI.png" alt="Interface de Kara via OpenWebUI" class="media-image">
+            </div>
+            <p class="media-caption">Kara en action via l'interface OpenWebUI</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Architecture Technique</h2>
+            <p>
+                Kara tourne sur la VM 109 "VM-IA-Server" sur le HP Z440, la machine la plus puissante de mon infrastructure. Avec 20GB de RAM, 5 cores CPU, et surtout 2 GPUs NVIDIA, c'est une vraie bête de calcul dédiée exclusivement à l'IA.
+            </p>
+            <p>
+                Le stack complet de Kara repose sur plusieurs composants qui fonctionnent ensemble :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Stack Technique de Kara</h3>
+                <ul>
+                    <li><strong>Ollama :</strong> Fait tourner les modèles LLM localement (Llama 2, Mistral, etc.)</li>
+                    <li><strong>OpenWebUI :</strong> Interface web élégante pour dialoguer avec Kara</li>
+                    <li><strong>N8N :</strong> Orchestre les workflows et connexions avec autres services</li>
+                    <li><strong>TrueNAS :</strong> Stocke la mémoire persistante et contexte</li>
+                    <li><strong>Home Assistant :</strong> Permet à Kara de contrôler la maison</li>
+                    <li><strong>ESP32 Google Home :</strong> Donne une voix physique à Kara</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Capacités & Fonctionnalités</h2>
+            <p>
+                Kara n'est pas qu'un simple chatbot. C'est un véritable assistant qui peut accomplir des tâches concrètes :
+            </p>
+            <ul>
+                <li><strong>Contrôle domotique :</strong> "Kara, allume les lumières du salon" → Action instantanée via Home Assistant</li>
+                <li><strong>Analyse d'emails :</strong> Lit ma boîte mail et me résume les messages importants</li>
+                <li><strong>Automatisations intelligentes :</strong> "Si je quitte la maison, éteins tout" → Créé l'automatisation</li>
+                <li><strong>Questions techniques :</strong> Je peux lui demander de débugger du code, expliquer des concepts</li>
+                <li><strong>Surveillance :</strong> Analyse les images de Frigate et m'alerte si quelque chose d'anormal</li>
+                <li><strong>Mémoire contextuelle :</strong> Se souvient de nos conversations et apprend mes préférences</li>
+            </ul>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Kara/Services Connectes.jpg" alt="Diagramme des services connectés à Kara" class="media-image">
+            </div>
+            <p class="media-caption">Tous les services que Kara peut contrôler et avec lesquels elle interagit</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Les Modèles IA Locaux</h2>
+            <p>
+                Grâce à Ollama qui tourne sur la même VM, Kara a accès à plusieurs modèles de langage que j'ai téléchargés et qui tournent localement sur les GPUs :
+            </p>
+            <ul>
+                <li><strong>Llama 2 13B :</strong> Modèle général polyvalent, bon équilibre performance/qualité</li>
+                <li><strong>Mistral 7B :</strong> Ultra-rapide pour les réponses courtes et commandes vocales</li>
+                <li><strong>CodeLlama :</strong> Spécialisé dans le code et le développement</li>
+                <li><strong>Vicuna :</strong> Pour les conversations naturelles et créatives</li>
+            </ul>
+            <p>
+                Kara choisit automatiquement le meilleur modèle selon la tâche. Pour une commande vocale simple, Mistral 7B répond en <1 seconde. Pour de l'analyse approfondie, Llama 2 13B prend le relais.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Contrôle Vocal via ESP32</h2>
+            <p>
+                Le vrai game-changer, c'est le contrôle vocal. Grâce à l'ESP32 Google Home que j'ai fabriqué, je peux parler à Kara naturellement sans toucher mon téléphone ou ordinateur.
+            </p>
+            <p>
+                Le workflow est ultra-rapide : je parle à l'ESP32 → Audio envoyé à Kara via N8N → Ollama traite et comprend → Action exécutée → Réponse vocale via l'ESP32. Tout ça en moins de 2 secondes.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Exemples de Commandes Vocales</h3>
+                <ul>
+                    <li>"Kara, éteins toutes les lumières" → Home Assistant exécute</li>
+                    <li>"Kara, quelle est la température dehors ?" → Répond avec données météo</li>
+                    <li>"Kara, quelqu'un est devant la porte ?" → Analyse image Frigate et répond</li>
+                    <li>"Kara, mets la maison en mode nuit" → Active scène complète</li>
+                    <li>"Kara, résume mes emails importants" → Analyse boîte mail et résume</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Mémoire & Apprentissage</h2>
+            <p>
+                Kara ne se contente pas de répondre aux questions. Elle apprend. Chaque conversation est stockée sur TrueNAS avec contexte complet. Au fil du temps, Kara comprend mes habitudes, mes préférences, et anticipe mes besoins.
+            </p>
+            <p>
+                Par exemple, Kara a appris que j'aime que les lumières soient tamisées le soir. Maintenant, quand je dis "mode soirée", elle sait exactement quelle ambiance créer sans que je doive tout spécifier.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Kara/Conversation History.jpg" alt="Historique des conversations avec Kara" class="media-image">
+            </div>
+            <p class="media-caption">Historique complet des échanges avec Kara, stocké et analysable</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Performance & Statistiques</h2>
+            <ul>
+                <li><strong>Temps de réponse moyen :</strong> 1-3 secondes selon complexité</li>
+                <li><strong>Utilisation GPU :</strong> 60-80% pendant inférence, 0% au repos</li>
+                <li><strong>Requêtes par jour :</strong> 50-100 interactions vocales et texte</li>
+                <li><strong>Taux de compréhension :</strong> >95% sur commandes vocales</li>
+                <li><strong>Uptime :</strong> 6d 16h 48m sans interruption</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Technologies & Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">Ollama</div>
+                <div class="tech-tag">Llama 2</div>
+                <div class="tech-tag">Mistral</div>
+                <div class="tech-tag">OpenWebUI</div>
+                <div class="tech-tag">N8N</div>
+                <div class="tech-tag">Python</div>
+                <div class="tech-tag">NVIDIA CUDA</div>
+                <div class="tech-tag">Home Assistant</div>
+                <div class="tech-tag">ESP32</div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Compétences Développées</h3>
+                <ul>
+                    <li>Déploiement et optimisation de LLMs</li>
+                    <li>Utilisation de GPUs pour accélération IA</li>
+                    <li>Création de pipelines conversationnels</li>
+                    <li>Intégration multi-services complexe</li>
+                    <li>Traitement du langage naturel</li>
+                    <li>Architecture de systèmes IA distribués</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Le Futur de Kara</h2>
+            <p>
+                Kara continue d'évoluer. J'envisage d'ajouter la vision par ordinateur pour qu'elle puisse "voir" via les caméras Frigate et décrire ce qui se passe. Je veux aussi améliorer sa mémoire à long terme pour qu'elle se souvienne de conversations d'il y a des mois.
+            </p>
+            <p>
+                Mais pour l'instant, Kara fait déjà exactement ce que je voulais : être un véritable assistant intelligent, personnel, et complètement privé. Mon JARVIS à moi, qui tourne sur mes serveurs, protège ma vie privée, et me facilite la vie au quotidien.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="esp-32(Kara).html" class="next-project-link">
+            <div class="next-label">Interface vocale</div>
+            <h3>ESP32 Google Home</h3>
+            <p class="next-description">Assistant vocal DIY : le hardware custom qui donne une voix physique à Kara</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

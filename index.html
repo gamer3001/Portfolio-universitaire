@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ainis Haichour - Developer & Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #2e5090;          /* Bleu marine du costard */
+            --accent-light: #3d6ab8;   /* Version légèrement plus claire pour hover */
+            --accent-glow: rgba(46, 80, 144, 0.18);
+            --surface: rgba(255, 255, 255, 0.04);
+
+            /* Couleurs personnalisées */
+            --color-infra: #c87a2e;     /* Orange légèrement assourdi */
+            --color-service: #2e8c5a;   /* Vert légèrement assourdi */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            transition: color 0.3s ease;
+            text-transform: lowercase;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .hero-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-bio {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        /* Stats — design incrusté premium */
+        .hero-stats {
+            display: flex;
+            gap: 0;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(46, 80, 144, 0.25);
+            border-radius: 14px;
+            overflow: hidden;
+            background: rgba(46, 80, 144, 0.06);
+            backdrop-filter: blur(8px);
+            max-width: 420px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            padding: 1.4rem 1rem;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: rgba(46, 80, 144, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: var(--accent-light);
+            font-family: 'Cormorant Garamond', serif;
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 400;
+        }
+
+        /* CTA Buttons */
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-primary:hover {
+            border-color: rgba(255,255,255,0.35);
+            color: var(--text-primary);
+        }
+
+        .btn-primary .btn-icon {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover .btn-icon {
+            transform: translateY(3px);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+            border: 1px solid var(--accent);
+            letter-spacing: 0.1em;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-light);
+            border-color: var(--accent-light);
+        }
+
+        .hero-image {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.85));
+        }
+
+        /* Projects Section */
+        .projects-preview {
+            padding: 6rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 4rem;
+            text-align: center;
+            letter-spacing: -0.01em;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .category-header {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.2rem;
+            color: var(--accent-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 4rem;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(46, 80, 144, 0.35);
+        }
+
+        .category-header.infra {
+            color: var(--color-infra);
+            border-bottom-color: rgba(200, 122, 46, 0.35);
+        }
+
+        .category-header.service {
+            color: var(--color-service);
+            border-bottom-color: rgba(46, 140, 90, 0.35);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, var(--accent-glow), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(46, 80, 144, 0.4);
+            box-shadow: 0 20px 60px rgba(46, 80, 144, 0.12);
+        }
+
+        .project-image {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .project-content p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 4rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Modal Contact */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 2000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: #0d0d0d;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--text-primary);
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(46, 80, 144, 0.12);
+            border-color: var(--accent);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav {
+                padding: 1rem 2rem;
+            }
+
+            .hero {
+                padding: 6rem 2rem 3rem;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .projects-preview {
+                padding: 4rem 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <ul class="nav-links">
+                <li><a href="#about">about</a></li>
+                <li><a href="#projects">projects</a></li>
+                <li><a id="contact-btn" href="#">contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="about">
+        <div class="hero-grid">
+            <div class="hero-text">
+                <div class="hero-label">Lyceen · Maker</div>
+                <h1 class="hero-name">Ainis Haichour</h1>
+                <p class="hero-bio">
+                    Passionné par l'infrastructure IT, l'automatisation et l'intelligence artificielle. 
+                    Je conçois des systèmes qui allient performance et élégance.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">20+</div>
+                        <div class="stat-label">Projets</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Serveurs</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">∞</div>
+                        <div class="stat-label">Passion</div>
+                    </div>
+                </div>
+
+                <div class="hero-cta">
+                    <a href="#projects" class="btn btn-primary">
+                        <span class="btn-icon">↓</span>
+                        Défiler
+                    </a>
+                    <a href="#" id="contactBtn2" class="btn btn-secondary">Me contacter</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="Data/Images/Index/Photo de mwa.jpg" alt="Ainis Haichour">
+            </div>
+        </div>
+    </section>
+
+    <section class="projects-preview" id="projects">
+        <h2 class="section-title">Mes Projets</h2>
+
+        <div class="category-header">Intelligence Artificielle & Automation</div>
+        <div class="projects-grid">
+            <a href="kara-ia.html" class="project-card">
+                <div class="project-image">🤖</div>
+                <div class="project-content">
+                    <h3>Kara</h3>
+                    <p>Mon JARVIS personnel : IA locale qui contrôle ma maison et apprend de mes habitudes.</p>
+                </div>
+            </a>
+
+            <a href="esp-32(Kara).html" class="project-card">
+                <div class="project-image">🎙️</div>
+                <div class="project-content">
+                    <h3>ESP32 Voice</h3>
+                    <p>Assistant vocal DIY qui donne une voix à Kara.</p>
+                </div>
+            </a>
+
+            <a href="frigate.html" class="project-card">
+                <div class="project-image">📹</div>
+                <div class="project-content">
+                    <h3>Frigate</h3>
+                    <p>Détection d'objets en temps réel via IA.</p>
+                </div>
+            </a>
+
+            <a href="n8n.html" class="project-card">
+                <div class="project-image">🔗</div>
+                <div class="project-content">
+                    <h3>n8n</h3>
+                    <p>Automatisation workflow : Orchestration intelligente de mes services et notifications.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="category-header infra">Infrastructure & Virtualisation</div>
+        <div class="projects-grid">
+            <a href="infrastructure-proxmox.html" class="project-card">
+                <div class="project-image">🖥️</div>
+                <div class="project-content">
+                    <h3>Cluster Proxmox</h3>
+                    <p>3 serveurs, ~20 VMs/containers - Un datacenter à la maison.</p>
+                </div>
+            </a>
+
+            <a href="truenas.html" class="project-card">
+                <div class="project-image">💾</div>
+                <div class="project-content">
+                    <h3>TrueNAS Scale</h3>
+                    <p>Le coffre-fort numérique : Téraoctets de données protégés par ZFS avec redondance et snapshots.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="category-header service">Services & Domotique</div>
+        <div class="projects-grid">
+            <a href="home-assistant.html" class="project-card">
+                <div class="project-image">🏠</div>
+                <div class="project-content">
+                    <h3>Home Assistant</h3>
+                    <p>Le cerveau domotique : Centralisation de tous les appareils connectés et automatisations complexes.</p>
+                </div>
+            </a>
+
+            <a href="octoprint.html" class="project-card">
+                <div class="project-image">🖨️</div>
+                <div class="project-content">
+                    <h3>Octoprint</h3>
+                    <p>Gestion d'impression 3D : Du fruit de mon imagination à un produit qui tient dans la main.</p>
+                </div>
+            </a>
+
+            <a href="pihole.html" class="project-card">
+                <div class="project-image">🛡️</div>
+                <div class="project-content">
+                    <h3>PiHole</h3>
+                    <p>Bouclier réseau : Blocage des publicités et traceurs au niveau DNS pour tout le réseau.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="category-header infra">Projets Scolaires</div>
+        <div class="projects-grid">
+            <a href="cybertruck.html" class="project-card">
+                <div class="project-image">🚗</div>
+                <div class="project-content">
+                    <h3>Cybertruck Intelligent</h3>
+                    <p>Une petite voiturette capable d'éviter des obstacles de manière autonome.</p>
+                </div>
+            </a>
+
+            <a href="cisco trafik.html" class="project-card">
+                <div class="project-image">🚦</div>
+                <div class="project-content">
+                    <h3>"Cisco Trafik"</h3>
+                    <p>Un petit feu tricolore créé sans aucune ligne de code !</p>
+                </div>
+            </a>
+
+            <a href="deploiment-fog.html" class="project-card">
+                <div class="project-image">☁️</div>
+                <div class="project-content">
+                    <h3>Déploiement FOG</h3>
+                    <p>Un projet simple mais intéressant qui a permis de synchroniser l'OS de tous les PC d'une salle de cours.</p>
+                </div>
+            </a>
+
+            <a href="datacenter-epil.html" class="project-card">
+                <div class="project-image">🏢</div>
+                <div class="project-content">
+                    <h3>Datacenter "EPIL"</h3>
+                    <p>Mon projet de fin d'année, qui consistait à créer un datacenter avec les machines mises à ma disposition.</p>
+                </div>
+            </a>
+
+            <a href="virtual-Arcade.html" class="project-card">
+                <div class="project-image">🕹️</div>
+                <div class="project-content">
+                    <h3>Virtual Arcade Project</h3>
+                    <p>Ma VM préférée du datacenter EPIL, il s'agit d'une VM avec quelques émulateurs installés et une belle interface de jeu.</p>
+                </div>
+            </a>
+
+            <a href="TailsScale.html" class="project-card">
+                <div class="project-image">🔐</div>
+                <div class="project-content">
+                    <h3>Tailscale VPN</h3>
+                    <p>Accès distant sécurisé au datacenter EPIL : VPN Zero Trust sans ouverture de ports.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="category-header">Projets dans le DUR</div>
+        <div class="projects-grid">
+            <a href="Borne-arcade.html" class="project-card">
+                <div class="project-image">👾</div>
+                <div class="project-content">
+                    <h3>Borne D'Arcade DIY</h3>
+                    <p>La construction d'une borne d'arcade avec le matériel que j'avais à la maison.</p>
+                </div>
+            </a>
+
+            <a href="Ambilight.html" class="project-card">
+                <div class="project-image">📺</div>
+                <div class="project-content">
+                    <h3>Ambilight TV</h3>
+                    <p>La construction d'un système de lumière réactif à l'écran de ma TV pour une immersion impeccable lors de mes parties.</p>
+                </div>
+            </a>
+
+            <a href="Wii-portable.html" class="project-card">
+                <div class="project-image">🎮</div>
+                <div class="project-content">
+                    <h3>Wii Portable</h3>
+                    <p>Transformation d'une Wii en console portable avec écran intégré et batterie (En cours).</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <footer id="footer">
+        <p>&copy; 2026 Ainis Haichour. Tous droits réservés.</p>
+    </footer>
+
+    <div class="modal-overlay" id="contact-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h2 style="font-family: 'Cormorant Garamond', serif; margin-bottom: 1rem;">Me Contacter</h2>
+            <p style="color: var(--text-secondary);">Discutons de vos projets ou de virtualisation !</p>
+            
+            <div class="contact-info">
+                <a href="mailto:haichour.ainis3@gmail.com" class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <span><span class="__cf_email__" data-cfemail="haichour.ainis3@gmail.com">haichour.ainis3@gmail.com</span></span>
+                </a>
+                <a href="https://linkedin.com/in/ainis-haichour" target="_blank" class="contact-item">
+                    <span class="contact-icon">💼</span>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/gamer3001" target="_blank" class="contact-item">
+                    <span class="contact-icon">🐙</span>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if(this.id !== 'contact-btn' && this.id !== 'contactBtn2') {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // GESTION DU POP-UP CONTACT
+        const contactBtn = document.getElementById('contact-btn');
+        const contactBtn2 = document.getElementById('contactBtn2');
+        const modal = document.getElementById('contact-modal');
+        const closeModal = document.getElementById('close-modal');
+
+        function openContactModal(e) {
+            e.preventDefault();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        if (contactBtn) contactBtn.addEventListener('click', openContactModal);
+        if (contactBtn2) contactBtn2.addEventListener('click', openContactModal);
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Parallax — désactivé sur mobile pour éviter le chevauchement
+        if (window.innerWidth > 968) {
+            window.addEventListener('scroll', () => {
+                const hero = document.querySelector('.hero-text');
+                if (hero) hero.style.transform = `translateY(${window.pageYOffset * 0.3}px)`;
+            });
+        }
+
+        // Intersection Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.project-card').forEach(card => observer.observe(card));
+    </script>
+
+    <script>
+    /* =============================================
+       CANVAS BACKGROUND — Dégradé noir avec étoiles
+       et légère teinte marine au scroll
+    ============================================= */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, stars = [];
+
+    /* Palette : noir pur → très légère teinte marine profonde en bas */
+    const PALETTE = [
+        [0.00, [0,   0,   0  ]],
+        [0.20, [2,   3,   6  ]],
+        [0.40, [3,   5,   12 ]],
+        [0.60, [4,   7,   18 ]],
+        [0.80, [5,   9,   22 ]],
+        [1.00, [6,   11,  28 ]],
+    ];
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function lerpColor(c1, c2, t) {
+        return [Math.round(lerp(c1[0],c2[0],t)), Math.round(lerp(c1[1],c2[1],t)), Math.round(lerp(c1[2],c2[2],t))];
+    }
+    function getColor(frac) {
+        frac = Math.max(0, Math.min(1, frac));
+        for (let i = 0; i < PALETTE.length - 1; i++) {
+            const [f0, c0] = PALETTE[i], [f1, c1] = PALETTE[i+1];
+            if (frac >= f0 && frac <= f1) return lerpColor(c0, c1, (frac-f0)/(f1-f0));
+        }
+        return PALETTE[PALETTE.length-1][1];
+    }
+
+    function createStars() {
+        stars = [];
+        const count = Math.floor((W * H) / 3000);
+        for (let i = 0; i < count; i++) {
+            const sz = Math.random();
+            stars.push({
+                x: Math.random() * W,
+                y: Math.pow(Math.random(), 1.5) * H,
+                r: sz < 0.6 ? 0.5 : sz < 0.88 ? 0.85 : 1.2,
+                baseAlpha: 0.3 + Math.random() * 0.6,
+                speed: 0.5 + Math.random() * 2.0,
+                phase: Math.random() * Math.PI * 2,
+            });
+        }
+    }
+
+    function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        createStars();
+    }
+
+    let scrollFrac = 0, targetFrac = 0;
+    window.addEventListener('scroll', () => {
+        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        targetFrac = window.scrollY / max;
+    }, { passive: true });
+
+    let lastT = 0;
+    function render(now) {
+        const dt = Math.min((now - lastT) / 1000, 0.05);
+        lastT = now;
+        scrollFrac += (targetFrac - scrollFrac) * 0.055;
+
+        // Background gradient
+        const tc = getColor(scrollFrac);
+        const bc = getColor(Math.min(1, scrollFrac + 0.3));
+        const grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, `rgb(${tc[0]},${tc[1]},${tc[2]})`);
+        grad.addColorStop(1, `rgb(${bc[0]},${bc[1]},${bc[2]})`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+
+        // Subtle navy nebula (very faint)
+        const ba = Math.max(0, 0.04 - scrollFrac * 0.05);
+        if (ba > 0.001) {
+            const g1 = ctx.createRadialGradient(W*.2,H*.3,0,W*.2,H*.3,W*.35);
+            g1.addColorStop(0,`rgba(20,35,90,${ba})`); g1.addColorStop(1,'transparent');
+            ctx.fillStyle = g1; ctx.fillRect(0,0,W,H);
+        }
+
+        // Scan lines (très subtiles)
+        const sa = Math.min(0.015, scrollFrac * 0.025);
+        if (sa > 0.001) {
+            ctx.fillStyle = `rgba(46,80,144,${sa})`;
+            for (let y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1);
+        }
+
+        // Navy shimmer at bottom on deep scroll
+        if (scrollFrac > 0.45) {
+            const sh = (scrollFrac - 0.45) * 1.8;
+            const g3 = ctx.createLinearGradient(0, H*.6, 0, H);
+            g3.addColorStop(0,'transparent');
+            g3.addColorStop(1,`rgba(46,80,144,${Math.min(0.08,sh*0.07)})`);
+            ctx.fillStyle = g3; ctx.fillRect(0,0,W,H);
+        }
+
+        // Stars
+        const t = now / 1000;
+        for (const s of stars) {
+            const starY = s.y / H;
+            const vis = Math.max(0, 1 - (scrollFrac - starY * 0.5 + 0.15) * 3.5);
+            if (vis <= 0.01) continue;
+            const twinkle = 0.45 + 0.55 * Math.sin(t * s.speed + s.phase);
+            const alpha = s.baseAlpha * twinkle * vis;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(215,225,255,${alpha})`;
+            ctx.fill();
+            if (s.r > 1.0 && twinkle > 0.78) {
+                const g = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4.5);
+                g.addColorStop(0,`rgba(180,200,255,${alpha*0.4})`);
+                g.addColorStop(1,'transparent');
+                ctx.fillStyle = g;
+                ctx.fillRect(s.x-s.r*5,s.y-s.r*5,s.r*10,s.r*10);
+            }
+        }
+
+        // Data packets (navy tinted)
+        if (scrollFrac > 0.28) {
+            const pa = Math.min(0.45, (scrollFrac-0.28)*1.5);
+            for (let i = 0; i < 9; i++) {
+                const seed = i * 141.3;
+                const px = ((seed*79)%W+W)%W;
+                const speed = 28 + (i*19%45);
+                const py = ((H-(t*speed+seed*100)%H)+H)%H;
+                const fa = Math.sin((t*speed*0.1+seed*0.05))*0.5+0.5;
+                ctx.beginPath();
+                ctx.arc(px, py, 1.3, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(46,80,144,${fa*pa*0.4})`;
+                ctx.fill();
+            }
+        }
+
+        requestAnimationFrame(render);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    requestAnimationFrame(render);
+    </script>
+
+</body>
+</html>

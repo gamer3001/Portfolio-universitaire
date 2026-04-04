@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N8N - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --n8n-pink: #EA4B71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(234, 75, 113, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(234, 75, 113, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--n8n-pink);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--n8n-pink);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(234, 75, 113, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(234, 75, 113, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--n8n-pink);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(234, 75, 113, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--n8n-pink);
+            color: var(--n8n-pink);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0;
+        }
+
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Automation · Workflow</div>
+            
+            <h1>N8N</h1>
+            
+            <p class="project-subtitle">
+                L'orchestrateur intelligent qui connecte tous mes services - LXC 106 sur EliteBook avec 2GB RAM
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Serveur</div>
+                    <div class="meta-value">ProxmoxEliteBook</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Type</div>
+                    <div class="meta-value">LXC</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">RAM</div>
+                    <div class="meta-value">2 GB</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">CPU</div>
+                    <div class="meta-value">2 cores</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Uptime</div>
+                    <div class="meta-value">6d 21h 22m</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>Le Chef d'Orchestre</h2>
+            <p>
+                N8N est le cerveau qui connecte tous mes services ensemble. C'est un outil d'automatisation workflow qui permet de créer des scénarios complexes reliant Home Assistant, Frigate, Kara, mes emails, APIs externes... tout peut être orchestré visuellement.
+            </p>
+            <p>
+                Au lieu d'avoir des scripts éparpillés partout, j'ai centralisé toute la logique d'automatisation dans N8N. Chaque workflow est visuel, facile à débugger, et peut être modifié en quelques clics. C'est la colle qui fait tenir tout l'écosystème ensemble.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet N8N/Interface N8N.jpg" alt="Interface N8N avec workflows" class="media-image">
+            </div>
+            <p class="media-caption">Interface N8N montrant plusieurs workflows actifs</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Architecture & Déploiement</h2>
+            <p>
+                N8N tourne dans le conteneur LXC 106 sur le ProxmoxEliteBook. Avec 2GB de RAM et 2 cores CPU, c'est parfaitement dimensionné pour gérer des dizaines de workflows simultanés. L'uptime de plus de 6 jours prouve sa stabilité - il tourne en continu sans broncher.
+            </p>
+            <p>
+                Les workflows sont stockés dans une base de données SQLite locale, avec backup automatique quotidien sur TrueNAS. Si je dois reconstruire N8N, je restaure simplement la base et tous mes workflows sont de retour.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Workflows Actifs</h3>
+                <ul>
+                    <li><strong>Kara Email Monitor :</strong> Kara analyse mes emails importants et me fait un résumé</li>
+                    <li><strong>Frigate Alert System :</strong> Détection personne → Screenshot → Notification avec image</li>
+                    <li><strong>Home Assistant Backup :</strong> Backup automatique quotidien vers TrueNAS</li>
+                    <li><strong>Weather Automation :</strong> Récupère météo → Ajuste chauffage et volets</li>
+                    <li><strong>Kara Voice Control :</strong> Commandes vocales ESP32 → Actions domotique</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Intégration Kara</h2>
+            <p>
+                N8N joue un rôle crucial dans l'orchestration de Kara, mon assistant IA. C'est N8N qui gère la communication entre Kara (sur la VM-IA-Server), OpenWebUI, Home Assistant, et tous les autres services.
+            </p>
+            <p>
+                Quand je donne un ordre vocal à Kara via l'ESP32, voici ce qui se passe : ESP32 → N8N → Ollama (pour comprendre l'intention) → Home Assistant (pour exécuter l'action) → N8N → ESP32 (confirmation vocale). Tout ça en moins d'une seconde.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet N8N/Workflow Kara.jpg" alt="Workflow d'intégration Kara" class="media-image">
+            </div>
+            <p class="media-caption">Workflow complexe connectant Kara à tous les services</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Nodes & Intégrations</h2>
+            <p>
+                N8N dispose de centaines de "nodes" pré-faits pour se connecter à des services populaires. J'utilise notamment :
+            </p>
+            <ul>
+                <li><strong>Home Assistant Node :</strong> Contrôle total de la domotique</li>
+                <li><strong>HTTP Request :</strong> Pour appeler Ollama, Frigate, et APIs custom</li>
+                <li><strong>Email (IMAP/SMTP) :</strong> Surveillance et envoi d'emails</li>
+                <li><strong>Webhook :</strong> Réception d'événements de Frigate, ESP32, etc.</li>
+                <li><strong>Schedule Trigger :</strong> Automatisations temporelles</li>
+                <li><strong>IF Node :</strong> Logique conditionnelle complexe</li>
+                <li><strong>Code Node :</strong> JavaScript custom pour logique avancée</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Exemple Concret : Alerte Frigate</h2>
+            <p>
+                Voici un workflow que j'utilise quotidiennement. Quand Frigate détecte une personne à l'entrée :
+            </p>
+            <ol style="padding-left: 2rem;">
+                <li>Frigate envoie un webhook à N8N avec l'événement</li>
+                <li>N8N vérifie si je suis à la maison (via Home Assistant)</li>
+                <li>Si je suis absent, N8N récupère le snapshot de Frigate</li>
+                <li>N8N envoie une notification push avec l'image sur mon téléphone</li>
+                <li>N8N demande à Kara d'analyser l'image (qui est-ce ?)</li>
+                <li>Si c'est un livreur, N8N allume les lumières extérieures</li>
+            </ol>
+            <p>
+                Tout ça orchestré automatiquement, sans intervention. C'est la puissance de N8N.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet N8N/Execution Log.jpg" alt="Logs d'exécution des workflows" class="media-image">
+            </div>
+            <p class="media-caption">Historique des exécutions avec temps de traitement et statuts</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Debugging & Monitoring</h2>
+            <p>
+                N8N offre des outils de debugging incroyables. Chaque exécution de workflow est loggée avec toutes les données qui transitent à chaque étape. Si un workflow échoue, je peux voir exactement où et pourquoi.
+            </p>
+            <p>
+                J'ai configuré des alertes pour m'avertir si un workflow critique échoue plusieurs fois. Par exemple, si le backup automatique de Home Assistant rate 2 fois de suite, je reçois une notification pour investiguer.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Statistiques & Performance</h2>
+            <ul>
+                <li><strong>Workflows actifs :</strong> 15+ automatisations en production</li>
+                <li><strong>Exécutions par jour :</strong> ~200-300 triggers</li>
+                <li><strong>Taux de succès :</strong> >98% (très fiable)</li>
+                <li><strong>Temps moyen d'exécution :</strong> <2 secondes par workflow</li>
+                <li><strong>Utilisation CPU :</strong> 0.03% en moyenne</li>
+                <li><strong>RAM utilisée :</strong> 203 MB sur 2 GB</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Technologies & Stack</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">N8N</div>
+                <div class="tech-tag">Node.js</div>
+                <div class="tech-tag">SQLite</div>
+                <div class="tech-tag">Webhooks</div>
+                <div class="tech-tag">REST APIs</div>
+                <div class="tech-tag">JavaScript</div>
+                <div class="tech-tag">Home Assistant</div>
+                <div class="tech-tag">MQTT</div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Compétences Développées</h3>
+                <ul>
+                    <li>Orchestration de workflows complexes</li>
+                    <li>Intégration d'APIs multiples</li>
+                    <li>Logique conditionnelle et événementielle</li>
+                    <li>Debugging de systèmes distribués</li>
+                    <li>Automatisation intelligente</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>L'Orchestrateur Invisible</h2>
+            <p>
+                N8N est l'exemple parfait d'un service qui fait son travail en silence. Je l'oublie complètement... jusqu'à ce que je réalise combien de choses se passent automatiquement grâce à lui. C'est le ciment qui lie tous mes services en un écosystème cohérent et intelligent.
+            </p>
+        </div>
+    </div>
+
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

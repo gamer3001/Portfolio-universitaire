@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Arcade - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --surface: rgba(255, 255, 255, 0.05);
+            --arcade-pink: #FF006E;
+            --arcade-cyan: #00F5FF;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 110, 0.03), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 245, 255, 0.03), transparent 50%);
+            pointer-events: none;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .back-button {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .back-button:hover { background: var(--surface); color: var(--text-primary); }
+        .back-button::before { content: '←'; margin-right: 0.5rem; }
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            text-align: center;
+        }
+        .hero-content { max-width: 800px; animation: fadeIn 1s; }
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--arcade-pink);
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+        }
+        .section {
+            margin-bottom: 6rem;
+            animation: fadeIn 1s backwards;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        ul { list-style: none; padding: 0; }
+        li {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--arcade-pink);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.05), rgba(0, 245, 255, 0.05));
+            border: 1px solid rgba(255, 0, 110, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            color: var(--arcade-pink);
+            margin-bottom: 1rem;
+        }
+        .media-section { margin-bottom: 6rem; }
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .media-container:hover .media-image { transform: scale(1.02); }
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, .content { padding-left: 2rem; padding-right: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="project-category">Gaming · Émulation</div>
+            <h1>Virtual Arcade</h1>
+            <p class="subtitle">
+                Ma VM préférée du datacenter EPIL : plateforme gaming retro avec passthrough GPU et interface PlayNite
+            </p>
+        </div>
+    </section>
+
+    <div class="content">
+        <div class="section">
+            <h2>L'Idée du Projet</h2>
+            <p>
+                Lors du développement du datacenter EPIL, on s'est dit : "Pourquoi ne pas tester les capacités du serveur de manière ludique ?" L'idée est née : créer une VM dédiée au gaming rétro avec émulation de consoles classiques.
+            </p>
+            <p>
+                Le serveur R730 était puissant, mais pas assez pour émuler la Nintendo Switch. Par contre, la Wii et la SNES ? Parfait ! On a donc créé la VM-Émulation, qui est rapidement devenue mon projet préféré du datacenter.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Virtual Arcade/Interface PlayNite.jpg" alt="Interface PlayNite fullscreen" class="media-image">
+            </div>
+            <p class="media-caption">Interface PlayNite en fullscreen : lancement automatique au démarrage</p>
+        </div>
+
+        <div class="section">
+            <h2>Configuration de la VM</h2>
+            <p>
+                La VM tourne sous Windows 11 Pro pour une compatibilité maximale avec les émulateurs. Configuration :
+            </p>
+            <ul>
+                <li><strong>OS :</strong> Windows 11 Pro (sans compte Microsoft)</li>
+                <li><strong>CPU :</strong> 4 cœurs alloués du Xeon E5-2600</li>
+                <li><strong>RAM :</strong> 12GB DDR4</li>
+                <li><strong>Stockage :</strong> SSD 500GB dédié</li>
+                <li><strong>GPU :</strong> Carte graphique en passthrough PCIe</li>
+                <li><strong>Émulation TPM 2.0 :</strong> Pour Windows 11</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Le Passthrough GPU</h2>
+            <p>
+                Le passthrough GPU est LA technique qui change tout pour l'émulation sur VM. Concrètement, on donne un accès direct de la VM à une carte graphique physique, contournant la couche d'abstraction de Proxmox.
+            </p>
+            <p>
+                Résultat : performances quasi-natives, comme si le GPU était installé directement dans un PC physique. C'est essentiel pour l'émulation, surtout pour les jeux 3D de Wii qui demandent beaucoup de GPU.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Avantages du Passthrough</h3>
+                <ul>
+                    <li>Performances graphiques natives (~95% des perfs réelles)</li>
+                    <li>Réduction drastique de l'input lag</li>
+                    <li>Support complet OpenGL/Vulkan pour émulateurs</li>
+                    <li>Fluidité 60 FPS stable en émulation Wii</li>
+                    <li>Possibilité d'upscaling HD (720p → 1080p)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Virtual Arcade/Mario Kart Wii.jpg" alt="Mario Kart Wii en émulation" class="media-image">
+            </div>
+            <p class="media-caption">Mario Kart Wii tournant à 60 FPS en 1080p via émulateur Dolphin</p>
+        </div>
+
+        <div class="section">
+            <h2>PlayNite : L'Interface Ultime</h2>
+            <p>
+                PlayNite est un launcher open-source qui unifie tous les jeux et émulateurs dans une seule interface magnifique. On l'a configuré pour qu'il se lance automatiquement en fullscreen au démarrage de la VM.
+            </p>
+            <p>
+                Résultat : quand on allume la TV et qu'on démarre la VM, on tombe directement sur une interface type console de salon, sans voir Windows. C'est exactement l'expérience qu'on voulait !
+            </p>
+            
+            <ul>
+                <li>Lancement auto au démarrage Windows</li>
+                <li>Mode fullscreen pour expérience console</li>
+                <li>Détection automatique des ROMs</li>
+                <li>Jaquettes et métadonnées automatiques</li>
+                <li>Support manettes Xbox/PlayStation</li>
+                <li>Interface navigable à la manette</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Émulateurs Installés</h2>
+            <p>
+                On a installé plusieurs émulateurs pour couvrir différentes consoles rétro. Chacun est configuré pour les meilleures performances :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Liste des Émulateurs</h3>
+                <ul>
+                    <li><strong>Dolphin (Wii/GameCube) :</strong> Émulateur principal, upscaling 1080p, 60 FPS stable</li>
+                    <li><strong>SNES9x (Super Nintendo) :</strong> Émulation parfaite, filtres CRT optionnels</li>
+                    <li><strong>PCSX2 (PlayStation 2) :</strong> En test, performances correctes</li>
+                    <li><strong>RetroArch :</strong> Multi-émulateur pour NES, Mega Drive, Game Boy</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Bibliothèque de Jeux</h2>
+            <p>
+                On a extrait les ROMs de nos propres disques (légal !) pour créer une belle bibliothèque retro :
+            </p>
+            <ul>
+                <li><strong>Mario Kart Wii</strong> - Le classique indémodable</li>
+                <li><strong>Street Fighter II</strong> - Combat rétro sur SNES</li>
+                <li><strong>Super Smash Bros (Wii)</strong> - Le jeu qui a motivé le projet !</li>
+                <li>+ bibliothèque SNES complète (Zelda, Mario, Metroid, etc.)</li>
+            </ul>
+            <p style="font-style: italic; font-size: 0.9rem;">
+                Note : Nous n'encourageons en aucun cas le piratage. Toutes les ROMs ont été extraites de copies physiques légalement possédées.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Virtual Arcade/Setup TV.jpg" alt="Setup avec TV dédiée" class="media-image">
+            </div>
+            <p class="media-caption">TV dédiée pour la VM-Émulation, réduction de l'input lag</p>
+        </div>
+
+        <div class="section">
+            <h2>Le Défi de l'Input Lag</h2>
+            <p>
+                Les émulateurs ne sont pas conçus pour tourner sur des VMs. On a donc observé un décalage (input lag) entre nos actions à la manette et ce qui se passe à l'écran.
+            </p>
+            <p>
+                Solution trouvée : installer une TV dédiée connectée directement à la sortie GPU de la VM. Résultat : input lag divisé par 3, expérience de jeu fluide et réactive !
+            </p>
+            <p>
+                Le passthrough GPU a aussi énormément aidé en réduisant les couches de virtualisation entre la manette et l'affichage.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Migration entre Serveurs</h2>
+            <p>
+                Pour installer la carte graphique sur le R730, j'ai dû migrer temporairement la VM vers le R430. Proxmox rend ça super simple :
+            </p>
+            <ul>
+                <li>Migration à chaud (sans éteindre la VM)</li>
+                <li>Installation de la carte GPU sur R730</li>
+                <li>Configuration du passthrough PCIe</li>
+                <li>Migration de retour avec GPU fonctionnel</li>
+            </ul>
+            <p>
+                C'est une des forces de Proxmox : la flexibilité totale pour déplacer les VMs entre nœuds du cluster.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Logiciels Installés</h2>
+            <p>
+                On a utilisé Ninite pour installer rapidement tous les logiciels nécessaires :
+            </p>
+            <ul>
+                <li>Google Chrome (pour télécharger les ROMs)</li>
+                <li>Visual Studio C++ Redistributable (requis par émulateurs)</li>
+                <li>DirectX Runtime (pour performances GPU)</li>
+                <li>Drivers GPU à jour</li>
+                <li>Drivers manettes (Xbox, PlayStation)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Résultat Final</h2>
+            <p>
+                La VM-Émulation est maintenant ma VM préférée du datacenter EPIL. Elle prouve qu'on peut créer une vraie console de salon retro avec de la virtualisation et du matériel serveur.
+            </p>
+            <p>
+                Performances : 60 FPS stables en Wii, 0 lag en SNES, expérience fluide à la TV. Le passthrough GPU a été la clé du succès.
+            </p>
+            <p>
+                Et bonus : c'est devenu un excellent moyen de faire des pauses gaming entre les séances de configuration serveur !
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

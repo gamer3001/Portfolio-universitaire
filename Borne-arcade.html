@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borne d'Arcade DIY - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --surface: rgba(255, 255, 255, 0.05);
+            --arcade-red: #FF2D55;
+            --arcade-yellow: #FFD60A;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 45, 85, 0.03), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 214, 10, 0.03), transparent 50%);
+            pointer-events: none;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .back-button {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .back-button:hover { background: var(--surface); color: var(--text-primary); }
+        .back-button::before { content: '←'; margin-right: 0.5rem; }
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            text-align: center;
+        }
+        .hero-content { max-width: 800px; animation: fadeIn 1s; }
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 45, 85, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--arcade-red);
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+        }
+        .section {
+            margin-bottom: 6rem;
+            animation: fadeIn 1s backwards;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        ul { list-style: none; padding: 0; }
+        li {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--arcade-red);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 45, 85, 0.05), rgba(255, 214, 10, 0.05));
+            border: 1px solid rgba(255, 45, 85, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            color: var(--arcade-red);
+            margin-bottom: 1rem;
+        }
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .spec-item {
+            background: var(--surface);
+            border: 1px solid rgba(255, 45, 85, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .spec-label {
+            font-size: 0.9rem;
+            color: var(--arcade-yellow);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .spec-value {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+        .media-section { margin-bottom: 6rem; }
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .media-container:hover .media-image { transform: scale(1.02); }
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, .content { padding-left: 2rem; padding-right: 2rem; }
+            .specs-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="project-category">DIY · Retrogaming</div>
+            <h1>Borne d'Arcade DIY</h1>
+            <p class="subtitle">
+                Borne d'arcade complète avec meuble vintage, PC gaming et boutons arcade authentiques
+            </p>
+        </div>
+    </section>
+
+    <div class="content">
+        <div class="section">
+            <h2>Le Projet</h2>
+            <p>
+                J'ai toujours rêvé d'avoir une vraie borne d'arcade à la maison. Plutôt que d'en acheter une hors de prix, j'ai décidé de la construire moi-même en récupérant un vieux meuble pour avoir du bois d'époque authentique.
+            </p>
+            <p>
+                L'idée était simple : créer une borne moderne capable d'émuler des dizaines de consoles rétro, tout en gardant l'esthétique et le feeling d'une vraie arcade des années 80-90. Résultat : une borne complètement fonctionnelle avec plus de 30 systèmes émulés !
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Borne Arcade/Vue Generale.jpg" alt="Borne d'arcade complète" class="media-image">
+            </div>
+            <p class="media-caption">Ma borne d'arcade DIY avec meuble vintage récupéré</p>
+        </div>
+
+        <div class="section">
+            <h2>Le Meuble : Bois Vintage Récupéré</h2>
+            <p>
+                Au lieu d'acheter du bois neuf, j'ai récupéré un vieux meuble des années 80. L'avantage : du bois massif de qualité, avec une patine authentique qu'on ne peut pas reproduire.
+            </p>
+            <p>
+                J'ai découpé et réassemblé les planches pour créer la structure de la borne. Le bois vintage donne un cachet incroyable et une solidité à toute épreuve. C'est du costaud !
+            </p>
+            <ul>
+                <li>Meuble vintage récupéré (années 80)</li>
+                <li>Bois massif de qualité supérieure</li>
+                <li>Découpé et réassemblé sur mesure</li>
+                <li>Patine authentique conservée</li>
+                <li>Vernissage final pour protection</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Configuration Hardware</h2>
+            <p>
+                Pour faire tourner les émulateurs, j'ai utilisé un PC que j'avais sous la main. La config est largement suffisante pour émuler tout ce qui est rétro, et même quelques consoles plus récentes !
+            </p>
+            
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-label">Processeur</div>
+                    <div class="spec-value">Intel Core i5 5ème Gen</div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-label">Carte Graphique</div>
+                    <div class="spec-value">AMD Radeon HD 6000</div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-label">Mémoire</div>
+                    <div class="spec-value">16GB DDR3</div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-label">Stockage</div>
+                    <div class="spec-value">SSD 256GB (système + ROMs)</div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-label">Écran</div>
+                    <div class="spec-value">LCD 24" format 4:3</div>
+                </div>
+                
+                <div class="spec-item">
+                    <div class="spec-label">Audio</div>
+                    <div class="spec-value">Enceintes stéréo intégrées</div>
+                </div>
+            </div>
+
+            <p style="margin-top: 2rem;">
+                Cette config peut faire tourner confortablement : NES, SNES, Mega Drive, Nintendo 64, PlayStation 1, Dreamcast, PSP, GameCube, et même certains jeux Wii. Parfait pour le retrogaming !
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Borne Arcade/Hardware Interne.jpg" alt="PC monté dans la borne" class="media-image">
+            </div>
+            <p class="media-caption">Le PC monté à l'intérieur de la borne avec système de refroidissement</p>
+        </div>
+
+        <div class="section">
+            <h2>Boutons & Contrôles Arcade</h2>
+            <p>
+                Pour l'expérience arcade authentique, j'ai commandé de vrais boutons arcade sur AliExpress. Ce sont les mêmes types de boutons qu'on trouve dans les vraies bornes commerciales.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Setup Contrôles</h3>
+                <ul>
+                    <li><strong>2x Joysticks arcade :</strong> Type Sanwa (8 directions, clicky)</li>
+                    <li><strong>16 boutons arcade :</strong> 8 par joueur (6 actions + Start + Select)</li>
+                    <li><strong>2x Contrôleurs USB :</strong> Un par joueur, connexion plug & play</li>
+                    <li><strong>Boutons illuminés :</strong> LEDs intégrées pour style rétro</li>
+                    <li><strong>Disposition classique :</strong> Layout Street Fighter (6 boutons arc)</li>
+                </ul>
+            </div>
+
+            <p>
+                J'ai aussi ajouté des <strong>ports USB en façade</strong> pour pouvoir brancher des manettes modernes (PlayStation, Xbox) ou tout autre accessoire USB si besoin. Pratique pour les jeux qui ne marchent pas bien avec les sticks arcade.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Borne Arcade/Boutons Arcade.jpg" alt="Boutons arcade illuminés" class="media-image">
+            </div>
+            <p class="media-caption">Boutons arcade authentiques avec LEDs, layout Street Fighter</p>
+        </div>
+
+        <div class="section">
+            <h2>Recalbox : Le Système d'Exploitation</h2>
+            <p>
+                Pour le logiciel, j'utilise <strong>Recalbox</strong>. C'est un OS Linux ultra-léger conçu spécifiquement pour les bornes d'arcade et le retrogaming. Il démarre directement sur l'interface de jeu, sans passer par Windows.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Pourquoi Recalbox ?</h3>
+                <ul>
+                    <li><strong>Plug & Play :</strong> Tout est configuré d'avance, zéro prise de tête</li>
+                    <li><strong>Interface magnifique :</strong> Style console moderne avec jaquettes et vidéos</li>
+                    <li><strong>30+ systèmes émulés :</strong> De l'Atari 2600 à la Wii</li>
+                    <li><strong>Léger :</strong> Toutes les ressources pour l'émulation, pas de Windows en arrière-plan</li>
+                    <li><strong>Support manettes :</strong> Arcade, PlayStation, Xbox, Switch... tout fonctionne</li>
+                    <li><strong>Scraping automatique :</strong> Télécharge les jaquettes et infos des jeux</li>
+                    <li><strong>Kodi intégré :</strong> Bonus, je peux regarder des films depuis la borne</li>
+                </ul>
+            </div>
+
+            <p>
+                Recalbox est basé sur RetroArch et EmulationStation. C'est la solution parfaite pour une borne : simple, stable, et ça marche du premier coup.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Consoles Émulées</h2>
+            <p>
+                Avec mon hardware (i5 5ème gen + Radeon HD 6000), voici ce que la borne peut faire tourner parfaitement :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>✅ Systèmes Qui Tournent Parfaitement</h3>
+                <ul>
+                    <li><strong>Arcade :</strong> Neo Geo, CPS1, CPS2, CPS3, MAME (milliers de jeux)</li>
+                    <li><strong>Nintendo :</strong> NES, SNES, Nintendo 64, GameCube</li>
+                    <li><strong>Sega :</strong> Master System, Mega Drive/Genesis, Dreamcast</li>
+                    <li><strong>Sony :</strong> PlayStation 1, PSP</li>
+                    <li><strong>Autres :</strong> Atari 2600, Game Boy, Game Boy Advance, PC Engine</li>
+                </ul>
+                
+                <h3 style="margin-top: 2rem;">⚠️ Systèmes Partiels</h3>
+                <ul>
+                    <li><strong>Wii :</strong> Certains jeux tournent bien, d'autres laguent un peu</li>
+                    <li><strong>PS2 :</strong> Non supportée par Recalbox (dommage !)</li>
+                </ul>
+            </div>
+
+            <p>
+                Au total, j'ai accès à plus de <strong>30 systèmes différents</strong> et plusieurs milliers de jeux. De quoi ne jamais s'ennuyer !
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Borne Arcade/Interface Recalbox.jpg" alt="Interface Recalbox avec jaquettes" class="media-image">
+            </div>
+            <p class="media-caption">Interface Recalbox avec jaquettes et vidéos de gameplay</p>
+        </div>
+
+        <div class="section">
+            <h2>Connectivité : CPL Intégré</h2>
+            <p>
+                Pour la connectivité réseau, j'ai intégré une <strong>prise CPL directement dans la borne</strong>. Ça me permet d'avoir internet sur la borne sans tirer de câble Ethernet à travers la pièce.
+            </p>
+            <p>
+                <strong>Pourquoi c'est pratique :</strong>
+            </p>
+            <ul>
+                <li>Ajout de ROMs via le réseau (pas besoin de clé USB)</li>
+                <li>Scraping des jaquettes en ligne automatique</li>
+                <li>Mises à jour Recalbox en WiFi</li>
+                <li>Accès SSH pour configuration avancée</li>
+                <li>Streaming jeux PC via Steam Link (bonus !)</li>
+            </ul>
+            <p>
+                Le CPL est caché à l'intérieur de la borne, branché sur une multiprise interne. Tout est propre et invisible de l'extérieur.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Plans & Construction</h2>
+            <p>
+                Pour la construction, j'ai d'abord fait des plans détaillés pour être sûr que tout rentre bien (PC, écran, boutons, enceintes).
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Dimensions de la Borne</h3>
+                <ul>
+                    <li><strong>Hauteur totale :</strong> 165 cm (ergonomie debout)</li>
+                    <li><strong>Largeur :</strong> 70 cm (espace pour 2 joueurs)</li>
+                    <li><strong>Profondeur :</strong> 60 cm (stable, ne bascule pas)</li>
+                    <li><strong>Hauteur panneau contrôle :</strong> 95 cm (confort de jeu)</li>
+                    <li><strong>Inclinaison écran :</strong> 15° vers le haut (visibilité optimale)</li>
+                </ul>
+            </div>
+
+            <p>
+                J'ai découpé le bois vintage avec une scie circulaire, assemblé avec des vis et de la colle à bois, puis poncé et verni pour une finition pro.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Borne Arcade/Plans Construction.jpg" alt="Plans de construction de la borne" class="media-image">
+            </div>
+            <p class="media-caption">Plans détaillés de la borne avec dimensions et emplacements composants</p>
+        </div>
+
+        <div class="section">
+            <h2>Fonctionnalités Bonus</h2>
+            <p>
+                Au-delà du retrogaming pur, la borne a quelques features sympas :
+            </p>
+            <ul>
+                <li><strong>Ports USB façade :</strong> Pour brancher manettes PS5, Xbox Series, ou clés USB</li>
+                <li><strong>Kodi intégré :</strong> Streaming Netflix/films via Recalbox</li>
+                <li><strong>Steam Link :</strong> Jouer à mes jeux PC depuis la borne</li>
+                <li><strong>Mode Jukebox :</strong> Écouter des OSTs de jeux rétro</li>
+                <li><strong>Save states :</strong> Sauvegarder/charger à tout moment dans les jeux</li>
+                <li><strong>Rewind :</strong> Rembobiner le jeu en cas d'erreur (pratique !)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Résultat Final</h2>
+            <p>
+                Après plusieurs semaines de travail (découpe bois, montage électronique, câblage, config Recalbox), j'ai maintenant une borne d'arcade 100% fonctionnelle qui :
+            </p>
+            <ul>
+                <li>Émule 30+ systèmes sans lag</li>
+                <li>A un look rétro authentique avec du vrai bois vintage</li>
+                <li>Supporte 2 joueurs simultanés</li>
+                <li>Se connecte au réseau via CPL intégré</li>
+                <li>A des ports USB en façade pour flexibilité</li>
+                <li>Offre des milliers de jeux à portée de joystick</li>
+            </ul>
+            <p>
+                C'est devenu LE point central de mes soirées jeux entre amis. Street Fighter, Metal Slug, Mario Kart 64... que du bonheur ! 🕹️
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Borne Arcade/Session Jeu.jpg" alt="Session de jeu sur la borne" class="media-image">
+            </div>
+            <p class="media-caption">Session Street Fighter II entre potes sur la borne !</p>
+        </div>
+
+        <div class="section">
+            <h2>Améliorations Futures</h2>
+            <p>
+                Quelques idées pour améliorer encore la borne :
+            </p>
+            <ul>
+                <li>Ajouter un marquee lumineux en haut (panneau rétroéclairé avec logo custom)</li>
+                <li>Installer un système de LEDs RGB autour du panneau de contrôle</li>
+                <li>Upgrader vers un écran CRT authentique pour le look 100% rétro</li>
+                <li>Ajouter un trackball pour les jeux type Marble Madness</li>
+                <li>Peindre la borne avec artwork custom type Neo Geo ou Street Fighter</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

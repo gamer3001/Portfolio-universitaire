@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Déploiement FOG - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --surface: rgba(255, 255, 255, 0.05);
+            --fog-green: #34C759;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(52, 199, 89, 0.03), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.03), transparent 50%);
+            pointer-events: none;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .back-button {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .back-button:hover { background: var(--surface); color: var(--text-primary); }
+        .back-button::before { content: '←'; margin-right: 0.5rem; }
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            text-align: center;
+        }
+        .hero-content { max-width: 800px; animation: fadeIn 1s; }
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--fog-green);
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+        }
+        .section {
+            margin-bottom: 6rem;
+            animation: fadeIn 1s backwards;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        ul { list-style: none; padding: 0; }
+        li {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--fog-green);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(52, 199, 89, 0.05), rgba(0, 102, 255, 0.05));
+            border: 1px solid rgba(52, 199, 89, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            color: var(--fog-green);
+            margin-bottom: 1rem;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .step-card {
+            background: var(--surface);
+            border: 1px solid rgba(52, 199, 89, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--fog-green);
+        }
+        .step-number {
+            font-size: 2rem;
+            color: var(--fog-green);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .step-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        .media-section { margin-bottom: 6rem; }
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .media-container:hover .media-image { transform: scale(1.02); }
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, .content { padding-left: 2rem; padding-right: 2rem; }
+            .steps-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="project-category">Projet Scolaire · Réseau</div>
+            <h1>Déploiement FOG</h1>
+            <p class="subtitle">
+                Synchroniser l'OS de tous les PC d'une salle de cours automatiquement via le réseau
+            </p>
+        </div>
+    </section>
+
+    <div class="content">
+        <div class="section">
+            <h2>Le Problème à Résoudre</h2>
+            <p>
+                Dans une salle de classe avec 20 PC, installer un système d'exploitation sur chaque poste à la main est un cauchemar. Il faut une clé USB, passer sur chaque PC, attendre 30 minutes par installation... Multiplié par 20 postes, ça devient vite ingérable.
+            </p>
+            <p>
+                Et si un PC plante ou qu'on veut changer de système (Windows → Ubuntu), il faut tout recommencer. C'est exactement le problème qu'on avait au lycée.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>La Solution : FOG Project</h2>
+            <p>
+                FOG Project est un logiciel libre qui permet de déployer des systèmes d'exploitation sur plusieurs ordinateurs simultanément via le réseau. Pas besoin de clé USB, pas besoin de passer sur chaque poste : tout se fait depuis un serveur central.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Ce que FOG permet</h3>
+                <ul>
+                    <li>Déployer Windows ou Ubuntu sur 20 PC en même temps</li>
+                    <li>Choisir depuis le poste du prof quel système installer</li>
+                    <li>Tout faire automatiquement via le réseau (PXE boot)</li>
+                    <li>Gérer les installations depuis une interface web simple</li>
+                    <li>Stocker plusieurs images systèmes et les déployer en quelques clics</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet FOG/Interface FOG.jpg" alt="Interface web FOG Project" class="media-image">
+            </div>
+            <p class="media-caption">Interface web de FOG pour gérer les déploiements</p>
+        </div>
+
+        <div class="section">
+            <h2>Comment Ça Fonctionne</h2>
+            <p>
+                Le principe est simple mais puissant. Voici le workflow complet :
+            </p>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Boot PXE</div>
+                    <p>Les PC démarrent sur le réseau au lieu du disque dur</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Choix du Prof</div>
+                    <p>Depuis son PC, le prof choisit l'image à déployer (Windows ou Ubuntu)</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Déploiement</div>
+                    <p>FOG envoie l'image sur tous les PC simultanément via multicast</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Redémarrage</div>
+                    <p>Les PC redémarrent automatiquement sur le nouveau système</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Architecture du Projet</h2>
+            <p>
+                Pour que tout fonctionne, on a mis en place une infrastructure complète :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Matériel Nécessaire</h3>
+                <ul>
+                    <li><strong>Serveur FOG :</strong> PC dédié sous Debian 12 (pas besoin qu'il soit puissant)</li>
+                    <li><strong>20 PC clients :</strong> Les postes de la salle de classe</li>
+                    <li><strong>Switch réseau :</strong> Pour relier tous les postes en Ethernet</li>
+                    <li><strong>Câbles RJ45 :</strong> Connexion filaire obligatoire (le Wi-Fi ne marche pas pour PXE)</li>
+                    <li><strong>PC prof :</strong> Pour gérer les déploiements via l'interface web</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet FOG/Salle Cablage.jpg" alt="Salle de classe avec câblage réseau" class="media-image">
+            </div>
+            <p class="media-caption">Salle de classe avec tous les PC reliés au switch en Ethernet</p>
+        </div>
+
+        <div class="section">
+            <h2>Installation du Serveur</h2>
+            <p>
+                J'ai installé FOG sur un PC dédié tournant sous Debian 12. L'installation est assez simple avec le script officiel :
+            </p>
+            <ul>
+                <li>Installation de Debian 12 en mode serveur (pas d'interface graphique)</li>
+                <li>Mise à jour du système et installation des dépendances</li>
+                <li>Téléchargement et exécution du script d'installation FOG</li>
+                <li>Configuration du serveur DHCP pour le boot PXE</li>
+                <li>Configuration du serveur TFTP pour l'envoi des images</li>
+                <li>Activation de l'interface web sur le port 80</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Préparation des Images</h2>
+            <p>
+                Avant de déployer, il faut créer les "images" de référence. Une image, c'est une copie complète d'un système déjà configuré.
+            </p>
+            <p>
+                Processus de création d'image :
+            </p>
+            <ul>
+                <li>Installer Windows 11 ou Ubuntu 24.04 sur un PC modèle</li>
+                <li>Installer tous les logiciels nécessaires (Office, navigateurs, outils pédagogiques)</li>
+                <li>Configurer les paramètres par défaut</li>
+                <li>Capturer l'image avec FOG (upload vers le serveur)</li>
+                <li>L'image est maintenant disponible pour déploiement sur tous les PC</li>
+            </ul>
+            
+            <div class="highlight-box">
+                <h3>Images Créées</h3>
+                <ul>
+                    <li><strong>Windows 11 x64 Éducation :</strong> Version complète avec Office, Chrome, VS Code</li>
+                    <li><strong>Ubuntu 24.04 LTS :</strong> Version légère pour cours de programmation</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet FOG/Creation Image.jpg" alt="Création d'une image système" class="media-image">
+            </div>
+            <p class="media-caption">Capture d'une image Windows 11 configurée vers le serveur FOG</p>
+        </div>
+
+        <div class="section">
+            <h2>Configuration des PC Clients</h2>
+            <p>
+                Pour que les PC puissent démarrer sur le réseau, il faut configurer leur BIOS/UEFI :
+            </p>
+            <ul>
+                <li>Activer le boot PXE (Network Boot) dans le BIOS</li>
+                <li>Mettre le boot réseau en priorité avant le disque dur</li>
+                <li>Activer l'UEFI pour Windows 11 (obligatoire)</li>
+                <li>Désactiver le Secure Boot si nécessaire</li>
+            </ul>
+            <p>
+                Cette étape doit être faite une seule fois sur chaque PC. Après, tout se fait automatiquement.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Déploiement en Action</h2>
+            <p>
+                Une fois tout configuré, le déploiement devient ultra simple. Voici comment ça se passe en pratique :
+            </p>
+            <ul>
+                <li>Le prof se connecte à l'interface web FOG depuis son PC</li>
+                <li>Il sélectionne les PC à déployer (ou tous d'un coup)</li>
+                <li>Il choisit l'image à envoyer (Windows 11 ou Ubuntu 24.04)</li>
+                <li>Il lance le déploiement</li>
+                <li>Les PC s'allument, bootent sur le réseau, et reçoivent l'image automatiquement</li>
+                <li>30 minutes plus tard, tous les PC ont le même système installé</li>
+            </ul>
+            <p>
+                Résultat : ce qui prenait 10 heures à la main (30 min × 20 PC) se fait maintenant en 30 minutes. Gain de temps massif !
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Avantages de FOG</h2>
+            
+            <div class="highlight-box">
+                <h3>Gains Concrets</h3>
+                <ul>
+                    <li><strong>Gain de temps :</strong> 10 heures → 30 minutes pour déployer 20 PC</li>
+                    <li><strong>Fiabilité :</strong> Tous les PC ont exactement la même config, zéro erreur humaine</li>
+                    <li><strong>Flexibilité :</strong> Changement Windows ↔ Ubuntu en quelques clics</li>
+                    <li><strong>Maintenance :</strong> PC planté ? On redéploie l'image en 30 min</li>
+                    <li><strong>Pas de clés USB :</strong> Tout passe par le réseau, plus simple</li>
+                    <li><strong>Multicast :</strong> Envoyer l'image une seule fois vers 20 PC simultanément</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Points d'Attention</h2>
+            <p>
+                Quelques contraintes à respecter pour que tout fonctionne :
+            </p>
+            <ul>
+                <li><strong>Connexion Ethernet obligatoire :</strong> Le Wi-Fi ne supporte pas le boot PXE</li>
+                <li><strong>Serveur toujours allumé :</strong> Il doit être disponible pendant tout le déploiement</li>
+                <li><strong>Boot PXE activé :</strong> À configurer dans le BIOS de chaque PC</li>
+                <li><strong>Compatibilité UEFI :</strong> Nécessaire pour Windows 11</li>
+                <li><strong>Espace disque serveur :</strong> Prévoir ~50GB par image stockée</li>
+            </ul>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet FOG/Deploiement Live.jpg" alt="Déploiement en cours sur plusieurs PC" class="media-image">
+            </div>
+            <p class="media-caption">Déploiement simultané en cours sur 20 PC de la salle</p>
+        </div>
+
+        <div class="section">
+            <h2>Résultats & Bilan</h2>
+            <p>
+                Le projet FOG a été un succès complet. La salle informatique peut maintenant être reconfigurée en 30 minutes au lieu de plusieurs heures. Les profs peuvent changer de système selon les besoins des cours sans perdre de temps.
+            </p>
+            <p>
+                Ce projet m'a permis de comprendre :
+            </p>
+            <ul>
+                <li>Le fonctionnement du boot réseau (PXE, TFTP)</li>
+                <li>L'administration de serveurs Linux en production</li>
+                <li>Le déploiement d'OS à grande échelle</li>
+                <li>La gestion d'infrastructure réseau éducative</li>
+                <li>L'importance de l'automatisation pour gagner du temps</li>
+            </ul>
+            <p>
+                Le système est maintenant utilisé régulièrement par les profs pour préparer les salles avant les cours ou les examens. Mission accomplie !
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

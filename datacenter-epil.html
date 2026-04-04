@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datacenter EPIL - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --datacenter-blue: #00D4FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--datacenter-blue);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--datacenter-blue);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--datacenter-blue);
+        }
+
+        .server-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .server-card {
+            background: var(--surface);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .server-card:hover {
+            border-color: var(--datacenter-blue);
+            transform: translateY(-5px);
+        }
+
+        .server-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--datacenter-blue);
+        }
+
+        .server-card ul {
+            list-style: none;
+        }
+
+        .server-card li {
+            padding-left: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .server-card li::before {
+            content: '→';
+            color: var(--datacenter-blue);
+            padding-right: 0.5rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--datacenter-blue);
+            color: var(--datacenter-blue);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0;
+        }
+
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+
+            .server-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Projet Scolaire · Infrastructure</div>
+            
+            <h1>Datacenter "EPIL"</h1>
+            
+            <p class="project-subtitle">
+                Mon projet de fin d'année : créer un datacenter complet avec 3 serveurs Proxmox, stockage TrueNAS, et services multiples
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Formation</div>
+                    <div class="meta-value">Lycée EPIL 2025-2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Serveurs</div>
+                    <div class="meta-value">2 machines</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Type</div>
+                    <div class="meta-value">Cluster Proxmox</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Services</div>
+                    <div class="meta-value">10+ VMs</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>Le Projet de Fin d'Année</h2>
+            <p>
+                Pour mon projet de fin d'année au Lycée EPIL, j'ai eu la mission de créer un datacenter complet avec les machines mises à ma disposition. L'objectif était de concevoir une infrastructure professionnelle capable d'héberger plusieurs services en virtualisation.
+            </p>
+            <p>
+                Ce projet m'a permis de mettre en pratique toutes mes compétences en infrastructure, virtualisation, et administration système. De l'installation physique des serveurs à la configuration du cluster, en passant par le déploiement des services, j'ai géré l'intégralité du projet.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet EPIL/Datacenter Setup.jpg" alt="Datacenter EPIL en rack" class="media-image">
+            </div>
+            <p class="media-caption">Les 3 serveurs montés en rack avec switch et câblage organisé</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Architecture du Cluster</h2>
+            <p>
+                Le datacenter EPIL est basé sur un cluster Proxmox haute disponibilité composé de 3 serveurs Dell PowerEdge. Chaque serveur a un rôle spécifique tout en participant à la redondance du cluster.
+            </p>
+            
+            <div class="server-grid">
+                <div class="server-card">
+                    <h4>PowerEdge R730</h4>
+                    <p><strong>Serveur Principal</strong></p>
+                    <ul>
+                        <li>CPU: Dual Xeon E5-2600</li>
+                        <li>RAM: 16GB DDR4</li>
+                        <li>Storage: 4x 1TB RAID 10</li>
+                        <li>IP: 192.168.0.124</li>
+                        <li>Rôle: VMs production</li>
+                    </ul>
+                </div>
+
+                <div class="server-card">
+                    <h4>PowerEdge R430</h4>
+                    <p><strong>Serveur Secondaire</strong></p>
+                    <ul>
+                        <li>CPU: Xeon E5-2600</li>
+                        <li>RAM: 16GB DDR4</li>
+                        <li>Storage: 2x 500GB + SSD 500GB</li>
+                        <li>Rôle: TrueNAS + VMs test</li>
+                    </ul>
+                </div>
+
+                
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Services Déployés</h2>
+            <p>
+                Le datacenter héberge une dizaine de VMs et containers, chacun avec un rôle spécifique. Voici les principaux services en production :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>VMs & Containers en Production</h3>
+                <ul>
+                    <li><strong>Home Assistant OS</strong> - Domotique centralisée (déjà présenté en détail)</li>
+                    <li><strong>TrueNAS Scale</strong> - Stockage NAS avec RAID-Z, SMB shares, 4x 500GB</li>
+                    <li><strong>VM-Émulation</strong> - Virtual Arcade avec PlayNite et émulateurs (voir projet dédié)</li>
+                    <li><strong>VM Windows 11 Pro</strong> - TP Cisco Packet Tracer, VS Code, outils dev</li>
+                    <li><strong>VM Windows Server 2022</strong> - Tests Active Directory et gestion domaine</li>
+                    <li><strong>VM Debian</strong> - Serveur web PHP pour projets scolaires</li>
+                    <li><strong>VM Kali Linux</strong> - TP cybersécurité et pentesting</li>
+                    <li><strong>Tailscale VPN</strong> - Accès distant sécurisé (voir projet dédié)</li>
+                    <li><strong>PC Interface</strong> - Dashboard monitoring serveur temps réel</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet EPIL/Proxmox Cluster.jpg" alt="Interface Proxmox du cluster" class="media-image">
+            </div>
+            <p class="media-caption">Interface Proxmox montrant le cluster 3 nœuds et toutes les VMs</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Réseau & Sécurité</h2>
+            <p>
+                La configuration réseau a été pensée pour la performance et la sécurité. J'ai mis en place :
+            </p>
+            <ul>
+                <li><strong>Switch 24 ports manageable</strong> configuré avec VLANs pour isoler les services</li>
+                <li><strong>Routeur TP-Link TL-WR1043N</strong> configuré pour internet permanent</li>
+                <li><strong>VLAN segmentation</strong> : Management, Production, Test, Stockage</li>
+                <li><strong>Tailscale VPN</strong> pour accès distant sécurisé sans ouvrir de ports</li>
+                <li><strong>Firewall Proxmox</strong> avec règles strictes par VM</li>
+                <li><strong>IPs statiques</strong> documentées pour chaque service</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Stockage & Redondance</h2>
+            <p>
+                J'ai installé TrueNAS Scale sur le R430 pour gérer le stockage centralisé. Configuration :
+            </p>
+            <ul>
+                <li>4 disques de 500GB en RAID-Z (équivalent RAID 5)</li>
+                <li>Snapshots automatiques quotidiens pour protection données</li>
+                <li>SMB shares pour partage fichiers entre VMs</li>
+                <li>Backup quotidien des VMs critiques sur TrueNAS</li>
+                <li>Utilisateurs configurés : Emilet, Ainish, Mohamedb</li>
+            </ul>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet EPIL/Cable Management.jpg" alt="Câblage organisé du datacenter" class="media-image">
+            </div>
+            <p class="media-caption">Câble management propre avec étiquetage et organisation par couleur</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Défis & Solutions</h2>
+            <p>
+                Ce projet a présenté plusieurs défis techniques que j'ai dû résoudre :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Problèmes Rencontrés</h3>
+                <ul>
+                    <li><strong>Ventilateurs débranchés R430</strong> → Diagnostic et reconnexion des ventilateurs</li>
+                    <li><strong>RAM insuffisante</strong> → Partage de barrettes entre serveurs pour démarrage</li>
+                    <li><strong>Réinitialisations PCs</strong> → Création d'images Rescuezilla pour réinstallation rapide</li>
+                    <li><strong>Accès distant</strong> → Mise en place Tailscale VPN (zero trust, pas de ports ouverts)</li>
+                    <li><strong>Switch 48p HS</strong> → Remplacement par switch 24p fonctionnel</li>
+                    <li><strong>Onduleur défectueux</strong> → Tests et remplacement par modèle fonctionnel</li>
+                    <li><strong>(Je precise aussi que aucune des machines ne fonctionnais on a du tout diagnostiquer et reparer comme on a pu )</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Outils & Méthodologie</h2>
+            <p>
+                Pour mener ce projet à bien, j'ai utilisé une méthodologie rigoureuse et des outils professionnels :
+            </p>
+            <ul>
+                <li><strong>Documentation complète</strong> : Calendrier de rendu avec toutes les séances documentées</li>
+                <li><strong>GitHub</strong> : Compte ProjetCIELETG3 pour versionning et backups</li>
+                <li><strong>Ninite</strong> : Installation automatique des logiciels sur les VMs Windows</li>
+                <li><strong>Rescuezilla</strong> : Images système pour réinstallations rapides</li>
+                <li><strong>Scripts personnalisés</strong> : Automatisation des configurations répétitives</li>
+                <li><strong>TousLesDrivers</strong> : Outil pour installer drivers manquants</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>Monitoring & Interface</h2>
+            <p>
+                J'ai configuré un PC dédié comme interface graphique pour monitorer le datacenter en temps réel. Cet écran affiche :
+            </p>
+            <ul>
+                <li>Uptime de chaque serveur</li>
+                <li>Utilisation CPU, RAM, stockage</li>
+                <li>État des VMs (running, stopped, error)</li>
+                <li>Logs en temps réel</li>
+                <li>Températures et ventilation</li>
+                <li>Trafic réseau par VLAN</li>
+            </ul>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet EPIL/Monitoring Dashboard.jpg" alt="Dashboard de monitoring" class="media-image">
+            </div>
+            <p class="media-caption">Dashboard de monitoring temps réel affiché sur le PC interface</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Technologies & Compétences</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">Proxmox VE</div>
+                <div class="tech-tag">TrueNAS Scale</div>
+                <div class="tech-tag">Cluster HA</div>
+                <div class="tech-tag">RAID Configuration</div>
+                <div class="tech-tag">VLANs</div>
+                <div class="tech-tag">Linux</div>
+                <div class="tech-tag">Windows Server</div>
+                <div class="tech-tag">Networking</div>
+                <div class="tech-tag">Tailscale VPN</div>
+                <div class="tech-tag">GitHub</div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Compétences Développées</h3>
+                <ul>
+                    <li>Conception et déploiement d'infrastructure datacenter complète</li>
+                    <li>Administration de cluster Proxmox haute disponibilité</li>
+                    <li>Configuration réseau avancée (VLANs, routing, firewall)</li>
+                    <li>Gestion de stockage avec RAID et snapshots</li>
+                    <li>Troubleshooting matériel et logiciel</li>
+                    <li>Documentation technique rigoureuse</li>
+                    <li>Gestion de projet IT de A à Z</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Résultats & Bilan</h2>
+            <p>
+                Le datacenter EPIL est maintenant opérationnel et sert activement pour les cours et TPs du lycée. C'est une infrastructure professionnelle qui :
+            </p>
+            <ul>
+                <li>Héberge 10+ VMs en production stable</li>
+                <li>Offre un stockage centralisé redondant</li>
+                <li>Permet des TPs pratiques en conditions réelles</li>
+                <li>Fournit un accès distant sécurisé via VPN</li>
+                <li>Sert de plateforme d'expérimentation pour les élèves</li>
+            </ul>
+            <p>
+                Ce projet de fin d'année a été une expérience incroyablement formatrice. J'ai pu mettre en pratique toutes mes connaissances en infrastructure et découvrir les réalités d'un projet datacenter professionnel.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="virtual-arcade.html" class="next-project-link">
+            <div class="next-label">Projet lié</div>
+            <h3>Virtual Arcade</h3>
+            <p class="next-description">Ma VM préférée du datacenter : émulation gaming avec passthrough GPU</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

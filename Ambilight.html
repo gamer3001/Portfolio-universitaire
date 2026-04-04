@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambilight TV DIY - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #111118;
+            --bg-secondary: #181824;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --surface: rgba(255, 255, 255, 0.05);
+            --ambi-purple: #9333EA;
+            --ambi-cyan: #00F5FF;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(147, 51, 234, 0.03), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 245, 255, 0.03), transparent 50%);
+            pointer-events: none;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .back-button {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .back-button:hover { background: var(--surface); color: var(--text-primary); }
+        .back-button::before { content: '←'; margin-right: 0.5rem; }
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            text-align: center;
+        }
+        .hero-content { max-width: 800px; animation: fadeIn 1s; }
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--ambi-purple);
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+        }
+        .section {
+            margin-bottom: 6rem;
+            animation: fadeIn 1s backwards;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        ul { list-style: none; padding: 0; }
+        li {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--ambi-purple);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.05), rgba(0, 245, 255, 0.05));
+            border: 1px solid rgba(147, 51, 234, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            color: var(--ambi-purple);
+            margin-bottom: 1rem;
+        }
+        .version-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .version-card {
+            background: var(--surface);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        .version-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--ambi-purple);
+        }
+        .version-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--ambi-cyan);
+        }
+        .media-section { margin-bottom: 6rem; }
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .media-container:hover .media-image { transform: scale(1.02); }
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+        .video-link {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--ambi-purple);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        .video-link:hover {
+            background: var(--ambi-cyan);
+            transform: translateY(-2px);
+        }
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, .content { padding-left: 2rem; padding-right: 2rem; }
+            .version-comparison { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="project-category">DIY · Électronique</div>
+            <h1>Ambilight TV DIY</h1>
+            <p class="subtitle">
+                Mon premier vrai projet électronique : système de lumière réactive à l'écran pour une immersion impeccable
+            </p>
+        </div>
+    </section>
+
+    <div class="content">
+        <div class="section">
+            <h2>Le Déclic : Une Vidéo YouTube</h2>
+            <p>
+                Quand j'étais plus jeune, je suis tombé par hasard sur une vidéo d'un YouTubeur nommé <strong>Abrège</strong> qui présentait son projet d'Ambilight TV DIY. J'ai été complètement captivé par le concept : des LEDs qui reproduisent les couleurs de l'écran derrière la TV pour créer une immersion totale.
+            </p>
+            <p>
+                C'est ce projet qui m'a donné envie de toucher à l'électronique pour la première fois. J'ai naturellement suivi son tuto et j'ai reproduit plus ou moins la même configuration, avec quelques modifications personnelles.
+            </p>
+            
+            <a href="https://www.youtube.com/watch?v=yy4bL8JGVxA" target="_blank" class="video-link">
+                📺 Voir la vidéo d'Abrège qui m'a inspiré (Mai 2021)
+            </a>
+            
+            <div class="highlight-box" style="margin-top: 2rem;">
+                <h3>Composants d'Abrège vs Ma Configuration</h3>
+                <p style="margin-bottom: 1rem;">Voici la comparaison entre le setup original d'Abrège et ce que j'ai fait :</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                    <div>
+                        <h4 style="color: var(--ambi-purple); margin-bottom: 1rem;">Setup Abrège (Original)</h4>
+                        <ul style="font-size: 0.95rem;">
+                            <li>Raspberry Pi Zero W</li>
+                            <li>HDMI Capture Card USB</li>
+                            <li>Splitter HDMI 4K</li>
+                            <li>Câble HDMI 20cm</li>
+                            <li>Ruban LED WS2812B</li>
+                            <li><strong>PCB custom</strong> (JLCPCB)</li>
+                            <li>Alimentation adaptée</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: var(--ambi-cyan); margin-bottom: 1rem;">Mon Setup (Adapté)</h4>
+                        <ul style="font-size: 0.95rem;">
+                            <li>Raspberry Pi Zero W → Pi 3B</li>
+                            <li>HDMI Capture Card USB</li>
+                            <li>Splitter HDMI 4K identique</li>
+                            <li>Câbles HDMI standards</li>
+                            <li>Ruban LED WS2812B 5V</li>
+                            <li><strong>Cartes de prototypage</strong> (pas PCB custom)</li>
+                            <li>Alimentation ATX 30A</li>
+                            <li><strong>+ ESP8266</strong> (contrôle indépendant)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p style="margin-top: 1.5rem; font-style: italic; color: var(--text-secondary);">
+                    <strong>Différence clé :</strong> Abrège a conçu un PCB custom pour un câblage ultra-propre. Moi, j'ai opté pour des cartes de prototypage classiques, plus accessibles et faciles à modifier.
+                </p>
+            </div>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Ambilight/Setup Complet.jpg" alt="Setup Ambilight complet" class="media-image">
+            </div>
+            <p class="media-caption">Mon setup Ambilight actuel sur TV Samsung 65"</p>
+        </div>
+
+        <div class="section">
+            <h2>Concept de l'Ambilight</h2>
+            <p>
+                Le principe est simple mais génial : des LEDs placées derrière la TV analysent en temps réel les couleurs affichées à l'écran et les reproduisent sur le mur. Résultat : l'immersion est décuplée, surtout pour les films et séries.
+            </p>
+            <p>
+                Comment ça fonctionne techniquement ?
+            </p>
+            <ul>
+                <li>Un <strong>splitter HDMI</strong> duplique le signal vidéo vers la TV et le Raspberry Pi</li>
+                <li>Le <strong>Raspberry Pi</strong> analyse les couleurs des bords de l'image via Hyperion/HyperHDR</li>
+                <li>Les couleurs sont envoyées aux <strong>LEDs WS2812B</strong> qui les reproduisent instantanément</li>
+                <li>Latence ultra-faible (~20ms) pour un effet totalement synchronisé</li>
+            </ul>
+            
+        </div>
+
+        <div class="section">
+            <h2>Version 1 : TV 30" Selecline (Mes Débuts)</h2>
+            <p>
+                Ma première version était sur une petite TV Selecline de 30 pouces. Budget étudiant oblige ! Voici la config de l'époque :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Configuration Version 1 (2021-2026)</h3>
+                <ul>
+                    <li><strong>TV :</strong> Selecline 30" (entrée de gamme)</li>
+                    <li><strong>Raspberry Pi Zero W :</strong> Cerveau du système (un peu juste niveau puissance)</li>
+                    <li><strong>Ruban LED WS2812B 5V :</strong> ~2 mètres pour faire le tour de la TV</li>
+                    <li><strong>ESP8266 :</strong> Pour contrôler les LEDs même quand la TV est éteinte (ambiance)</li>
+                    <li><strong>Alimentation 10A 5V :</strong> Suffisant pour ~120 LEDs</li>
+                    <li><strong>Splitter HDMI basique :</strong> 1080p max</li>
+                    <li><strong>Logiciel :</strong> Hyperbian (version originale d'Hyperion)</li>
+                </ul>
+            </div>
+
+            <p>
+                Petit détail amusant : comme je n'avais pas d'imprimante 3D à l'époque, j'avais démonté ma TV et caché tous les composants (Raspberry Pi, alimentation, ESP8266) directement dans le châssis de la TV. Comme c'était une TV bas de gamme avec beaucoup d'espace vide à l'intérieur, ça passait !
+            </p>
+            <p>
+                Les LEDs saccadaient un peu par moments à cause du Pi Zero qui manquait de puissance, mais globalement ça fonctionnait et l'effet était déjà impressionnant.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Ambilight/Version 1 Selecline.jpg" alt="Version 1 sur TV 30 pouces" class="media-image">
+            </div>
+            <p class="media-caption">Ma première version Ambilight sur TV Selecline 30" (composants cachés dans le châssis)</p>
+        </div>
+
+        <div class="section">
+            <h2>Version 2 : TV Samsung 65" (Upgrade Complet)</h2>
+            <p>
+                Aujourd'hui, j'ai une TV gigantesque de 65 pouces Samsung. J'ai donc redimensionné mon projet pour le remettre au goût du jour. Tout a été upgradé pour cette nouvelle version !
+            </p>
+            
+            <div class="version-comparison">
+                <div class="version-card">
+                    <div class="version-title">Version 1 (30")</div>
+                    <ul>
+                        <li>Pi Zero W</li>
+                        <li>~120 LEDs</li>
+                        <li>Alim 10A</li>
+                        <li>HDMI 1080p</li>
+                        <li>Composants cachés dans TV</li>
+                        <li>Hyperbian</li>
+                    </ul>
+                </div>
+                
+                <div class="version-card">
+                    <div class="version-title">Version 2 (65")</div>
+                    <ul>
+                        <li>Raspberry Pi 3B</li>
+                        <li>~480 LEDs (x4 !)</li>
+                        <li>Alim 30A (ATX PC)</li>
+                        <li>HDMI 4K UHD</li>
+                        <li>Box imprimée 3D</li>
+                        <li>HyperHDR</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Le Vrai Défi : L'Alimentation</h2>
+            <p>
+                Le plus gros challenge de la version 2, c'était l'alimentation. Passer de 120 LEDs à 480 LEDs, c'est multiplier la consommation par 4 !
+            </p>
+            <p>
+                Il me fallait une alimentation capable de fournir <strong>30A en 5V</strong>, soit 150W. C'est énorme, et les alimentations LED 30A de qualité coûtent une fortune.
+            </p>
+            <p>
+                <strong>Ma solution :</strong> Récupérer une vieille alimentation ATX de PC qui avait largement assez de puissance sur le rail 5V. Bonus : les autres tensions (12V, 3.3V) me servent à alimenter d'autres circuits de test près de ma TV et mes équipements LED à proximité.
+            </p>
+            <ul>
+                <li><strong>Rail 5V :</strong> Alimente les LEDs WS2812B (30A disponibles)</li>
+                <li><strong>Rail 12V :</strong> Alimente mes LEDs d'ambiance qui mettent en valeur mes consoles</li>
+                <li><strong>Rail 12V :</strong> Alimente aussi mon présentoir LED</li>
+            </ul>
+            <p>
+                Ça me fait économiser quelques prises, ce qui n'est pas mal !
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Ambilight/Alimentation ATX.jpg" alt="Alimentation ATX récupérée" class="media-image">
+            </div>
+            <p class="media-caption">Alimentation ATX de PC récupérée, capable de fournir 30A sur le rail 5V</p>
+        </div>
+
+        <div class="section">
+            <h2>Hardware Version 2</h2>
+            <p>
+                Voici la liste complète du matériel de ma version actuelle :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Bill of Materials (BOM)</h3>
+                <ul>
+                    <li><strong>Raspberry Pi 3B :</strong> Beaucoup plus de puissance que le Zero, zéro saccade</li>
+                    <li><strong>Ruban LED WS2812B 5V :</strong> ~480 LEDs pour faire le tour d'une TV 65"</li>
+                    <li><strong>ESP8266 :</strong> Contrôle indépendant des LEDs (ambiance quand TV éteinte)</li>
+                    <li><strong>Splitter HDMI 4K :</strong> Supporte UHD et laisse passer le signal de la Magic Remote Samsung</li>
+                    <li><strong>Alimentation ATX PC :</strong> 30A sur rail 5V (récupérée gratuitement !)</li>
+                    <li><strong>Boîtier custom imprimé 3D :</strong> "Box Ambilight" sous la TV</li>
+                    <li><strong>Câbles et connecteurs :</strong> Pour relier proprement tous les composants</li>
+                </ul>
+            </div>
+
+            <p>
+                Point important : le splitter HDMI 4K que j'ai choisi laisse passer le signal de la Magic Remote Samsung. Ça veut dire que ma télécommande fonctionne normalement avec tous mes appareils (PS5, Apple TV, etc.) même en passant par le splitter. C'est un vrai plus !
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Logiciel : Hyperbian vs HyperHDR</h2>
+            <p>
+                À la base, j'étais sous <strong>Hyperbian</strong> (la version originale d'Hyperion). On m'a recommandé de passer sous <strong>HyperHDR</strong> pour de meilleures performances sur la 4K.
+            </p>
+            <p>
+                Je l'ai fait, mais honnêtement : <strong>restez sur Hyperbian si vous débutez</strong>. C'est plus stable et beaucoup plus simple à mettre en place. HyperHDR offre quelques améliorations pour la HDR, mais c'est plus capricieux à configurer.
+            </p>
+            <p>
+                Hyperbian fait très bien le job et la communauté est plus active pour l'aide et les tutos.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Ambilight/Box Ambilight 3D.jpg" alt="Box Ambilight imprimée en 3D" class="media-image">
+            </div>
+            <p class="media-caption">Ma "Box Ambilight" custom imprimée en 3D, placée sous la TV</p>
+        </div>
+
+        <div class="section">
+            <h2>Accessoires LED Supplémentaires</h2>
+            <p>
+                Pour pousser l'immersion encore plus loin, j'ai créé des accessoires LED que je place de chaque côté de mon lit lors de soirées cinéma intensives. C'est un concept similaire à l'intégration Philips HUE qu'Abrège a montré dans sa version 2022, mais fait maison avec des ESP32.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Barres LED Custom</h3>
+                <ul>
+                    <li><strong>2x Barres LED DIY :</strong> Placées à gauche et à droite du lit</li>
+                    <li><strong>Contrôle ESP32 :</strong> Synchronisées avec l'Ambilight Raspberry Pi via WiFi</li>
+                    <li><strong>WS2812B 12V :</strong> ~50 LEDs par barre pour effet diffus</li>
+                    <li><strong>Alimentation depuis ATX :</strong> Utilise le rail 12V de l'alimentation PC</li>
+                    <li><strong>Protocole UDP :</strong> Communication temps réel avec Hyperion</li>
+                    <li><strong>Effet immersion totale :</strong> Les couleurs se propagent dans toute la pièce</li>
+                </ul>
+            </div>
+            
+            <p>
+                Le principe est simple : Hyperion envoie les données de couleurs non seulement aux LEDs derrière la TV, mais aussi aux ESP32 des barres latérales via le réseau WiFi. Résultat : toute la pièce réagit aux couleurs de l'écran !
+            </p>
+            <p>
+                Honnêtement, ces barres je ne les utilise que lors de soirées cinéma vraiment intenses, ce qui est assez rare. Le reste du temps, l'Ambilight TV seul suffit amplement. Mais quand je les allume, l'effet est vraiment bluffant.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Utilisations & Cas d'Usage</h2>
+            <p>
+                L'Ambilight n'est pas toujours activé. Voici comment je l'utilise au quotidien :
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Quand j'active l'Ambilight</h3>
+                <ul>
+                    <li><strong>Séries & Films :</strong> C'est l'utilisation principale, l'immersion est incroyable</li>
+                    <li><strong>Jeux solo :</strong> Parfait pour les jeux d'aventure ou RPG immersifs</li>
+                    <li><strong>Ambiance :</strong> Mode couleur fixe via ESP8266 quand la TV est éteinte</li>
+                </ul>
+                
+                <h3>Quand je le désactive</h3>
+                <ul>
+                    <li><strong>Jeux en ligne (Fortnite, FPS) :</strong> Les lumières déconcentrent et font perdre du framerate inutilement</li>
+                    <li><strong>Besoin de concentration max :</strong> Je préfère tout désactiver pour être focus</li>
+                </ul>
+            </div>
+
+            <p>
+                Pour les jeux compétitifs en ligne, je coupe systématiquement l'Ambilight. C'est trop distrayant et ça gaspille de la puissance de calcul pour rien.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Ambilight/Ambilight Action.jpg" alt="Ambilight en action pendant un film" class="media-image">
+            </div>
+            <p class="media-caption">L'Ambilight en action pendant un film : immersion totale garantie</p>
+        </div>
+
+
+        <div class="section">
+            <h2>Conseils & Retour d'Expérience</h2>
+            <p>
+                Après plusieurs années d'utilisation, voici mes recommandations si vous voulez vous lancer :
+            </p>
+            <ul>
+                <li><strong>Restez sur Hyperbian :</strong> Plus stable que HyperHDR, plus simple à configurer</li>
+                <li><strong>Ne sous-estimez pas l'alimentation :</strong> Calculez 60mA par LED au max, ajoutez 20% de marge</li>
+                <li><strong>Pi 3B minimum :</strong> Le Pi Zero est trop juste pour de la 4K</li>
+                <li><strong>Splitter HDMI de qualité :</strong> Les pas chers causent des problèmes HDCP</li>
+                <li><strong>WS2812B plutôt que WS2811 :</strong> Plus flexible en 5V, plus simple à alimenter</li>
+                <li><strong>Testez avant de coller :</strong> Vérifiez que tout fonctionne avant de fixer définitivement</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Bilan Final</h2>
+            <p>
+                L'Ambilight TV est le projet qui m'a fait tomber amoureux de l'électronique. C'est mon premier vrai projet concret, et il fonctionne toujours parfaitement après plusieurs années et 2 versions.
+            </p>
+            <p>
+                L'immersion qu'apporte l'Ambilight pour les films et séries est juste incroyable. Une fois qu'on y a goûté, impossible de revenir en arrière.
+            </p>
+            <p>
+                Merci à <strong>Abrège</strong> pour la vidéo qui m'a inspiré et lancé dans cette aventure !
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Assistant - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(0, 102, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --ha-blue: #41bdf5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(65, 189, 245, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(65, 189, 245, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--ha-blue);
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--ha-blue);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(65, 189, 245, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(65, 189, 245, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--ha-blue);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(65, 189, 245, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--ha-blue);
+            color: var(--ha-blue);
+            transform: translateY(-2px);
+        }
+
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0; /* Évite les espaces sous l'image */
+        }
+
+        /* Style spécifique pour les nouvelles images */
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+
+        .next-project {
+            max-width: 1200px;
+            margin: 6rem auto 0;
+            padding: 4rem 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .next-project-link {
+            display: block;
+            text-decoration: none;
+            padding: 3rem;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-project-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .next-project-link:hover::before {
+            opacity: 1;
+        }
+
+        .next-project-link:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 102, 255, 0.3);
+        }
+
+        .next-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-label::after {
+            content: '→';
+            font-size: 1.2rem;
+        }
+
+        .next-project-link h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .next-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+
+            .next-project {
+                padding: 4rem 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Domotique · Le Commencement</div>
+            
+            <h1>Home Assistant</h1>
+            
+            <p class="project-subtitle">
+                2019. Une vidéo YouTube, un vieux laptop, et le début d'une aventure qui ne cessera jamais d'évoluer.
+            </p>
+
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Début</div>
+                    <div class="meta-value">2019</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Statut</div>
+                    <div class="meta-value">Évolution Continue</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Rôle</div>
+                    <div class="meta-value">Cœur du Système</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+        <div class="content-section">
+            <h2>Le Déclic (2019)</h2>
+            <p>
+                Tout a commencé par une simple vidéo YouTube sur la domotique. Je scrollais sans but précis quand je suis tombé sur une démonstration de Home Assistant. Des lumières qui s'allument automatiquement, des volets qui se ferment au coucher du soleil, une maison qui réagit intelligemment à ses habitants. J'étais fasciné.
+            </p>
+            <p>
+                Ce qui m'a vraiment convaincu, c'était la philosophie open-source et la possibilité de tout contrôler localement, sans dépendre des clouds propriétaires. Pas de subscription, pas de limitations artificielles, juste une plateforme puissante et personnalisable à l'infini.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Home Assistant/1er Dashboard home-assistant.png" alt="Dashboard Home Assistant 2019" class="media-image">
+            </div>
+            <p class="media-caption">Mon premier dashboard Home Assistant, simple mais fonctionnel</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Les Débuts : Un Vieux Laptop</h2>
+            <p>
+                N'ayant pas de budget dédié, j'ai fouillé dans mon placard et déterré un vieux laptop que je destinais à la déchetterie. Écran fissuré, batterie morte, mais l'essentiel était là : il pouvait encore tourner.
+            </p>
+            <p>
+                J'ai installé Linux dessus, puis Docker. Quelques heures de lecture de documentation plus tard, mon premier conteneur Home Assistant était lancé. Le laptop chauffait, le ventilateur tournait constamment comme un avion au décollage, mais ça fonctionnait. J'avais mon propre serveur domotique.
+            </p>
+            
+            <div class="highlight-box">
+                <h3>Setup Initial</h3>
+                <ul>
+                    <li>Vieux laptop récupéré (processeur dual-core, 4GB RAM)</li>
+                    <li>Ubuntu Server + Docker</li>
+                    <li>Conteneur Home Assistant</li>
+                    <li>Quelques prises connectées WiFi basiques</li>
+                    <li>Une ampoule Philips Hue récupérée</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>La Première Automatisation</h2>
+            <p>
+                Ma toute première automatisation était ridiculement simple, mais je m'en souviens comme si c'était hier. Quand mon téléphone se connectait au WiFi de la maison (= je rentrais chez moi), une lampe s'allumait automatiquement dans l'entrée.
+            </p>
+            <p>
+                Ça peut sembler insignifiant, mais voir cette lumière s'allumer toute seule pour la première fois... c'était magique. J'avais créé quelque chose d'intelligent. À partir de ce moment-là, j'ai su que je ne m'arrêterais pas là.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>L'Escalade Rapide</h2>
+            <p>
+                Une automatisation en a appelé une autre. Les lumières du salon qui s'adaptent à l'heure de la journée. Le chauffage qui se coupe quand je pars. Des notifications sur mon téléphone pour me rappeler des choses importantes. Chaque jour apportait une nouvelle idée, une nouvelle possibilité à explorer.
+            </p>
+            <p>
+                Le vieux laptop commençait à montrer ses limites. Il ralentissait, crashait parfois, et je me rendais compte que j'avais besoin de quelque chose de plus puissant, de plus fiable. C'est là que l'idée d'une vraie infrastructure a commencé à germer.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Home Assistant/Evolution HA.jpg" alt="Évolution Home Assistant - Appareils connectés" class="media-image">
+            </div>
+            <p class="media-caption">De 3 appareils en 2019 à un écosystème complet aujourd'hui</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Le Cœur Qui Continue de Battre</h2>
+            <p>
+                Aujourd'hui, Home Assistant tourne sur une VM dédiée (VM 102) sur mon cluster Proxmox EliteBook. Avec 14.74GB de RAM et 4 cores CPU, c'est une configuration qui n'a plus rien à voir avec le vieux laptop du début. L'uptime est de plus de 6 jours sans interruption.
+            </p>
+            <p>
+                Home Assistant est toujours le cœur absolu de ma maison intelligente. Il a survécu à plusieurs migrations matérielles, à d'innombrables mises à jour, et continue d'évoluer jour après jour. Tous mes services s'y connectent : Frigate pour la surveillance, Pi-hole pour le DNS, N8N pour les automatisations, et même Kara qui peut contrôler la maison via Home Assistant.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>L'Écosystème Actuel</h2>
+            <p>
+                Ce qui a commencé comme une simple curiosité en 2019 est devenu le centre névralgique d'un écosystème complexe qui contrôle pratiquement tous les aspects de ma maison :
+            </p>
+            <ul>
+                <li>Éclairage intelligent dans toutes les pièces avec ajustement automatique</li>
+                <li>Contrôle du chauffage optimisé selon présence et météo</li>
+                <li>Surveillance vidéo via Frigate avec 2 caméras extérieures</li>
+                <li>Détection de présence multi-zones</li>
+                <li>Automatisations complexes basées sur le contexte</li>
+                <li>Intégration vocale avec Kara mon IA personnelle</li>
+                <li>Monitoring énergétique en temps réel</li>
+                <li>Contrôle à distance via app mobile sécurisée</li>
+            </ul>
+        </div>
+
+        <div class="media-section">
+            <div class="media-container">
+                <img src="Data/Images/Projet Home Assistant/Automatisations HA.jpg" alt="Automatisations Home Assistant complexes" class="media-image">
+            </div>
+            <p class="media-caption">Quelques-unes des centaines d'automatisations qui tournent</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Technologies & Apprentissages</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">Home Assistant OS</div>
+                <div class="tech-tag">Docker</div>
+                <div class="tech-tag">YAML</div>
+                <div class="tech-tag">Linux</div>
+                <div class="tech-tag">Zigbee</div>
+                <div class="tech-tag">MQTT</div>
+                <div class="tech-tag">Node-RED</div>
+                <div class="tech-tag">ESPHome</div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Ce Que J'ai Appris</h3>
+                <ul>
+                    <li>Bases de l'administration système Linux</li>
+                    <li>Conteneurisation et virtualisation</li>
+                    <li>Protocoles domotiques (Zigbee, Z-Wave, WiFi)</li>
+                    <li>YAML et configuration as code</li>
+                    <li>Networking et sécurité réseau</li>
+                    <li>Automatisations et logique conditionnelle</li>
+                    <li>L'importance de la documentation</li>
+                    <li>La patience dans le debugging</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Statistiques</h2>
+            <p>
+                Après plus de 5 ans d'évolution continue, voici quelques chiffres de mon installation Home Assistant :
+            </p>
+            <ul>
+                <li><strong>Appareils connectés :</strong> 50+ devices (lumières, capteurs, switches)</li>
+                <li><strong>Automatisations actives :</strong> 150+ scripts et automatisations</li>
+                <li><strong>Intégrations :</strong> 30+ services externes intégrés</li>
+                <li><strong>Uptime VM :</strong> 6+ jours d'affilée sans redémarrage</li>
+                <li><strong>Événements par jour :</strong> Plusieurs milliers d'états changés</li>
+                <li><strong>Mises à jour :</strong> Toujours sur la dernière version stable</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>L'Origine de Tout</h2>
+            <p>
+                Home Assistant a été le déclencheur de tout. C'est ce projet qui m'a poussé à construire le cluster Proxmox, à apprendre la virtualisation, à explorer les protocoles réseau. Chaque nouveau service que j'ai ajouté (TrueNAS, Frigate, N8N, Kara) existe parce que Home Assistant a ouvert la porte.
+            </p>
+            <p>
+                Mais pour supporter cette croissance, il a fallu construire une infrastructure solide. Une infrastructure qui allait bien au-delà d'un simple laptop... C'est là que Proxmox entre en jeu.
+            </p>
+        </div>
+    </div>
+
+    <div class="next-project">
+        <a href="infrastructure-proxmox.html" class="next-project-link">
+            <div class="next-label">Évolution suivante</div>
+            <h3>Infrastructure Proxmox</h3>
+            <p class="next-description">Du laptop surchauffé au cluster de 3 serveurs : comment j'ai construit une infrastructure professionnelle à la maison</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Portfolio. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
