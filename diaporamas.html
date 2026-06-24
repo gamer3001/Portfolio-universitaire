@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diaporamas - Ainis Haichour</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #2e5090;
+            --accent-light: #3d6ab8;
+            --accent-glow: rgba(46, 80, 144, 0.18);
+            --surface: rgba(255, 255, 255, 0.04);
+            --color-infra: #c87a2e;
+            --color-service: #2e8c5a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        #bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+        /* Navigation (identique au reste du site) */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        .nav-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 300; letter-spacing: 0.05em; color: var(--text-primary); text-decoration: none; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; font-weight: 400; letter-spacing: 0.05em; transition: color 0.3s ease; text-transform: lowercase; cursor: pointer; }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a.active { color: var(--text-primary); }
+
+        /* En-tête de page */
+        .page-header {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 11rem 4rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .page-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.2rem;
+            letter-spacing: -0.02em;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.05s backwards;
+        }
+
+        .page-bio {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            max-width: 620px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+        }
+
+        /* Grille de diaporamas */
+        .diaporamas-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 4rem 6rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .diaporamas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .diaporama-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+        }
+
+        .diaporama-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(46, 80, 144, 0.4);
+            box-shadow: 0 20px 60px rgba(46, 80, 144, 0.12);
+        }
+
+        .diaporama-thumb {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            background: #050505;
+        }
+
+        .diaporama-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .diaporama-card:hover .diaporama-thumb img {
+            transform: scale(1.05);
+        }
+
+        .diaporama-thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 45%, rgba(0,0,0,0.88));
+        }
+
+        .diaporama-tag {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 2;
+            background: rgba(0,0,0,0.55);
+            border: 1px solid rgba(46, 80, 144, 0.4);
+            backdrop-filter: blur(6px);
+            color: var(--accent-light);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+        }
+
+        .diaporama-content {
+            padding: 1.8rem 2rem 2.2rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .diaporama-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 0.7rem;
+            color: var(--text-primary);
+        }
+
+        .diaporama-content p {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 1.4rem;
+            flex: 1;
+        }
+
+        .diaporama-cta {
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--accent-light);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .diaporama-cta .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .diaporama-card:hover .diaporama-cta .arrow {
+            transform: translateX(4px);
+        }
+
+        /* Carte "à venir" */
+        .diaporama-card.soon {
+            align-items: center;
+            justify-content: center;
+            cursor: default;
+        }
+
+        .diaporama-card.soon:hover {
+            transform: none;
+            border-color: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+        }
+
+        .diaporama-card.soon .diaporama-thumb {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            opacity: 0.3;
+        }
+
+        .diaporama-card.soon .diaporama-content p {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 4rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Modal Contact (identique) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 2000;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: #0d0d0d; border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px; padding: 3rem; max-width: 500px; width: 90%;
+            position: relative; transform: scale(0.9); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .close-modal { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; color: var(--text-secondary); cursor: pointer; border: none; background: none; transition: color 0.3s ease; }
+        .close-modal:hover { color: var(--text-primary); }
+        .contact-info { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+        .contact-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--surface); border-radius: 12px; text-decoration: none; color: var(--text-primary); transition: all 0.3s ease; }
+        .contact-item:hover { background: rgba(46, 80, 144, 0.12); border-color: var(--accent); }
+        .contact-icon { font-size: 1.5rem; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 968px) {
+            nav { padding: 1rem 2rem; }
+            .page-header { padding: 9rem 2rem 1.5rem; }
+            .diaporamas-section { padding: 1rem 2rem 4rem; }
+            .diaporamas-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <ul class="nav-links">
+                <li><a href="index.html#about">about</a></li>
+                <li><a href="diaporamas.html" class="active">diaporamas</a></li>
+                <li><a href="index.html#projects">projects</a></li>
+                <li><a id="contact-btn" href="#">contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="page-label">Lyceen · Maker</div>
+        <h1 class="page-title">Diaporamas</h1>
+        <p class="page-bio">
+            Mes présentations de projets scolaires, habituellement présentées à l'oral en PowerPoint,
+            mises en page ici pour une lecture plus agréable et accessible à tout moment.
+            Choisissez un diaporama ci-dessous pour le consulter en version web.
+        </p>
+    </header>
+
+    <section class="diaporamas-section">
+        <div class="diaporamas-grid">
+
+            <a href="diaporama-infrastructure-serveur-domotique.html" class="diaporama-card">
+                <div class="diaporama-thumb">
+                    <span class="diaporama-tag">BAC PRO CIEL</span>
+                    <img src="Data/Images/Diaporamas/Infrastructure-Serveur-Domotique/hero-setup.jpg" alt="Aperçu du diaporama Infrastructure Serveur et Domotique Connectée">
+                </div>
+                <div class="diaporama-content">
+                    <h3>Infrastructure Serveur et Domotique Connectée</h3>
+                    <p>Cluster Proxmox, Home Assistant et TrueNAS : la construction d'un datacenter à la maison, de la virtualisation à la domotique.</p>
+                    <span class="diaporama-cta">Voir le diaporama <span class="arrow">→</span></span>
+                </div>
+            </a>
+
+            <div class="diaporama-card soon">
+                <div class="diaporama-thumb">🗂️</div>
+                <div class="diaporama-content">
+                    <h3 style="opacity:0.6;">Prochain diaporama</h3>
+                    <p>D'autres présentations arriveront bientôt ici.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour. Tous droits réservés.</p>
+    </footer>
+
+    <div class="modal-overlay" id="contact-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h2 style="font-family: 'Cormorant Garamond', serif; margin-bottom: 1rem;">Me Contacter</h2>
+            <p style="color: var(--text-secondary);">Discutons de vos projets ou de virtualisation !</p>
+            <div class="contact-info">
+                <a href="mailto:haichour.ainis3@gmail.com" class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <span>haichour.ainis3@gmail.com</span>
+                </a>
+                <a href="https://linkedin.com/in/ainis-haichour" target="_blank" class="contact-item">
+                    <span class="contact-icon">💼</span>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://github.com/gamer3001" target="_blank" class="contact-item">
+                    <span class="contact-icon">🐙</span>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const contactBtn = document.getElementById('contact-btn');
+        const modal = document.getElementById('contact-modal');
+        const closeModal = document.getElementById('close-modal');
+
+        function openContactModal(e) {
+            e.preventDefault();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        if (contactBtn) contactBtn.addEventListener('click', openContactModal);
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.diaporama-card').forEach(card => observer.observe(card));
+    </script>
+
+    <script>
+    /* CANVAS BACKGROUND — identique au reste du site */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, stars = [];
+
+    const PALETTE = [
+        [0.00, [0,   0,   0  ]],
+        [0.20, [2,   3,   6  ]],
+        [0.40, [3,   5,   12 ]],
+        [0.60, [4,   7,   18 ]],
+        [0.80, [5,   9,   22 ]],
+        [1.00, [6,   11,  28 ]],
+    ];
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function lerpColor(c1, c2, t) {
+        return [Math.round(lerp(c1[0],c2[0],t)), Math.round(lerp(c1[1],c2[1],t)), Math.round(lerp(c1[2],c2[2],t))];
+    }
+    function getColor(frac) {
+        frac = Math.max(0, Math.min(1, frac));
+        for (let i = 0; i < PALETTE.length - 1; i++) {
+            const [f0, c0] = PALETTE[i], [f1, c1] = PALETTE[i+1];
+            if (frac >= f0 && frac <= f1) return lerpColor(c0, c1, (frac-f0)/(f1-f0));
+        }
+        return PALETTE[PALETTE.length-1][1];
+    }
+
+    function createStars() {
+        stars = [];
+        const count = Math.floor((W * H) / 3000);
+        for (let i = 0; i < count; i++) {
+            const sz = Math.random();
+            stars.push({
+                x: Math.random() * W,
+                y: Math.pow(Math.random(), 1.5) * H,
+                r: sz < 0.6 ? 0.5 : sz < 0.88 ? 0.85 : 1.2,
+                baseAlpha: 0.3 + Math.random() * 0.6,
+                speed: 0.5 + Math.random() * 2.0,
+                phase: Math.random() * Math.PI * 2,
+            });
+        }
+    }
+
+    function resize() {
+        W = canvas.width  = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        createStars();
+    }
+
+    let scrollFrac = 0, targetFrac = 0;
+    window.addEventListener('scroll', () => {
+        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        targetFrac = window.scrollY / max;
+    }, { passive: true });
+
+    let lastT = 0;
+    function render(now) {
+        const dt = Math.min((now - lastT) / 1000, 0.05);
+        lastT = now;
+        scrollFrac += (targetFrac - scrollFrac) * 0.055;
+
+        const tc = getColor(scrollFrac);
+        const bc = getColor(Math.min(1, scrollFrac + 0.3));
+        const grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, `rgb(${tc[0]},${tc[1]},${tc[2]})`);
+        grad.addColorStop(1, `rgb(${bc[0]},${bc[1]},${bc[2]})`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+
+        const ba = Math.max(0, 0.04 - scrollFrac * 0.05);
+        if (ba > 0.001) {
+            const g1 = ctx.createRadialGradient(W*.2,H*.3,0,W*.2,H*.3,W*.35);
+            g1.addColorStop(0,`rgba(20,35,90,${ba})`); g1.addColorStop(1,'transparent');
+            ctx.fillStyle = g1; ctx.fillRect(0,0,W,H);
+        }
+
+        const sa = Math.min(0.015, scrollFrac * 0.025);
+        if (sa > 0.001) {
+            ctx.fillStyle = `rgba(46,80,144,${sa})`;
+            for (let y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1);
+        }
+
+        if (scrollFrac > 0.45) {
+            const sh = (scrollFrac - 0.45) * 1.8;
+            const g3 = ctx.createLinearGradient(0, H*.6, 0, H);
+            g3.addColorStop(0,'transparent');
+            g3.addColorStop(1,`rgba(46,80,144,${Math.min(0.08,sh*0.07)})`);
+            ctx.fillStyle = g3; ctx.fillRect(0,0,W,H);
+        }
+
+        const t = now / 1000;
+        for (const s of stars) {
+            const starY = s.y / H;
+            const vis = Math.max(0, 1 - (scrollFrac - starY * 0.5 + 0.15) * 3.5);
+            if (vis <= 0.01) continue;
+            const twinkle = 0.45 + 0.55 * Math.sin(t * s.speed + s.phase);
+            const alpha = s.baseAlpha * twinkle * vis;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(215,225,255,${alpha})`;
+            ctx.fill();
+            if (s.r > 1.0 && twinkle > 0.78) {
+                const g = ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4.5);
+                g.addColorStop(0,`rgba(180,200,255,${alpha*0.4})`);
+                g.addColorStop(1,'transparent');
+                ctx.fillStyle = g;
+                ctx.fillRect(s.x-s.r*5,s.y-s.r*5,s.r*10,s.r*10);
+            }
+        }
+
+        if (scrollFrac > 0.28) {
+            const pa = Math.min(0.45, (scrollFrac-0.28)*1.5);
+            for (let i = 0; i < 9; i++) {
+                const seed = i * 141.3;
+                const px = ((seed*79)%W+W)%W;
+                const speed = 28 + (i*19%45);
+                const py = ((H-(t*speed+seed*100)%H)+H)%H;
+                const fa = Math.sin((t*speed*0.1+seed*0.05))*0.5+0.5;
+                ctx.beginPath();
+                ctx.arc(px, py, 1.3, 0, Math.PI*2);
+                ctx.fillStyle = `rgba(46,80,144,${fa*pa*0.4})`;
+                ctx.fill();
+            }
+        }
+
+        requestAnimationFrame(render);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    requestAnimationFrame(render);
+    </script>
+</body>
+</html>
