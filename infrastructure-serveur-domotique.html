@@ -222,7 +222,33 @@
             .nav-arrow.prev { left: 0.5rem; }
             .nav-arrow.next { right: 0.5rem; }
         }
-    </style>
+    
+.presentation-footer{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1rem;
+    margin-top:2rem;
+    margin-bottom:2rem;
+}
+#qrcode{
+    background:rgba(255,255,255,0.05);
+    padding:12px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.1);
+}
+.pdf-download{
+    color:var(--text-primary);
+    text-decoration:none;
+    font-size:0.9rem;
+    transition:all .3s ease;
+}
+.pdf-download:hover{
+    color:white;
+}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
     <canvas id="bg-canvas"></canvas>
@@ -270,8 +296,22 @@
                 <div class="dots-wrapper" id="sliderDots"></div>
             </div>
 
-        </div>
-    </section>
+        
+</div>
+
+<div class="presentation-footer">
+    <div id="qrcode"></div>
+
+    <a href="Data/PDF/Datacenter_EPIL.pdf"
+       class="pdf-download"
+       target="_blank"
+       download>
+       Télécharger le PDF
+    </a>
+</div>
+
+</section>
+
 
     <script>
         const slides = document.querySelectorAll('.slide');
@@ -463,5 +503,18 @@
         resize();
         requestAnimationFrame(render);
     </script>
+
+<script>
+window.addEventListener('load', () => {
+    new QRCode(document.getElementById("qrcode"), {
+        text: window.location.href,
+        width: 120,
+        height: 120,
+        colorDark: "#ffffff",
+        colorLight: "#000000"
+    });
+});
+</script>
 </body>
+
 </html>
