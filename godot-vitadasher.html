@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitaDasher 2D - Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+--bg-primary: #0a0a0f;
+--bg-secondary: #12121a;
+--text-primary: #f5f5f7;
+--text-secondary: #a1a1a6;
+--accent: #2e5090;
+--accent-glow: rgba(46, 80, 144, 0.15);
+--surface: rgba(255, 255, 255, 0.05);
+--godot-blue: #478cbf;
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body {
+font-family: 'DM Sans', sans-serif;
+background: var(--bg-primary);
+color: var(--text-primary);
+overflow-x: hidden;
+line-height: 1.6;
+}
+body::before {
+content: '';
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-image:
+radial-gradient(circle at 20% 50%, rgba(71, 140, 191, 0.05) 0%, transparent 50%),
+radial-gradient(circle at 80% 80%, rgba(46, 80, 144, 0.03) 0%, transparent 50%);
+pointer-events: none;
+z-index: 0;
+}
+nav {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+z-index: 1000;
+background: rgba(10, 10, 15, 0.8);
+backdrop-filter: blur(20px);
+border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+padding: 1.5rem 4rem;
+}
+.nav-content {
+max-width: 1400px;
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.logo {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.5rem;
+font-weight: 300;
+letter-spacing: 0.05em;
+color: var(--text-primary);
+text-decoration: none;
+}
+.back-button {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+color: var(--text-secondary);
+text-decoration: none;
+font-size: 0.9rem;
+font-weight: 400;
+letter-spacing: 0.02em;
+transition: all 0.3s ease;
+padding: 0.5rem 1rem;
+border-radius: 50px;
+}
+.back-button:hover {
+color: var(--text-primary);
+background: var(--surface);
+}
+.back-button::before {
+content: '←';
+font-size: 1.2rem;
+}
+.project-hero {
+min-height: 70vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 8rem 4rem 4rem;
+position: relative;
+text-align: center;
+}
+.hero-content {
+max-width: 800px;
+animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-category {
+display: inline-block;
+padding: 0.5rem 1.25rem;
+background: var(--surface);
+border: 1px solid rgba(71, 140, 191, 0.25);
+border-radius: 50px;
+font-size: 0.85rem;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+margin-bottom: 2rem;
+color: var(--godot-blue);
+}
+h1 {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(2.5rem, 6vw, 5rem);
+font-weight: 300;
+line-height: 1.1;
+margin-bottom: 1.5rem;
+letter-spacing: -0.02em;
+}
+.project-subtitle {
+font-size: clamp(1rem, 2vw, 1.25rem);
+color: var(--text-secondary);
+margin-bottom: 3rem;
+font-weight: 300;
+line-height: 1.8;
+}
+.project-content {
+max-width: 1200px;
+margin: 0 auto;
+padding: 4rem 4rem 8rem;
+position: relative;
+z-index: 1;
+}
+.content-section {
+margin-bottom: 6rem;
+animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.content-section h2 {
+font-family: 'Cormorant Garamond', serif;
+font-size: clamp(2rem, 4vw, 3rem);
+font-weight: 300;
+margin-bottom: 1.5rem;
+letter-spacing: -0.01em;
+}
+.content-section p {
+font-size: 1.1rem;
+line-height: 1.8;
+color: var(--text-secondary);
+font-weight: 300;
+margin-bottom: 1.5rem;
+}
+.content-section ul {
+list-style: none;
+padding-left: 0;
+}
+.content-section li {
+font-size: 1.05rem;
+line-height: 1.8;
+color: var(--text-secondary);
+margin-bottom: 0.75rem;
+padding-left: 1.5rem;
+position: relative;
+}
+.content-section li::before {
+content: '—';
+position: absolute;
+left: 0;
+color: var(--godot-blue);
+}
+.highlight-box {
+background: linear-gradient(135deg, rgba(71, 140, 191, 0.06) 0%, rgba(46, 80, 144, 0.06) 100%);
+border: 1px solid rgba(71, 140, 191, 0.12);
+border-radius: 12px;
+padding: 2rem;
+margin: 2rem 0;
+}
+.highlight-box h3 {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.5rem;
+font-weight: 400;
+margin-bottom: 1rem;
+color: var(--godot-blue);
+}
+.tech-stack {
+display: flex;
+flex-wrap: wrap;
+gap: 1rem;
+margin: 2rem 0;
+}
+.tech-tag {
+padding: 0.5rem 1.25rem;
+background: var(--surface);
+border: 1px solid rgba(71, 140, 191, 0.2);
+border-radius: 50px;
+font-size: 0.9rem;
+color: var(--text-secondary);
+transition: all 0.3s ease;
+}
+.tech-tag:hover {
+border-color: var(--godot-blue);
+color: var(--godot-blue);
+transform: translateY(-2px);
+}
+.media-section {
+margin-bottom: 6rem;
+animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.media-container {
+border-radius: 16px;
+overflow: hidden;
+background: var(--bg-secondary);
+border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.image-placeholder {
+width: 100%;
+aspect-ratio: 16/9;
+background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(71, 140, 191, 0.08) 100%);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+font-size: 3rem;
+color: var(--text-secondary);
+border: 2px dashed rgba(71, 140, 191, 0.2);
+gap: 1rem;
+}
+.placeholder-text {
+font-size: 0.9rem;
+color: var(--text-secondary);
+text-align: center;
+padding: 0 2rem;
+}
+.media-caption {
+margin-top: 1rem;
+font-size: 0.9rem;
+color: var(--text-secondary);
+text-align: center;
+font-style: italic;
+}
+.spec-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 1.5rem;
+margin: 2rem 0;
+}
+.spec-card {
+background: var(--surface);
+border: 1px solid rgba(71, 140, 191, 0.12);
+border-radius: 12px;
+padding: 1.5rem;
+transition: all 0.3s ease;
+}
+.spec-card:hover {
+transform: translateY(-4px);
+border-color: var(--godot-blue);
+}
+.spec-label {
+font-size: 0.85rem;
+color: var(--text-secondary);
+text-transform: uppercase;
+letter-spacing: 0.1em;
+margin-bottom: 0.5rem;
+}
+.spec-value {
+font-family: 'Cormorant Garamond', serif;
+font-size: 1.5rem;
+color: var(--godot-blue);
+font-weight: 400;
+}
+.next-project {
+max-width: 1200px;
+margin: 6rem auto 0;
+padding: 4rem 4rem 0;
+border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.next-project-link {
+display: block;
+text-decoration: none;
+padding: 3rem;
+background: var(--surface);
+border: 1px solid rgba(255, 255, 255, 0.05);
+border-radius: 16px;
+transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+position: relative;
+overflow: hidden;
+}
+.next-project-link::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: linear-gradient(135deg, var(--accent-glow) 0%, transparent 100%);
+opacity: 0;
+transition: opacity 0.5s ease;
+}
+.next-project-link:hover::before {
+opacity: 1;
+}
+.next-project-link:hover {
+transform: translateY(-4px);
+border-color: rgba(71, 140, 191, 0.3);
+}
+.next-label {
+font-size: 0.8rem;
+color: var(--text-secondary);
+text-transform: uppercase;
+letter-spacing: 0.1em;
+margin-bottom: 0.5rem;
+position: relative;
+z-index: 1;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+.next-label::after {
+content: '→';
+font-size: 1.2rem;
+}
+.next-project-link h3 {
+font-family: 'Cormorant Garamond', serif;
+font-size: 2rem;
+color: var(--text-primary);
+font-weight: 400;
+position: relative;
+z-index: 1;
+margin-bottom: 0.5rem;
+}
+.next-description {
+font-size: 1rem;
+color: var(--text-secondary);
+position: relative;
+z-index: 1;
+}
+footer {
+text-align: center;
+padding: 4rem 2rem;
+color: var(--text-secondary);
+font-size: 0.9rem;
+border-top: 1px solid rgba(255, 255, 255, 0.05);
+margin-top: 4rem;
+}
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+@media (max-width: 768px) {
+nav {
+padding: 1.5rem 2rem;
+}
+.project-hero {
+padding: 6rem 2rem 4rem;
+}
+.project-content {
+padding: 4rem 2rem 6rem;
+}
+.spec-grid {
+grid-template-columns: 1fr;
+}
+.next-project {
+padding: 4rem 2rem 0;
+}
+}
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-content">
+<a href="index.html" class="logo">Portfolio</a>
+<a href="index.html#projects" class="back-button">Retour</a>
+</div>
+</nav>
+<section class="project-hero">
+<div class="hero-content">
+<div class="project-category">Création de Jeux Vidéo · Godot 2D · PS Vita</div>
+<h1>VitaDasher 2D</h1>
+<p class="project-subtitle">
+Mon projet Godot le plus poussé : un jeu 2D développé sous Godot 3.x et exporté nativement en homebrew sur PS Vita, via le fork communautaire mrneo240.
+</p>
+</div>
+</section>
+<div class="project-content">
+<div class="content-section">
+<h2>Un jeu 2D exporté nativement sur PS Vita</h2>
+<p>
+VitaDasher est mon projet Godot le plus ambitieux : un jeu 2D développé sous Godot 3.x et exporté pour tourner nativement sur PS Vita, en homebrew. Contrairement à mes autres projets Godot, ici l'objectif n'était pas seulement de faire un jeu, mais aussi de maîtriser toute la chaîne d'export vers une console propriétaire non officiellement supportée.
+</p>
+</div>
+<div class="media-section">
+<div class="media-container">
+<div class="image-placeholder">
+🎮
+<div class="placeholder-text">VitaDasher 2D<br>Jeu 2D tournant sur PS Vita</div>
+</div>
+</div>
+<p class="media-caption">Le jeu en cours d'exécution sur la console PS Vita, en homebrew</p>
+</div>
+<div class="content-section">
+<h2>Une chaîne d'export particulière</h2>
+<p>
+Pour exporter un jeu Godot sur PS Vita, il faut passer par un fork communautaire du moteur (le fork mrneo240) qui ajoute le support de la console, avec un rendu en GLES2 adapté aux limitations matérielles de la Vita.
+</p>
+<div class="highlight-box">
+<h3>Fork Godot utilisé</h3>
+<p>
+Le projet utilise le fork communautaire mrneo240 de Godot 3.x, spécialement adapté pour exporter et faire tourner des jeux sur PS Vita en homebrew, avec un pipeline de rendu GLES2.
+</p>
+</div>
+</div>
+<div class="content-section">
+<h2>Fonctionnalités en cours de développement</h2>
+<p>
+Le jeu est toujours en développement actif. Je travaille actuellement sur un menu pause déclenché par le bouton Start de la Vita, ce qui demande de bien comprendre la gestion des entrées manette (joypad) propre à cette plateforme homebrew.
+</p>
+<ul>
+<li>Déplacements et gameplay 2D de base</li>
+<li>Menu pause déclenché par le bouton Start (joypad button 11)</li>
+<li>Instanciation de la scène PauseMenu.tscn dans les scènes de jeu — en cours de vérification</li>
+</ul>
+</div>
+
+<div class="content-section">
+<h2>Stack Technique</h2>
+<div class="tech-stack">
+<div class="tech-tag">Godot Engine 3.x</div>
+<div class="tech-tag">GDScript</div>
+<div class="tech-tag">2D</div>
+<div class="tech-tag">PS Vita Homebrew</div>
+<div class="tech-tag">Fork mrneo240</div>
+<div class="tech-tag">GLES2</div>
+</div>
+</div>
+<div class="content-section">
+<h2>Code source</h2>
+<p>
+Le projet complet (scènes, scripts GDScript et assets) est disponible sur GitHub : <a href="https://github.com/gamer3001/VitaDasher-2D" target="_blank" style="color: var(--godot-blue);">https://github.com/gamer3001/VitaDasher-2D</a>
+</p>
+</div>
+</div>
+<div class="next-project">
+<a href="index.html#projects" class="next-project-link">
+<div class="next-label">Projet suivant</div>
+<h3>Retour aux projets</h3>
+<p class="next-description">Découvrir mes autres projets sur le portfolio.</p>
+</a>
+</div>
+<footer>
+<p>&copy; 2026 Ainis Haichour. Tous droits réservés.</p>
+</footer>
+<script>
+const observerOptions = {
+threshold: 0.1,
+rootMargin: '0px 0px -100px 0px'
+};
+const observer = new IntersectionObserver((entries) => {
+entries.forEach((entry) => {
+if (entry.isIntersecting) {
+entry.target.style.animationPlayState = 'running';
+observer.unobserve(entry.target);
+}
+});
+}, observerOptions);
+document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+section.style.animationDelay = `${index * 0.1}s`;
+section.style.animationPlayState = 'paused';
+observer.observe(section);
+});
+</script>
+</body>
+</html>
