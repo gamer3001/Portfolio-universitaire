@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmphIA - Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #060608;
+            --bg-secondary: #101014;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #2e5090;
+            --accent-light: #3d6ab8;
+            --surface: rgba(255, 255, 255, 0.05);
+            --ok: #2e8c5a;
+            --warn: #c87a2e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 15%, rgba(46, 80, 144, 0.08), transparent 50%),
+                radial-gradient(circle at 85% 75%, rgba(46, 140, 90, 0.05), transparent 50%);
+            pointer-events: none;
+        }
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(6, 6, 8, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .back-button {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .back-button:hover { background: var(--surface); color: var(--text-primary); }
+        .back-button::before { content: '←'; margin-right: 0.5rem; }
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 3rem;
+            text-align: center;
+        }
+        .hero-content { max-width: 800px; animation: fadeIn 1s; }
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(46, 80, 144, 0.35);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2rem;
+            color: var(--accent-light);
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        .subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .content {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 4rem 6rem;
+        }
+        .section {
+            margin-bottom: 5rem;
+            animation: fadeIn 1s backwards;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+        p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+        }
+        ul { list-style: none; padding: 0; }
+        li {
+            font-size: 1.02rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-light);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(46, 80, 144, 0.08), rgba(46, 140, 90, 0.04));
+            border: 1px solid rgba(46, 80, 144, 0.18);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .highlight-box h3 {
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+        }
+        /* Icone feature */
+        .feature-block {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 1.75rem 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .feature-icon { font-size: 2.75rem; flex-shrink: 0; }
+        .feature-text .feature-title { font-weight: 500; color: var(--text-primary); margin-bottom: 0.25rem; }
+        .feature-text .feature-sub { font-size: 0.9rem; color: var(--text-secondary); }
+        /* Pipeline steps */
+        .pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 2rem 0;
+        }
+        .pipeline-step {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.25rem 0;
+            border-left: 2px solid rgba(46, 80, 144, 0.3);
+            padding-left: 1.75rem;
+            position: relative;
+            margin-left: 1rem;
+        }
+        .pipeline-step::before {
+            content: attr(data-n);
+            position: absolute;
+            left: -1.1rem;
+            top: 1.15rem;
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 2px solid var(--accent-light);
+            color: var(--accent-light);
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .pipeline-step h3 { margin-bottom: 0.3rem; }
+        .pipeline-step p { margin-bottom: 0; }
+        /* Problem / fix cards */
+        .fix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .fix-card {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .fix-card .fix-problem {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--warn);
+            margin-bottom: 0.5rem;
+        }
+        .fix-card .fix-solution {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .fix-card .fix-solution strong { color: var(--text-primary); }
+        /* Tech stack tags */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1.5rem 0 2rem;
+        }
+        .tech-tag {
+            background: rgba(46, 80, 144, 0.1);
+            border: 1px solid rgba(46, 80, 144, 0.3);
+            color: var(--accent-light);
+            padding: 0.5rem 1.1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+        /* Media (images/gifs/videos) — libre à remplir */
+        .media-section { margin-bottom: 3rem; }
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .media-container:hover .media-image { transform: scale(1.02); }
+        .media-video {
+            width: 100%;
+            max-height: 55vh;
+            display: block;
+            object-fit: contain;
+            background: #000;
+        }
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+        /* Next project */
+        .next-project {
+            display: block;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .next-project:hover {
+            border-color: rgba(46, 80, 144, 0.4);
+            transform: translateY(-4px);
+        }
+        .next-project .np-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-light);
+            margin-bottom: 0.5rem;
+        }
+        .next-project h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; margin-bottom: 0.4rem; }
+        .next-project p { margin-bottom: 0; }
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            nav, .hero, .content { padding-left: 2rem; padding-right: 2rem; }
+            .feature-block { flex-direction: column; text-align: center; }
+            .media-video { max-height: 40vh; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html#projects" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="project-category">Intelligence Artificielle · Automatisation · Homelab</div>
+            <h1>AmphIA</h1>
+            <p class="subtitle">
+                Un pipeline 100% automatisé qui transforme mes enregistrements de cours (amphi et TD) en fiches de révision structurées : Whisper en local sur mon serveur pour la transcription, puis une IA générative pour le résumé — avec suivi en direct sur Telegram.
+            </p>
+        </div>
+    </section>
+
+    <div class="content">
+        <div class="section">
+            <h2>Le Projet</h2>
+            <p>
+                À l'IUT, j'enregistre mes cours (amphis et TD) avec mon téléphone. Plutôt que de les réécouter entièrement pour prendre des notes après coup, j'ai construit <strong>AmphIA</strong>, un pipeline qui fait tout le travail à ma place : dès que le fichier audio arrive sur mon NAS, il est automatiquement transcrit puis transformé en une fiche de cours claire et structurée, sans que j'aie à toucher à quoi que ce soit.
+            </p>
+            <p>
+                L'idée de départ était simple : « je dépose un audio, je récupère un résumé propre ». La difficulté a été de faire tenir tout ça sur mon homelab existant (un seul GPU, une GTX 1060 6 Go, déjà partagée avec d'autres services), sans rien payer.
+            </p>
+
+            <div class="feature-block">
+                <div class="feature-icon">🎧</div>
+                <div class="feature-text">
+                    <div class="feature-title">Téléphone → NAS → Transcription → Résumé IA</div>
+                    <div class="feature-sub">Zéro action manuelle après l'enregistrement du cours</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Architecture Générale</h2>
+            <p>
+                Le projet s'appuie entièrement sur mon infrastructure Proxmox existante, pour éviter d'ajouter des conteneurs inutiles :
+            </p>
+            <ul>
+                <li><strong>TrueNAS Scale</strong> : stockage central, avec une arborescence <code>IUT/Amphi</code> et <code>IUT/TD</code>, chacune contenant un dossier <code>Audio</code> (dépôt), <code>Slides</code> (PDF du prof, optionnel) et <code>Notes</code> (sortie).</li>
+                <li><strong>Tailscale</strong> : accès distant sécurisé au NAS depuis mon téléphone, pour déposer les enregistrements où que je sois, sans ouvrir le moindre port.</li>
+                <li><strong>LXC "Whisper" (Proxmox)</strong> : conteneur avec passthrough GPU (GTX 1060), qui monte le dossier NAS en SMB et fait tourner le script de surveillance et la transcription.</li>
+                <li><strong>API Gemini (Google AI Studio)</strong> : génération du résumé structuré, appelée directement en HTTP depuis le script — remplace l'ancienne IA locale (Ollama/Mistral).</li>
+                <li><strong>Bot Telegram</strong> : notifications de progression en temps réel et commandes à distance (<code>/retry</code>, <code>/restart</code>).</li>
+            </ul>
+
+            <!-- IMAGE LIBRE : capture de l'arborescence des dossiers sur TrueNAS -->
+            <div class="media-section">
+                <div class="media-container">
+                    <img src="Data/Images/Projet AmphIA/arborescence-nas.png" alt="Arborescence des dossiers IUT sur TrueNAS" class="media-image">
+                </div>
+                <p class="media-caption">Arborescence des dossiers Amphi/TD (Audio, Slides, Notes) sur TrueNAS</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Gestion de la VRAM Partagée (Segmentation GPU)</h2>
+            <p>
+                Le point le plus délicat du projet : la GTX 1060 ne dispose que de 6 Go de VRAM, et elle est déjà utilisée par un service Whisper permanent (Wyoming, branché sur Home Assistant pour la reconnaissance vocale de la maison). Faire tourner en même temps ce service léger et le modèle <code>large-v3</code> nécessaire à la transcription des cours ferait une erreur mémoire (OOM) quasi certaine.
+            </p>
+            <p>
+                La solution a été de <strong>segmenter l'usage du GPU dans le temps</strong> plutôt que de le partager en continu : le script décharge le service Whisper permanent avant de lancer un traitement lourd, puis le recharge une fois terminé.
+            </p>
+            <div class="highlight-box">
+                <h3>Séquence de bascule VRAM</h3>
+                <ul>
+                    <li><strong>1. Coupure du service léger :</strong> <code>systemctl stop wyoming-whisper</code> — la VRAM qu'il occupait est libérée.</li>
+                    <li><strong>2. Pause de sécurité :</strong> quelques secondes pour laisser le temps au GPU de vider la mémoire.</li>
+                    <li><strong>3. Traitement lourd :</strong> chargement du modèle <code>large-v3</code> et transcription des morceaux découpés, seul maître du GPU.</li>
+                    <li><strong>4. Redémarrage automatique :</strong> une fois la transcription terminée (même en cas d'erreur, via un bloc <code>finally</code>), <code>systemctl start wyoming-whisper</code> relance le service permanent pour Home Assistant.</li>
+                </ul>
+            </div>
+            <p>
+                Ce système de bascule garantit qu'un seul modèle Whisper n'est jamais chargé en VRAM à la fois, tout en gardant la reconnaissance vocale de la maison disponible le reste du temps.
+            </p>
+
+            <!-- GIF LIBRE : charge GPU/VRAM visible dans Proxmox pendant la bascule -->
+            <div class="media-section">
+                <div class="media-container">
+                    <img src="Data/Images/Projet AmphIA/charge-proxmox-gpu.gif" alt="Charge GPU visible dans Proxmox pendant la transcription" class="media-image">
+                </div>
+                <p class="media-caption">Charge GPU/VRAM observée dans Proxmox pendant la bascule Wyoming → transcription</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Pourquoi être passé d'Ollama à Gemini 2.5 Flash</h2>
+            <p>
+                À l'origine, le résumé était généré en local avec Ollama (modèle Mistral), sur la même GTX 1060 que Whisper. Cela fonctionnait, mais avec deux limites concrètes pour l'usage cours technique :
+            </p>
+            <div class="highlight-box">
+                <h3>Le problème du "tout local"</h3>
+                <ul>
+                    <li><strong>VRAM partagée :</strong> Whisper et Ollama devaient déjà se relayer sur les mêmes 6 Go de VRAM, en plus de la bascule avec Wyoming — une contrainte supplémentaire pour un gain de précision limité.</li>
+                    <li><strong>Précision technique :</strong> sur du vocabulaire pointu (commandes réseau, syntaxe, jargon informatique), le petit modèle local se trompait ou inventait des termes.</li>
+                    <li><strong>Contexte limité :</strong> les transcriptions longues (1h30 de cours) dépassaient facilement la fenêtre de contexte confortable du modèle local.</li>
+                </ul>
+            </div>
+            <p>
+                J'ai donc basculé la génération du résumé vers l'API Gemini de Google AI Studio, qui reste gratuite dans les limites de mon usage, tout en étant nettement plus précise sur le jargon technique et capable d'avaler des transcriptions entières sans les découper. Whisper, lui, reste local : c'est la partie la plus lourde en calcul, et il n'y a aucune raison d'envoyer des heures d'audio à une API externe alors que le GPU maison suffit très bien.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>Fonctionnement du Pipeline</h2>
+            <div class="pipeline">
+                <div class="pipeline-step" data-n="1">
+                    <div>
+                        <h3>Dépôt du fichier</h3>
+                        <p>L'enregistrement (.m4a) est déposé dans <code>IUT/Amphi/Audio</code> ou <code>IUT/TD/Audio</code> sur le NAS, via Tailscale depuis le téléphone.</p>
+                    </div>
+                </div>
+                <div class="pipeline-step" data-n="2">
+                    <div>
+                        <h3>Détection & vérification</h3>
+                        <p>Le script Python surveille les dossiers en continu et attend que la taille du fichier se stabilise, pour être sûr que le transfert est terminé avant de traiter un fichier encore en cours d'upload.</p>
+                    </div>
+                </div>
+                <div class="pipeline-step" data-n="3">
+                    <div>
+                        <h3>Bascule VRAM & découpage</h3>
+                        <p>Le service Wyoming permanent est coupé pour libérer la VRAM, puis l'audio est découpé en morceaux de 10 minutes avec FFmpeg.</p>
+                    </div>
+                </div>
+                <div class="pipeline-step" data-n="4">
+                    <div>
+                        <h3>Transcription</h3>
+                        <p>Chaque morceau est transcrit par faster-whisper (large-v3, en <code>int8</code>) sur la GTX 1060, seule occupante du GPU le temps du traitement.</p>
+                    </div>
+                </div>
+                <div class="pipeline-step" data-n="5">
+                    <div>
+                        <h3>Lecture des slides (optionnel)</h3>
+                        <p>Si des PDF du prof sont présents dans le dossier <code>Slides</code>, leur texte est extrait et ajouté au contexte, pour éviter que l'IA n'invente ou n'orthographie mal des termes techniques.</p>
+                    </div>
+                </div>
+                <div class="pipeline-step" data-n="6">
+                    <div>
+                        <h3>Résumé structuré par Gemini</h3>
+                        <p>La transcription brute (+ slides) est envoyée à Gemini 2.5 Flash avec une consigne stricte : rédiger une fiche complète, organisée logiquement, sans perdre une seule information du cours source.</p>
+                    </div>
+                </div>
+                <div class="pipeline-step" data-n="7">
+                    <div>
+                        <h3>Sauvegarde & notification</h3>
+                        <p>Deux fichiers sont déposés dans <code>Notes</code> : la transcription brute et la fiche résumée. Wyoming est relancé, et le bot Telegram envoie une notification à chaque étape, avec le lien final.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- IMAGE LIBRE : logs de la transcription Whisper dans le terminal -->
+            <div class="media-section">
+                <div class="media-container">
+                    <img src="Data/Images/Projet AmphIA/logs-whisper.png" alt="Logs du service de transcription Whisper" class="media-image">
+                </div>
+                <p class="media-caption">Logs en direct (journalctl) pendant la transcription d'un cours</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Suivi en Direct via Telegram</h2>
+            <p>
+                Comme le traitement d'un cours d'1h30 prend plusieurs minutes, j'ai ajouté un bot Telegram qui donne une visibilité complète sur ce qu'il se passe, sans avoir à rester devant un terminal SSH :
+            </p>
+            <ul>
+                <li>Notification à chaque étape clé (détection, bascule VRAM, transcription, résumé, terminé)</li>
+                <li>Message d'erreur détaillé en cas d'échec (avec la stack trace tronquée)</li>
+                <li>Commande <code>/retry</code> pour relancer automatiquement le dernier fichier en échec</li>
+                <li>Commande <code>/restart</code> pour redémarrer le service à distance</li>
+            </ul>
+
+            <!-- IMAGE LIBRE : capture d'écran du bot Telegram -->
+            <div class="media-section">
+                <div class="media-container">
+                    <img src="Data/Images/Projet AmphIA/bot-telegram.png" alt="Notifications du bot Telegram AmphIA" class="media-image">
+                </div>
+                <p class="media-caption">Notifications de progression envoyées par le bot Telegram</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Difficultés Rencontrées</h2>
+            <p>Comme souvent sur un projet homelab, la théorie et la pratique n'ont pas toujours été raccords :</p>
+            <div class="fix-grid">
+                <div class="fix-card">
+                    <div class="fix-problem">GPU Pascal incompatible</div>
+                    <div class="fix-solution">La GTX 1060 (architecture Pascal) ne supporte pas le calcul <code>int8_float16</code> de CTranslate2. <strong>Solution :</strong> forcer le compute type en <code>int8</code>, seul mode réellement accéléré sur cette carte.</div>
+                </div>
+                <div class="fix-card">
+                    <div class="fix-problem">Environnement Python géré</div>
+                    <div class="fix-solution">Debian 12 (PEP 668) bloque les <code>pip install</code> globaux. <strong>Solution :</strong> environnement virtuel dédié (<code>venv</code>) pour isoler les dépendances du script sans toucher au système.</div>
+                </div>
+                <div class="fix-card">
+                    <div class="fix-problem">Librairies CUDA manquantes</div>
+                    <div class="fix-solution">Erreur <code>libcublas.so.12</code> introuvable après l'installation des paquets CUDA via pip. <strong>Solution :</strong> pointer explicitement <code>LD_LIBRARY_PATH</code> vers le dossier des libs installées par pip.</div>
+                </div>
+                <div class="fix-card">
+                    <div class="fix-problem">Modèle Gemini obsolète</div>
+                    <div class="fix-solution"><code>gemini-1.5-flash</code> a été retiré de l'API sans prévenir (erreur 404). <strong>Solution :</strong> migration vers <code>gemini-2.5-flash</code>, avec un prompt renforcé pour garantir un résumé exhaustif.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Améliorations Envisagées</h2>
+            <ul>
+                <li>Export automatique de chaque fiche vers un Google Doc (via un compte de service), pour la relire depuis n'importe quel appareil (PC, Samsung, iPad)</li>
+                <li>Détection automatique de nouvelles matières sans modifier le script (déjà en partie fait via le scan des dossiers)</li>
+                <li>Régénération d'un token Telegram propre et passage des secrets en variables d'environnement plutôt qu'en dur dans le script</li>
+                <li>Ajout d'un mini tableau de bord web pour visualiser l'historique des cours traités</li>
+            </ul>
+
+            <h3 style="margin-top: 2rem;">Stack Technique</h3>
+            <div class="tech-tags">
+                <span class="tech-tag">Proxmox LXC</span>
+                <span class="tech-tag">TrueNAS Scale (SMB)</span>
+                <span class="tech-tag">Tailscale</span>
+                <span class="tech-tag">faster-whisper (GPU, int8)</span>
+                <span class="tech-tag">FFmpeg</span>
+                <span class="tech-tag">Google Gemini 2.5 Flash API</span>
+                <span class="tech-tag">Telegram Bot API</span>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">systemd</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Bilan du Projet</h2>
+            <p>
+                Ce projet répond exactement au besoin de départ : ne plus jamais réécouter un cours en entier pour en tirer des notes. Le résultat est une fiche complète et fidèle, générée en quelques minutes après l'enregistrement, sans surcharger un homelab déjà bien occupé.
+            </p>
+            <p>
+                Il m'a surtout appris à faire cohabiter plusieurs charges de travail IA sur un seul GPU grand public en segmentant leur usage dans le temps, à déboguer une chaîne complète (montage réseau, environnement Python, CUDA, API externe) et à choisir la bonne IA pour la bonne tâche : local quand c'est pertinent (Whisper), cloud gratuit quand la précision et le contexte comptent plus que la confidentialité (Gemini).
+            </p>
+        </div>
+
+        <a href="infrastructure-proxmox.html" class="next-project">
+            <div class="np-label">Projet suivant</div>
+            <h3>Cluster Proxmox</h3>
+            <p>3 serveurs, ~20 VMs/containers - Un datacenter à la maison, l'infrastructure qui héberge ce projet.</p>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour. Tous droits réservés.</p>
+    </footer>
+</body>
+</html>
