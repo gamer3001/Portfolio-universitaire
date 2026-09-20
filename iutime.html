@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IUTime - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent: #0066ff;
+            --accent-glow: rgba(124, 92, 255, 0.15);
+            --surface: rgba(255, 255, 255, 0.05);
+            --iutime-violet: #7C5CFF;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 20% 50%, rgba(124, 92, 255, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 102, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4rem;
+        }
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+        .back-button:hover {
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+        .project-hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-category {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(124, 92, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--iutime-violet);
+        }
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+        .project-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+        .project-meta {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        .meta-item {
+            text-align: center;
+        }
+        .meta-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        .meta-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+        }
+        .project-btn {
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        .project-btn.primary {
+            background: var(--iutime-violet);
+            color: white;
+            border: 1px solid var(--iutime-violet);
+        }
+        .project-btn.primary:hover {
+            background: #9179ff;
+            border-color: #9179ff;
+        }
+        .project-btn.secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .project-btn.secondary:hover {
+            border-color: rgba(255,255,255,0.35);
+            color: var(--text-primary);
+        }
+        .project-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 4rem 8rem;
+            position: relative;
+            z-index: 1;
+        }
+        .content-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        .content-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+        .content-section ul, .content-section ol {
+            list-style: none;
+            padding-left: 0;
+        }
+        .content-section li {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .content-section li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--iutime-violet);
+        }
+        .content-section ol {
+            counter-reset: step;
+        }
+        .content-section ol li {
+            counter-increment: step;
+            padding-left: 2rem;
+        }
+        .content-section ol li::before {
+            content: counter(step) '.';
+            font-weight: 500;
+            color: var(--iutime-violet);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.05) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 1px solid rgba(124, 92, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .highlight-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--iutime-violet);
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .tech-tag {
+            padding: 0.5rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid rgba(124, 92, 255, 0.2);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        .tech-tag:hover {
+            border-color: var(--iutime-violet);
+            color: var(--iutime-violet);
+            transform: translateY(-2px);
+        }
+        .media-section {
+            margin-bottom: 6rem;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+        .media-container {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0;
+        }
+        .media-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .media-container:hover .media-image {
+            transform: scale(1.02);
+        }
+        .media-caption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+        }
+        .media-row {
+            display: grid;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        @media (max-width: 768px) {
+            .media-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 2rem;
+            }
+            .project-hero {
+                padding: 6rem 2rem 4rem;
+            }
+            .project-content {
+                padding: 4rem 2rem 6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <a href="index.html" class="logo">Portfolio</a>
+            <a href="index.html" class="back-button">Retour</a>
+        </div>
+    </nav>
+
+    <section class="project-hero">
+        <div class="hero-content">
+            <div class="project-category">Web · Outil étudiant</div>
+            <h1>IUTime</h1>
+            <p class="project-subtitle">
+                L'emploi du temps en direct que l'IUT de Lille (campus Villeneuve d'Ascq) ne fournit pas en appli — juste un fichier ICS brut. Alors je l'ai construit moi-même.
+            </p>
+            <div class="project-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Type</div>
+                    <div class="meta-value">Web App</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Stack</div>
+                    <div class="meta-value">HTML / CSS / JS</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Source</div>
+                    <div class="meta-value">ICS Hyperplanning</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Sync</div>
+                    <div class="meta-value">GitHub Actions</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Hébergement</div>
+                    <div class="meta-value">GitHub Pages</div>
+                </div>
+            </div>
+            <div class="project-links">
+                <a href="https://gamer3001.github.io/IUTime/" target="_blank" class="project-btn primary">Voir le site</a>
+                <a href="https://github.com/gamer3001/IUTime" target="_blank" class="project-btn secondary">Code source</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="project-content">
+
+        <div class="content-section">
+            <h2>Le problème</h2>
+            <p>
+                À l'IUT de Lille, l'emploi du temps passe par Hyperplanning — mais il n'existe aucune application dédiée pour le consulter au quotidien, seulement un flux ICS brut à importer soi-même dans un calendrier générique. Pas très pratique pour vérifier rapidement son prochain cours entre deux couloirs.
+            </p>
+            <p>
+                J'ai voulu une vraie interface, pensée comme Pronote ou École Directe : rapide, lisible, et qui se met à jour toute seule sans que j'aie à retélécharger quoi que ce soit.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Une interface pensée pour l'usage quotidien</h2>
+            <p>
+                Navigation jour par jour avec des flèches, un bouton calendrier pour basculer entre vue jour et vue semaine, un trait d'heure actuelle façon calendrier Apple, et une couleur différente par matière pour repérer un cours d'un coup d'œil. Volontairement sobre, pas un design "généré par IA".
+            </p>
+            <p>
+                Le dimanche est totalement écarté : les flèches le sautent automatiquement en navigation jour, et il n'apparaît tout simplement pas dans la vue semaine ni dans le mini-calendrier, puisqu'il n'y a jamais cours ce jour-là.
+            </p>
+        </div>
+
+        <div class="media-section">
+            <div class="media-row">
+                <div>
+                    <div class="media-container">
+                        <img src="Data/Images/Projet IUTime/Interface Mobile.jpg" alt="Interface mobile d'IUTime" class="media-image">
+                    </div>
+                    <p class="media-caption">Vue mobile — navigation jour par jour</p>
+                </div>
+                <div>
+                    <div class="media-container">
+                        <img src="Data/Images/Projet IUTime/Interface PC.jpg" alt="Interface PC d'IUTime" class="media-image">
+                    </div>
+                    <p class="media-caption">Vue PC — semaine en grille côte à côte</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Deux versions, un seul site</h2>
+            <p>
+                <code>index.html</code> est pensé mobile-first, avec un bouton en haut pour basculer vers <code>pc.html</code> : une mise en page dédiée grand écran, avec la vue semaine en grille classique (colonnes côte à côte).
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Synchronisation automatique</h2>
+            <p>
+                Un workflow GitHub Actions (<code>sync-edt.yml</code>) va chercher le fichier <code>.ics</code> d'Hyperplanning à intervalle régulier et le commit directement dans <code>data/edt.ics</code>. Le site n'a donc jamais besoin d'une intervention manuelle pour rester à jour.
+            </p>
+            <div class="highlight-box">
+                <h3>Fiabilité du pipeline</h3>
+                <ul>
+                    <li>Le job échoue clairement (au lieu de continuer silencieusement) si le secret est vide, si l'IUT répond mal, ou si le contenu récupéré n'est pas un vrai fichier ICS</li>
+                    <li>Vérification que le contenu commence bien par <code>BEGIN:VCALENDAR</code> avant de l'utiliser</li>
+                    <li>Logs détaillés dans l'Action : code HTTP reçu et taille du fichier téléchargé</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Un site qui explique ses propres pannes</h2>
+            <p>
+                Plutôt que de rester bloqué sur un simple "chargement..." en cas de souci, le site affiche un panneau de diagnostic précis côté client : code d'erreur HTTP, message exact, et un bouton pour ouvrir directement <code>data/edt.ics</code> et vérifier le fichier brut en un clic.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h2>Stack & compétences</h2>
+            <div class="tech-stack">
+                <div class="tech-tag">HTML5</div>
+                <div class="tech-tag">CSS3</div>
+                <div class="tech-tag">JavaScript</div>
+                <div class="tech-tag">GitHub Actions</div>
+                <div class="tech-tag">GitHub Pages</div>
+                <div class="tech-tag">Parsing ICS / iCal</div>
+            </div>
+            <div class="highlight-box">
+                <h3>Compétences développées</h3>
+                <ul>
+                    <li>Parsing d'un format de données réel (ICS) côté client</li>
+                    <li>Automatisation d'un pipeline de données avec GitHub Actions</li>
+                    <li>Conception d'une interface responsive mobile / desktop</li>
+                    <li>Gestion d'erreurs et diagnostics exploitables par l'utilisateur</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Le petit outil qui manquait</h2>
+            <p>
+                IUTime ne révolutionne rien, mais il règle un vrai problème du quotidien : savoir en deux secondes où je dois être. C'est le genre de projet né d'une frustration simple — pas d'appli officielle — et résolu avec les outils que j'avais déjà sous la main.
+            </p>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Ainis Haichour (G3-industrie). Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section, .media-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animationPlayState = 'paused';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
